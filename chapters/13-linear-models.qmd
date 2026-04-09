@@ -1,0 +1,410 @@
+# Linear Models {#sec-linear-models}
+
+In @sec-scatterplots you visualized the relationships between pairs of continuous variables and described them qualitatively. This chapter takes the next step: quantifying those relationships with linear regression models. Rather than saying "education and income appear positively related," you will be able to say "each additional percentage point of college graduates in a county is associated with a $1,200 increase in median income, and the model explains 35% of the variation."
+
+We will estimate regression models using three different Python libraries — `scipy`, `scikit-learn`, and `statsmodels` — each of which offers different strengths. We will also use seaborn's `regplot` and `lmplot` functions to combine regression estimation with visualization, examine residuals to diagnose model quality, and introduce multiple regression.
+
+## Setup
+
+```{python}
+import numpy as np
+
+import pandas as pd
+idx = pd.IndexSlice
+pd.options.display.max_columns = 200
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+from matplotlib import ticker
+
+import seaborn as sb
+from scipy import stats
+```
+
+```{python}
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+```
+
+## The Data
+
+We continue using the county-level dataset from @sec-scatterplots.
+
+```{python}
+counties_df = pd.read_csv('us_counties.csv', dtype={0: str}, na_values=['-'])
+counties_df.rename(columns={'Unnamed: 0': 'FIPS'}, inplace=True)
+counties_df.set_index('county_fips', inplace=True)
+print(counties_df.shape)
+counties_df.head()
+```
+
+## The Linear Model
+
+A linear regression estimates the parameters of the equation:
+
+$$y = \alpha + \beta x$$
+
+where $y$ is the outcome variable, $x$ is the input variable, $\beta$ is the **slope** (how much $y$ changes for each one-unit increase in $x$), and $\alpha$ is the **intercept** (the predicted value of $y$ when $x = 0$). The parameters are estimated using a method called [ordinary least squares](https://en.wikipedia.org/wiki/Simple_linear_regression) (OLS), which finds the line that minimizes the sum of squared differences between observed and predicted values.
+
+## Estimation with `scipy.stats.linregress`
+
+The simplest interface is `scipy.stats.linregress`, which takes two arrays and returns the slope, intercept, correlation coefficient ($r$), p-value, and standard error.
+
+```{python}
+f, ax = plt.subplots()
+
+sb.regplot(
+    data=counties_df,
+    x='Pct_Born_Same_State',
+    y='Pct_HS_Grad',
+    line_kws={'color': 'tab:red'},
+    ax=ax
+)
+
+ax.set_xlim((0, 100))
+```
+
+```{python}
+model = stats.linregress(
+    x=counties_df['Pct_Born_Same_State'].fillna(counties_df['Pct_Born_Same_State'].mean()),
+    y=counties_df['Pct_HS_Grad'].fillna(counties_df['Pct_HS_Grad'].mean())
+)
+
+model
+```
+
+### Interpreting the parameters
+
+Each parameter has a substantive meaning.
+
+The **slope** of approximately 0.37 means that each additional percentage point of a county's population born in the same state is associated with a 0.37 percentage point increase in high school graduation rates.
+
+The **intercept** of approximately 58 means that the model predicts a high school graduation rate of 58% for a hypothetical county where 0% of the population was born in the same state.
+
+The **r-value** can be squared to get $R^2$, the [coefficient of determination](https://en.wikipedia.org/wiki/Coefficient_of_determination) — the proportion of variance in $y$ explained by $x$.
+
+```{python}
+model.rvalue ** 2
+```
+
+The **p-value** tests the null hypothesis that the slope is zero (no relationship). A very small p-value indicates strong evidence against this null.
+
+::: {.callout-warning}
+## Missing data and regression
+`linregress` does not handle `NaN` values — it will return `NaN` for all parameters if any input contains missing data. You must handle missing data before fitting, either by dropping rows with `.dropna()` or imputing with `.fillna()`. The choice matters and should be documented.
+:::
+
+### Visualizing the model
+
+Plot the data with the estimated regression line overlaid.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+
+counties_df.plot.scatter(x='Pct_Born_Same_State', y='Pct_HS_Grad', ax=ax, s=25)
+
+_x = counties_df['Pct_Born_Same_State'].fillna(0)
+_y = model.intercept + model.slope * _x
+ax.plot(_x, _y, color='tab:red')
+ax.set_xlim((0, 100))
+ax.set_ylim((0, 60))
+```
+
+## Estimation with `scikit-learn`
+
+For more complex models, `scikit-learn`'s `LinearRegression` uses the fit/predict pattern familiar throughout the machine learning ecosystem.
+
+```{python}
+from sklearn.linear_model import LinearRegression
+
+X = counties_df['Pct_Born_Same_State'].fillna(
+    counties_df['Pct_Born_Same_State'].mean()
+).values.reshape(-1, 1)
+
+y = counties_df['Pct_HS_Grad'].fillna(
+    counties_df['Pct_HS_Grad'].mean()
+).values.reshape(-1, 1)
+
+sk_reg = LinearRegression().fit(X, y)
+```
+
+The model statistics are stored as attributes.
+
+```{python}
+sk_reg.coef_
+```
+
+```{python}
+sk_reg.intercept_
+```
+
+```{python}
+sk_reg.score(X, y)
+```
+
+Note that scikit-learn requires the predictor to be a 2D array (hence `.reshape(-1, 1)`), even for simple linear regression, because the library is designed for models with multiple predictors.
+
+## Estimation with `statsmodels`
+
+The `statsmodels` library provides the most detailed statistical output, including confidence intervals, diagnostic tests, and a familiar summary table.
+
+```{python}
+_cleaned_df = counties_df.copy()
+_cleaned_df['Pct_HS_Grad'] = _cleaned_df['Pct_HS_Grad'].fillna(_cleaned_df['Pct_HS_Grad'].mean())
+_cleaned_df['Pct_Born_Same_State'] = _cleaned_df['Pct_Born_Same_State'].fillna(
+    _cleaned_df['Pct_Born_Same_State'].mean()
+)
+
+sm_reg = smf.ols('Pct_HS_Grad ~ Pct_Born_Same_State', data=_cleaned_df).fit()
+
+print(sm_reg.summary())
+```
+
+The formula interface (`y ~ x`) is borrowed from R and is intuitive once you get used to it. The summary table includes everything from `linregress` plus confidence intervals for each coefficient, F-statistics, and diagnostic measures.
+
+## Visualizing Regressions with Seaborn
+
+Seaborn's `regplot` and `lmplot` combine scatterplots with fitted regression lines and confidence bands in a single call. The shaded band around the regression line represents the 95% confidence interval for the predicted mean — connecting back to the uncertainty principles from @sec-uncertainty.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+
+sb.regplot(
+    data=counties_df,
+    x='Pct_Born_Same_State',
+    y='Pct_HS_Grad',
+    line_kws={'color': 'tab:orange'},
+    scatter_kws={'s': 15, 'alpha': .5},
+    ax=ax
+)
+
+ax.set_xlim((0, 100))
+ax.set_ylim((0, 60))
+```
+
+### Positive relationship
+
+```{python}
+g = sb.lmplot(
+    data=counties_df, x='Pct_Born_Same_State', y='Pct_HS_Grad',
+    aspect=2, scatter_kws={'alpha': .5}, line_kws={'color': 'tab:red'}
+)
+```
+
+### Negative relationship
+
+```{python}
+neg_model = stats.linregress(
+    x=counties_df['Pct_Assistance'].fillna(0),
+    y=counties_df['Pct_Broadband'].fillna(0)
+)
+print(f"slope={neg_model.slope:.3f}, R²={neg_model.rvalue**2:.3f}")
+```
+
+```{python}
+g = sb.lmplot(
+    data=counties_df, x='Pct_Assistance', y='Pct_Broadband',
+    aspect=2, scatter_kws={'alpha': .5}, line_kws={'color': 'tab:red'}
+)
+```
+
+### No relationship
+
+```{python}
+g = sb.lmplot(
+    data=counties_df[['Pct_Female', 'Pct_Hispanic']].fillna(0),
+    x='Pct_Female', y='Pct_Hispanic',
+    aspect=2, scatter_kws={'alpha': .5}, line_kws={'color': 'tab:red'}
+)
+```
+
+### Non-linear relationship
+
+Income and poverty follow a curve. A log transformation can linearize the relationship.
+
+```{python}
+g = sb.lmplot(
+    data=counties_df[['Median_Income', 'Pct_Family_Poverty']].fillna(0),
+    x='Median_Income', y='Pct_Family_Poverty',
+    aspect=2, scatter_kws={'alpha': .5}, line_kws={'color': 'tab:red'}
+)
+```
+
+```{python}
+counties_df['Pct_Family_Poverty_log'] = counties_df['Pct_Family_Poverty'].apply(np.log).fillna(0)
+counties_df['Pct_Family_Poverty_log'].replace({-np.inf: 0}, inplace=True)
+
+g = sb.lmplot(
+    data=counties_df, x='Median_Income', y='Pct_Family_Poverty_log',
+    aspect=2, scatter_kws={'alpha': .5}, line_kws={'color': 'tab:red'}
+)
+```
+
+```{python}
+stats.linregress(
+    x=counties_df['Median_Income'].fillna(0),
+    y=counties_df['Pct_Family_Poverty_log'].fillna(0)
+)
+```
+
+## Residuals
+
+Unless you have a very simple mechanistic relationship, there is residual variance — the difference between the model's prediction and the actual observation. Well-performing models have small residuals; poor models have large ones.
+
+```{python}
+model = stats.linregress(
+    x=counties_df['Pct_Family_Poverty'].fillna(counties_df['Pct_Family_Poverty'].mean()),
+    y=counties_df['Pct_Unemployed'].fillna(counties_df['Pct_Unemployed'].mean())
+)
+
+_x = counties_df['Pct_Family_Poverty'].fillna(counties_df['Pct_Family_Poverty'].mean())
+_y_pred = model.intercept + model.slope * _x
+
+counties_df['residuals'] = _y_pred - counties_df['Pct_Unemployed'].fillna(
+    counties_df['Pct_Unemployed'].mean()
+)
+```
+
+### Diagnosing model quality
+
+A well-specified regression model should have residuals that are independent, have constant variance, are normally distributed, and have a mean of zero.
+
+Residuals vs. predicted values — look for patterns. A random scatter is good; a funnel or curve is bad.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+
+sb.regplot(x=_y_pred, y=counties_df['residuals'],
+           scatter_kws={'alpha': .5}, line_kws={'color': 'tab:red'}, ax=ax)
+ax.axhline(0, c='tab:red', lw=2, ls='--')
+ax.set_xlabel('Predictions')
+ax.set_ylabel('Residuals')
+```
+
+Histogram of residuals — should be approximately normal and centered on zero.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+
+counties_df['residuals'].hist(bins=25, ax=ax)
+ax.grid(None)
+ax.axvline(counties_df['residuals'].mean(), c='tab:green', lw=2)
+ax.axvline(0, c='tab:red', lw=2, ls='--')
+ax.set_xlabel('Residual')
+ax.set_ylabel('Count')
+```
+
+## Multiple Regression
+
+Often you want to estimate an outcome as a function of more than one input variable. `statsmodels` provides the most intuitive interface for multiple regression via the formula syntax.
+
+```{python}
+one_X_fit = smf.ols('Pct_HS_Grad ~ Median_Income', data=counties_df.fillna(0)).fit()
+print(one_X_fit.summary())
+```
+
+```{python}
+two_X_fit = smf.ols('Pct_HS_Grad ~ Pct_Born_Same_State + Median_Income',
+                      data=counties_df.fillna(0)).fit()
+print(two_X_fit.summary())
+```
+
+Notice that the coefficient for `Median_Income` changes when `Pct_Born_Same_State` is added to the model. This is because the two predictors are correlated, and the multiple regression partitions the explained variance between them. The coefficient in a multiple regression represents the effect of each variable *holding the other variables constant*.
+
+::: {.callout-tip}
+## Interpreting multiple regression
+In a multiple regression, each coefficient represents the expected change in $y$ for a one-unit increase in that predictor, *holding all other predictors constant*. This is different from the simple regression coefficient, which does not control for other variables.
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 1: Estimate and interpret
+
+Model a relationship between two variables using any of the three libraries. Report the slope, intercept, and $R^2$. Interpret the slope in plain language including units.
+
+**Solution:**
+
+```{python}
+model = stats.linregress(
+    x=counties_df['Pct_Unemployed'].fillna(0),
+    y=counties_df['Pct_Family_Poverty'].fillna(0)
+)
+
+print(f"Slope: {model.slope:.3f}")
+print(f"Intercept: {model.intercept:.3f}")
+print(f"R²: {model.rvalue**2:.3f}")
+```
+
+Each additional percentage point of unemployment is associated with approximately a 1.5 percentage point increase in family poverty. The model explains about 40% of the variation in family poverty across counties.
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 2: Visualize with seaborn
+
+Use `lmplot` or `regplot` to estimate and visualize a relationship between two variables. Customize the scatter transparency and line color.
+
+**Solution:**
+
+```{python}
+g = sb.lmplot(
+    data=counties_df,
+    x='Pct_Unemployed',
+    y='Pct_Family_Poverty',
+    aspect=2,
+    scatter_kws={'alpha': .15, 's': 5},
+    line_kws={'color': 'red'}
+)
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 3: Analyze residuals
+
+Estimate a model, compute the residuals, and produce a residuals-vs-predictions plot and a histogram of residuals. Are the residuals independent, constant variance, normally distributed, and zero-centered?
+
+**Solution:**
+
+```{python}
+_model = stats.linregress(
+    x=counties_df['Pct_College_Grad'].fillna(0),
+    y=counties_df['Median_Income'].fillna(0)
+)
+
+_x = counties_df['Pct_College_Grad'].fillna(0)
+_pred = _model.intercept + _model.slope * _x
+_resid = _pred - counties_df['Median_Income'].fillna(0)
+
+f, (ax0, ax1) = plt.subplots(1, 2, figsize=(12, 5))
+ax0.scatter(_pred, _resid, alpha=.2, s=5)
+ax0.axhline(0, c='red', ls='--')
+ax0.set_xlabel('Predicted')
+ax0.set_ylabel('Residual')
+
+_resid.hist(bins=30, ax=ax1)
+ax1.axvline(0, c='red', ls='--')
+ax1.set_xlabel('Residual')
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 4: Multiple regression
+
+Estimate a model predicting `Pct_HS_Grad` from both `Pct_Born_Same_State` and `Median_Income` using `statsmodels`. Compare the coefficients to the simple regressions. How does the $R^2$ change?
+
+**Solution:**
+
+```{python}
+simple = smf.ols('Pct_HS_Grad ~ Pct_Born_Same_State', data=counties_df.fillna(0)).fit()
+multiple = smf.ols('Pct_HS_Grad ~ Pct_Born_Same_State + Median_Income',
+                    data=counties_df.fillna(0)).fit()
+
+print(f"Simple R²: {simple.rsquared:.4f}")
+print(f"Multiple R²: {multiple.rsquared:.4f}")
+print(multiple.summary())
+```
+
+The $R^2$ should increase because adding a relevant predictor always explains more variance. The coefficient for `Pct_Born_Same_State` may change because part of its original effect was confounded with income.
+:::
+
+## Looking Ahead
+
+You have estimated, visualized, and interpreted linear regression models, examined residuals, and introduced multiple regression. In @sec-validity, you will confront the most important question in data analysis: does a statistical relationship reflect a causal mechanism, or is it a spurious correlation?

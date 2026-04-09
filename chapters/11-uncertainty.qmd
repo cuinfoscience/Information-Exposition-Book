@@ -1,0 +1,268 @@
+# Communicating Uncertainty {#sec-uncertainty}
+
+The previous chapters treated data as known and reliable. In practice, every dataset carries uncertainty: sampling error, measurement noise, missing observations, model assumptions, and the inherent unpredictability of the phenomena being studied. Communicating uncertainty honestly is one of the most important responsibilities you have as a data analyst, and one of the most commonly neglected.
+
+This chapter covers the sources of uncertainty in data analysis, visual techniques for representing it, and strategies for communicating it to audiences who would prefer neat, definitive answers. These themes draw on research by Wilke (*Fundamentals of Data Visualization*), Padilla and colleagues on hazard uncertainty visualization, Gustafson and Rice on uncertainty in science communication, and Spiegelhalter on risk communication.
+
+## Setup
+
+```{python}
+import numpy as np
+import pandas as pd
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+import seaborn as sb
+from scipy import stats
+```
+
+## Sources of Uncertainty
+
+Uncertainty enters your analysis at multiple stages, and each source requires different communication strategies.
+
+**Sampling uncertainty.** Most datasets are samples from a larger population. The American Community Survey data you used in @sec-loading is a survey of roughly 3.5 million households out of 130 million — an excellent sample, but a sample nonetheless. Summary statistics computed from the sample (means, medians, percentages) are estimates, and they come with margins of error. The Census data even included these margins of error explicitly, which is why each variable appeared as a triplet of estimate, margin of error, and percentage.
+
+**Measurement uncertainty.** Temperature sensors have precision limits. Survey respondents misremember, misunderstand, or decline to answer honestly. COVID-19 case counts depend on testing rates, which varied enormously across time, geography, and policy. The number you see in your DataFrame is not necessarily the true value — it is a measurement, and all measurements have error.
+
+**Model uncertainty.** When you fit a rolling average in @sec-time-series or a linear regression in @sec-linear-models, the estimated parameters are uncertain. Different samples from the same population would produce different estimates. The confidence interval around a regression line represents this model uncertainty.
+
+**Missing data.** As you saw in @sec-loading, missing data is common and its absence is rarely random. Counties with few COVID cases may be suppressed from CDC data for privacy reasons. This systematically biases any aggregate statistics you compute.
+
+**Temporal uncertainty.** In @sec-time-series you used rolling averages to smooth noisy data. The window size you chose affected the result: a 7-day window and a 365-day window tell different stories from the same data. Neither is wrong, but both embed assumptions about the relevant time scale of the pattern you care about.
+
+## Visualizing Uncertainty
+
+### Error bars
+
+The simplest way to represent uncertainty is with error bars. Seaborn's bar and point plots include 95% confidence intervals by default — those black lines you saw at the top of the bars in @sec-catplots.
+
+```{python}
+deaths_df = pd.read_csv('CDC_deaths.csv', parse_dates=['Week date'])
+
+f, ax = plt.subplots(figsize=(12, 5))
+sb.barplot(
+    data=deaths_df,
+    x='Year',
+    y='Diseases of heart',
+    errorbar='ci',
+    color='indianred',
+    ax=ax
+)
+ax.set_ylabel('Weekly Heart Disease Deaths')
+ax.set_title('Average Weekly Heart Disease Deaths by Year (with 95% CI)')
+```
+
+The black lines represent the 95% confidence interval: we can be 95% confident that the true mean falls within this range. Wider intervals indicate more variability in the underlying data. Notice that the 2020 bar has a wider interval — the pandemic introduced more week-to-week variation in heart disease mortality than previous years.
+
+### Confidence bands on time series
+
+For time series and regression lines, uncertainty is typically shown as a shaded band around the central estimate. You can construct this from the mean and standard deviation of aggregated data.
+
+```{python}
+temp_df = pd.read_csv('avg_temp_1880_2024.csv', parse_dates=['Date'])
+temp_df.set_index('Date', inplace=True)
+
+annual = temp_df.groupby(pd.Grouper(freq='YS')).agg({'AvgTemp': ['mean', 'std']})
+annual.columns = ['mean', 'std']
+
+f, ax = plt.subplots(figsize=(14, 5))
+ax.plot(annual.index, annual['mean'], color='tab:red', linewidth=1.5)
+ax.fill_between(
+    annual.index,
+    annual['mean'] - 2 * annual['std'],
+    annual['mean'] + 2 * annual['std'],
+    alpha=0.2,
+    color='tab:red'
+)
+ax.set_ylabel('Temperature (°C)')
+ax.set_title('Annual Average Surface Temperature with ±2σ Band')
+```
+
+The shaded band shows ±2 standard deviations around the annual mean, capturing about 95% of the daily variation within each year. Notice that the band width is relatively stable: the warming trend is in the central tendency, not in the variability. This is itself an important finding — the world is not just warming on average, it is warming consistently.
+
+### Box plots as uncertainty summaries
+
+Box plots, introduced in @sec-catplots and used extensively in @sec-time-series, are another way to communicate distributional uncertainty. They show the median, interquartile range, and outliers without assuming a specific distribution shape.
+
+### Hypothetical outcome plots
+
+A more advanced technique involves showing multiple plausible outcomes rather than a single summary. Instead of one regression line with a confidence band, you can draw multiple regression lines sampled from the distribution of possible models. This "ensemble" approach, sometimes called a hypothetical outcome plot, helps audiences develop an intuitive sense of model uncertainty.
+
+```{python}
+np.random.seed(42)
+x = np.linspace(0, 10, 50)
+true_slope, true_intercept = 2.5, 1.0
+
+f, ax = plt.subplots(figsize=(8, 5))
+
+# Draw 20 plausible regression lines from noisy data
+for _ in range(20):
+    noise = np.random.normal(0, 3, len(x))
+    y = true_slope * x + true_intercept + noise
+    slope = np.polyfit(x, y, 1)
+    ax.plot(x, np.polyval(slope, x), color='steelblue', alpha=0.15)
+
+# Draw the "true" line
+ax.plot(x, true_slope * x + true_intercept, color='red', linewidth=2,
+        label='True relationship')
+ax.legend()
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_title('Hypothetical Outcome Plot: 20 Plausible Regression Lines')
+```
+
+Each semi-transparent blue line represents one plausible regression from one noisy sample. The spread of lines communicates the uncertainty more intuitively than a single confidence band.
+
+## Communicating Uncertainty in Writing
+
+Visualizing uncertainty is only half the challenge. The other half is writing about it in a way that is honest without being paralyzing.
+
+### Use calibrated language
+
+Match the strength of your language to the strength of the evidence. "The data shows" implies near-certainty. "The data suggests" implies strong evidence with some uncertainty. "The data is consistent with" implies that other explanations are also plausible. Each phrasing makes a different epistemic commitment, and you should choose deliberately.
+
+### Provide context for numbers
+
+A margin of error of ±3 percentage points means very different things depending on the estimate. An approval rating of 51% ± 3% could be a majority or a minority — the uncertainty is substantively important. An approval rating of 75% ± 3% is clearly a majority — the uncertainty barely matters. Always report the interval alongside the point estimate, and help the reader understand whether the uncertainty affects the conclusion.
+
+### Acknowledge what you don't know
+
+If your county-level COVID analysis is missing data from counties with small populations, say so. If your regression model explains only 15% of the variation, say so. If your rolling average window was chosen for convenience rather than theory, say so. Readers who discover these limitations on their own will lose trust. Readers who hear them from you will gain it.
+
+### Avoid false precision
+
+Reporting a temperature trend to four decimal places implies a level of precision that the underlying data does not support. Round to a meaningful number of significant figures. If your data has daily variability of ±2°C, reporting a trend of 0.0173°C per year creates a misleading impression of precision.
+
+::: {.callout-warning}
+## The certainty trap
+Audiences — especially decision-makers — prefer certainty. They want to hear "X will happen" rather than "X will probably happen, but there is a 30% chance of Y." Resist the temptation to overstate your confidence. An honest assessment of uncertainty is more useful and more ethical than a confident-but-wrong prediction. As Pearce writes in *The Economist*'s guide to uncertainty visualization, "Showing the range of possibilities helps people make better decisions than giving them a single number and hoping they treat it appropriately."
+:::
+
+## Uncertainty and Decision-Making
+
+How you present uncertainty should depend on the stakes of the decision it informs, connecting back to the audience analysis framework from @sec-audience.
+
+For **low-stakes decisions** (what restaurant to visit, which article to read next), a simple recommendation is fine. The cost of being wrong is small, and a detailed uncertainty analysis would be more burdensome than helpful.
+
+For **high-stakes decisions** (should a city invest in a new transit line, should a hospital change its staffing model), presenting the full range of plausible outcomes is essential. A forecast that shows both the best-case and worst-case scenarios helps decision-makers plan for contingencies. This is where confidence intervals, scenario analysis, and hypothetical outcome plots earn their keep.
+
+For **public communication** (a newspaper article about climate trends, a blog post about pandemic data), the challenge is conveying uncertainty without undermining the core finding. The phrase "scientists are 95% confident that global temperatures have increased" is more accessible and equally honest as reporting a p-value of 0.001. Translate technical uncertainty measures into language your audience can interpret.
+
+## Exercises
+
+::: {.callout-note collapse="true"}
+## Exercise 1: Add uncertainty to a chart
+
+Take any bar chart you produced in @sec-catplots and ensure it includes error bars. Then write a one-sentence interpretation of what the error bars tell you about the reliability of the comparison between categories.
+
+**Solution:**
+
+Seaborn includes 95% confidence interval error bars by default in `catplot` with `kind='bar'`. The key interpretation: if the error bars for two categories overlap substantially, the observed difference may not be statistically significant. If they do not overlap, the difference is likely real — though overlap alone is not a definitive test. Only a proper statistical test (like the t-tests from @sec-catplots) can establish significance.
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 2: Compare point estimates and intervals
+
+Using the CDC mortality data, compute the mean and 95% confidence interval for weekly cancer deaths in 2019 and 2020. Print both. Write a sentence interpreting whether the difference is meaningful.
+
+**Solution:**
+
+```{python}
+deaths_df = pd.read_csv('CDC_deaths.csv', parse_dates=['Week date'])
+
+for year in [2019, 2020]:
+    data = deaths_df.loc[deaths_df['Year'] == year, 'Malignant neoplasms'].dropna()
+    mean = data.mean()
+    ci = stats.t.interval(
+        0.95, len(data) - 1,
+        loc=mean,
+        scale=stats.sem(data)
+    )
+    print(f"{year}: Mean = {mean:.0f}, 95% CI = ({ci[0]:.0f}, {ci[1]:.0f})")
+```
+
+If the confidence intervals do not overlap, the difference in average weekly cancer deaths between 2019 and 2020 is statistically significant. Substantively, consider whether the magnitude of the difference is large enough to reflect a real change in cancer mortality or merely a shift in how deaths were classified during the pandemic.
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 3: Rewrite with calibrated language
+
+Take the following overconfident sentence and rewrite it with appropriate uncertainty language:
+
+"Our analysis proves that broadband access causes lower COVID death rates."
+
+**Solution:**
+
+"Our analysis shows a statistically significant negative association between broadband access and per-capita COVID death rates at the county level (p < 0.001, R² = 0.12). However, this cross-sectional correlation does not establish causation, and the model explains only 12% of the variation in death rates. Other factors — including urbanization, income, healthcare access, and age distribution — likely contribute to both broadband adoption and health outcomes."
+
+This rewrite replaces "proves" with "shows an association," explicitly names the test statistic and effect size, acknowledges the model's limited explanatory power, and identifies confounders. It is more honest and, paradoxically, more persuasive because it demonstrates the analyst's awareness of limitations.
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 4: Window size sensitivity
+
+Using the Berkeley Earth temperature data, compute 90-day, 365-day, and 3650-day rolling averages. Plot all three on the same axes. Write a paragraph explaining how the choice of window size affects the interpretation of the warming trend. Is one window size "correct"?
+
+**Solution:**
+
+```{python}
+temp_df = pd.read_csv('avg_temp_1880_2024.csv', parse_dates=['Date'])
+temp_df.set_index('Date', inplace=True)
+
+f, ax = plt.subplots(figsize=(14, 5))
+temp_df['AvgTemp'].rolling(90).mean().plot(ax=ax, alpha=0.5, label='90-day')
+temp_df['AvgTemp'].rolling(365).mean().plot(ax=ax, alpha=0.7, label='365-day')
+temp_df['AvgTemp'].rolling(3650).mean().plot(ax=ax, lw=3, label='10-year')
+ax.legend()
+ax.set_ylabel('Temperature (°C)')
+ax.set_title('Rolling Averages at Different Window Sizes')
+```
+
+The 90-day window preserves seasonal oscillation and year-to-year variation, making the long-term trend difficult to see. The 365-day window removes seasonality and reveals decadal fluctuations. The 10-year window removes almost all short-term variation and shows only the long-term warming trend. No single window size is "correct" — each answers a different question. The 90-day window is useful for identifying individual extreme seasons. The 10-year window is useful for policy discussions about century-scale climate change. The analyst's responsibility is to be transparent about the choice and its consequences.
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 5: Confidence band for DIA traffic
+
+Compute the mean and standard deviation of monthly DIA passenger traffic for each month of the year (January through December) using pre-pandemic data (2015–2019). Plot the monthly mean as a line with a ±1 standard deviation shaded band. Overlay the 2020 and 2021 actual values. Write two sentences interpreting the result.
+
+**Solution:**
+
+```{python}
+passengers_df = pd.read_csv('passengers.csv')
+passengers_df['Month'] = pd.to_datetime(passengers_df['Month'])
+passengers_df.set_index('Month', inplace=True)
+
+pre_pandemic = passengers_df.loc['2015':'2019']
+monthly_stats = pre_pandemic.groupby(pre_pandemic.index.month).agg(
+    {'Grand': ['mean', 'std']}
+)
+monthly_stats.columns = ['mean', 'std']
+
+f, ax = plt.subplots(figsize=(10, 5))
+ax.plot(range(1, 13), monthly_stats['mean'], color='gray', lw=2, label='2015–2019 Mean')
+ax.fill_between(
+    range(1, 13),
+    monthly_stats['mean'] - monthly_stats['std'],
+    monthly_stats['mean'] + monthly_stats['std'],
+    alpha=0.2, color='gray'
+)
+
+# Overlay 2020
+actual_2020 = passengers_df.loc['2020', 'Grand']
+ax.plot(actual_2020.index.month, actual_2020.values, 'o-',
+        color='crimson', label='2020')
+
+ax.set_xticks(range(1, 13))
+ax.set_xlabel('Month')
+ax.set_ylabel('Passengers')
+ax.set_title('2020 Actual vs. Pre-Pandemic Baseline (±1σ)')
+ax.legend()
+```
+
+The 2020 passenger counts fell far below the pre-pandemic confidence band starting in March, reaching levels that are many standard deviations below the historical norm. By late 2020, traffic began recovering but remained well outside the range of normal year-to-year variation, demonstrating that the COVID-19 impact was not a typical fluctuation but a historically unprecedented disruption.
+:::
+
+## Looking Ahead
+
+You now have frameworks for both visualizing and writing about uncertainty. In @sec-scatterplots, you will begin exploring the relationships between pairs of continuous variables — relationships that are always accompanied by uncertainty and always tempt analysts into causal claims that the data alone cannot support.

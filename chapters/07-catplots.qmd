@@ -1,0 +1,451 @@
+# Categorical Plots {#sec-catplots}
+
+In @sec-histograms you visualized the distribution of a single continuous variable. In practice, you often want to compare distributions across two or more *categories*: How does spending differ between political parties? Do different office buildings have different budgets? Do arms imports vary across world regions? These questions involve a continuous variable (spending, imports) and a categorical variable (party, building, region), and they call for a family of visualizations known as **categorical plots** — or catplots.
+
+This chapter introduces the [seaborn](https://seaborn.pydata.org/) library's `catplot` function, which provides a unified interface for bar plots, box plots, violin plots, strip plots, and more. You will also learn to perform basic statistical tests to evaluate whether observed differences between categories are meaningful or likely due to chance. The central idea tying these plots together is that you have two or more categories of data and want to compare their distributions — in other words, analyzing the relationships between continuous *and* categorical variables of interest.
+
+## Setup
+
+```{python}
+import numpy as np
+np.set_printoptions(suppress=True)
+
+import pandas as pd
+idx = pd.IndexSlice
+pd.options.display.max_columns = 100
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+
+import seaborn as sb
+```
+
+## Refresher: Statistical Significance Testing
+
+Before diving into the visualizations, let's review the intuition behind a statistical significance test. The independent samples **t-test** evaluates whether two groups have different means.
+
+```{python}
+from scipy.stats import ttest_ind
+```
+
+Create two random distributions with different means to see what a "real" difference looks like.
+
+```{python}
+rand_first = np.random.normal(loc=3, scale=2, size=100)
+rand_second = np.random.normal(loc=6, scale=2, size=100)
+
+# Visualize both
+f, ax = plt.subplots()
+ax.hist(rand_first, bins=15, alpha=.5)
+ax.hist(rand_second, bins=15, alpha=.5)
+
+# Add vertical lines for their means
+ax.axvline(rand_first.mean(), c='tab:blue', lw=2)
+ax.axvline(rand_second.mean(), c='tab:orange', lw=2)
+```
+
+```{python}
+ttest_ind(rand_first, rand_second)
+```
+
+A small p-value (well below 0.05) tells us that the observed difference is unlikely to have occurred by chance. A large p-value would tell us we cannot reject the null hypothesis that the two groups have the same mean.
+
+## The Data: House Expenditures
+
+We will use U.S. House of Representatives office expenditure data from [ProPublica](https://projects.propublica.org/represent/expenditures) for the third quarter of 2021. Each row is a detailed disbursement — a single spending transaction — by a congressional office.
+
+```{python}
+house_21q3_df = pd.read_csv('2021Q3-house-disburse-detail.csv')
+house_21q3_df.head()
+```
+
+### Understanding the data structure
+
+The "SORT SEQUENCE" column includes subtotals and other aggregated rows. We want only the detail-level transactions to avoid double-counting.
+
+```{python}
+house_21q3_df['SORT SEQUENCE'].value_counts()
+```
+
+In addition to representatives' offices, there are offices for various officers and administrators. The `BIOGUIDE_ID` is a standardized identifier for every senator and representative going back to 1790. Rows without a `BIOGUIDE_ID` are non-member offices.
+
+```{python}
+house_21q3_df['BIOGUIDE_ID'].value_counts()
+```
+
+### Filtering
+
+Filter to only detail-level transactions for actual representatives.
+
+```{python}
+c0 = house_21q3_df['SORT SEQUENCE'] == 'DETAIL'
+c1 = house_21q3_df['BIOGUIDE_ID'].notnull()
+
+print(f"Raw: {len(house_21q3_df):,} rows")
+print(f"Filtered: {len(house_21q3_df[c0 & c1]):,} rows")
+
+filtered_df = house_21q3_df[c0 & c1]
+```
+
+What is the average total spending per member's office?
+
+```{python}
+filtered_df.groupby('BIOGUIDE_ID').agg({'AMOUNT': 'sum'}).mean()
+```
+
+### Joining member data
+
+To compare spending by party, we need to merge the expenditure data with member information that includes party affiliation, state, and other context.
+
+```{python}
+members_df = pd.read_csv('house_members.csv')
+members_df.head(2)
+```
+
+```{python}
+joined_df = pd.merge(
+    left=filtered_df,
+    right=members_df,
+    left_on='BIOGUIDE_ID',
+    right_on='bioguideID',
+    how='left'
+)
+
+print(f"Members: {len(members_df)}, Filtered: {len(filtered_df):,}, "
+      f"Joined: {len(joined_df):,}")
+joined_df.head(2)
+```
+
+### Top-spending state delegations
+
+Which state delegations spend the most? A simple aggregation shows raw totals, but larger delegations naturally spend more.
+
+```{python}
+joined_df.groupby('state-fullname').agg({'AMOUNT': 'sum'}).sort_values(
+    'AMOUNT', ascending=False
+)
+```
+
+Normalizing by the number of representatives in each delegation reveals spending *per member*.
+
+```{python}
+top_spenders = joined_df.groupby('state-fullname').agg(
+    {'AMOUNT': 'sum', 'bioguideID': 'nunique'}
+)
+top_spenders['per_rep'] = top_spenders['AMOUNT'] / top_spenders['bioguideID']
+top_spenders.sort_values('per_rep', ascending=False).head(10)
+```
+
+## Bar Plots
+
+Seaborn's `catplot` function with `kind='bar'` shows the mean (or other summary statistic) for each category, with error bars representing the 95% confidence interval by default.
+
+```{python}
+sb.catplot(
+    data=joined_df,
+    x='caucus',
+    y='AMOUNT',
+    kind='bar',
+    order=['D', 'R'],
+    palette=['tab:blue', 'tab:red']
+)
+```
+
+::: {.callout-warning}
+## Transaction-level vs. office-level
+This chart shows the average *transaction* amount, not the average total spending per office. A party whose members make many small transactions will look different from one making fewer large ones, even if total spending is identical. Always be clear about what unit of analysis your chart represents.
+:::
+
+To get office-level totals, aggregate first and then merge.
+
+```{python}
+total_spending = joined_df.groupby('BIOGUIDE_ID').agg({'AMOUNT': 'sum'})
+total_spending.head()
+```
+
+```{python}
+spending_joined = pd.merge(
+    left=total_spending.reset_index(),
+    right=members_df,
+    left_on='BIOGUIDE_ID',
+    right_on='bioguideID',
+    how='left'
+)
+
+spending_joined.head()
+```
+
+Now the bar plot represents total quarterly spending per legislator.
+
+```{python}
+sb.catplot(
+    data=spending_joined,
+    x='caucus',
+    y='AMOUNT',
+    kind='bar',
+    order=['D', 'R'],
+    palette=['tab:blue', 'tab:red']
+)
+```
+
+## Box Plots
+
+Box plots show the full distribution rather than just the mean. The box spans the interquartile range (25th to 75th percentile), the line inside is the median, and the whiskers extend to 1.5 times the interquartile range. Points beyond the whiskers are outliers.
+
+```{python}
+g = sb.catplot(
+    data=spending_joined,
+    y='AMOUNT',
+    x='caucus',
+    kind='box',
+    order=['D', 'R'],
+    palette=['tab:blue', 'tab:red']
+)
+```
+
+Box plots reveal that spending distributions are right-skewed (the median is below the center of the box) and that there are several high-spending outliers in both parties.
+
+## Violin Plots
+
+Violin plots combine a box plot with a kernel density estimate, showing the full shape of the distribution. They are especially useful when distributions are multimodal (have multiple peaks).
+
+```{python}
+sb.catplot(
+    data=spending_joined,
+    x='caucus',
+    y='AMOUNT',
+    kind='violin',
+    order=['D', 'R'],
+    palette=sb.color_palette(['blue', 'red'])
+)
+```
+
+## Adding a Second Category with `hue`
+
+The `hue` parameter subdivides each category by a second variable. Here we compare spending by party *and* by office building.
+
+```{python}
+sb.catplot(
+    data=spending_joined,
+    x='office-building',
+    y='AMOUNT',
+    hue='caucus',
+    kind='bar',
+    estimator=np.mean,
+    hue_order=['D', 'R'],
+    palette=sb.color_palette(['tab:blue', 'tab:red']),
+    height=3
+)
+```
+
+## Statistical Significance Testing
+
+Visualizations show patterns, but they do not tell you whether the patterns are *statistically significant*. The independent samples t-test (`ttest_ind` from `scipy.stats`) tests whether two groups have the same mean.
+
+### Transaction-level test
+
+```{python}
+dem_transactions = joined_df.loc[joined_df['caucus'] == 'D', 'AMOUNT']
+rep_transactions = joined_df.loc[joined_df['caucus'] == 'R', 'AMOUNT']
+
+print(f"Democratic transactions: {len(dem_transactions):,}")
+print(f"Republican transactions: {len(rep_transactions):,}")
+```
+
+```{python}
+ttest_ind(dem_transactions, rep_transactions)
+```
+
+### Legislator-level test
+
+```{python}
+dem_office = spending_joined.loc[spending_joined['caucus'] == 'D', 'AMOUNT']
+rep_office = spending_joined.loc[spending_joined['caucus'] == 'R', 'AMOUNT']
+
+ttest_ind(dem_office, rep_office)
+```
+
+::: {.callout-tip}
+## Report effect sizes, not just p-values
+The p-value tells you whether a difference exists, but not how large it is. Always report the actual difference (e.g., "Democratic offices spent $42,000 more on average") alongside the p-value. A statistically significant difference of $500 across hundreds of legislators may not be substantively meaningful.
+:::
+
+## Exploring Other Categories
+
+The spending data contains many categorical variables beyond party.
+
+```{python}
+sb.catplot(
+    data=spending_joined,
+    x='prior-congress',
+    y='AMOUNT',
+    hue='caucus',
+    kind='bar',
+    hue_order=['D', 'R'],
+    palette=sb.color_palette(['tab:blue', 'tab:red']),
+    height=4
+)
+```
+
+## Country Military Data
+
+Let's apply catplots to a different dataset: the World Bank's [World Development Indicators](https://databank.worldbank.org/source/world-development-indicators#), which has data on military expenditures, armed forces size, and arms imports and exports for 266 countries. The `..` values represent missing data.
+
+```{python}
+military_df = pd.read_csv('country_military.csv', na_values='..')
+
+military_df.columns = ['Country Name', 'Country Code', 'Series Name',
+                        'Series Code'] + list(range(2010, 2021))
+
+military_df.head()
+```
+
+### Adding regional categories
+
+To make catplots of military data, we need a categorical variable. The United Nations and World Bank publish regional classifications of countries.
+
+```{python}
+regions_df = pd.read_csv('regional_classifications.csv')
+regions_df.head()
+```
+
+After reshaping and joining (exercises left below), we can make catplots like this one comparing arms imports by UN region.
+
+```{python}
+# This code assumes you have prepared a cat_military_df by pivoting
+# the military data and joining with regions_df
+# f, ax = plt.subplots(figsize=(10, 5))
+# sb.boxplot(data=cat_military_df, x='Arms imports', y='UN Regions', ax=ax)
+# ax.set_xscale('log')
+```
+
+## Exercises
+
+::: {.callout-note collapse="true"}
+## Exercise 1: Strip and swarm plots
+
+Use seaborn's `catplot` to create a strip plot (`kind='strip'`) and a swarm plot (`kind='swarm'`) of total spending by party. How do these plots compare to bar and box plots? When might each be preferable?
+
+**Solution:**
+
+```{python}
+sb.catplot(
+    data=spending_joined,
+    x='caucus',
+    y='AMOUNT',
+    kind='strip',
+    order=['D', 'R'],
+    palette=['tab:blue', 'tab:red'],
+    alpha=0.4
+)
+```
+
+Strip plots show every data point, making them excellent for small datasets where you want to see the full distribution. Swarm plots arrange points to avoid overlap, which is clearer for moderately sized datasets but becomes slow for large ones. Bar plots are better for audiences expecting summary statistics; box plots are better when you want to highlight spread and outliers.
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 2: Incumbency and spending
+
+Create a Boolean column "incumbent" that is `True` when the "prior-congress" column is not 0. Then make a catplot comparing spending between incumbents and non-incumbents, subdivided by party using `hue`. Are incumbents bigger spenders?
+
+**Solution:**
+
+```{python}
+spending_joined['incumbent'] = spending_joined['prior-congress'] != 0
+
+sb.catplot(
+    data=spending_joined,
+    x='incumbent',
+    y='AMOUNT',
+    hue='caucus',
+    kind='bar',
+    palette=['tab:blue', 'tab:red'],
+    hue_order=['D', 'R']
+)
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 3: Top spending categories
+
+Which spending categories (`CATEGORY` column in the disbursement data) account for the most total spending? Create a horizontal bar plot of the top 10 categories.
+
+**Solution:**
+
+```{python}
+cat_spending = joined_df.groupby('CATEGORY').agg({'AMOUNT': 'sum'})
+top_cats = cat_spending.sort_values('AMOUNT', ascending=True).tail(10)
+
+f, ax = plt.subplots(figsize=(10, 6))
+top_cats.plot(kind='barh', ax=ax, legend=False, color='steelblue')
+ax.set_xlabel('Total Spending ($)')
+ax.set_title('Top 10 House Spending Categories, Q3 2021')
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 4: Who was the top spender in Travel?
+
+Filter the joined data to the "TRAVEL" category. Which member's office spent the most on travel? Research why that might be (hint: consider the member's district location).
+
+**Solution:**
+
+```{python}
+travel = joined_df[joined_df['CATEGORY'] == 'TRAVEL']
+travel_by_member = travel.groupby(['BIOGUIDE_ID', 'state-fullname']).agg({'AMOUNT': 'sum'})
+travel_by_member.sort_values('AMOUNT', ascending=False).head(5)
+```
+
+Members representing distant districts (Alaska, Hawaii, Guam) tend to have the highest travel costs because flights to Washington, D.C. are longer and more expensive.
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 5: Clean and melt the military data
+
+Clean the `military_df` so the columns and series names are more interpretable. Drop the "Series Code" column. Pivot and melt the data so that the "Series Name" values become columns and "Country Name" and "Year" are ID variables. Then make a histogram of GDP values using log-scaled bins.
+
+**Solution:**
+
+```{python}
+# Drop Series Code
+mil_clean = military_df.drop(columns=['Series Code'])
+
+# Melt years into rows
+mil_long = pd.melt(
+    mil_clean,
+    id_vars=['Country Name', 'Country Code', 'Series Name'],
+    var_name='Year',
+    value_name='Value'
+)
+
+# Pivot so each Series Name becomes a column
+mil_pivot = mil_long.pivot_table(
+    index=['Country Name', 'Country Code', 'Year'],
+    columns='Series Name',
+    values='Value'
+).reset_index()
+
+mil_pivot.head()
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 6: Statistical significance across regions
+
+Using the military data joined with regional classifications, test whether GDP for countries in the "Europe & Central Asia" region is significantly different from GDP in the "East Asia & Pacific" region using `ttest_ind`.
+
+**Solution:**
+
+```{python}
+# Assuming cat_military_df has been prepared with a 'GDP' column and 'UN Regions'
+# europe = cat_military_df.loc[cat_military_df['UN Regions'] == 'Europe & Central Asia', 'GDP'].dropna()
+# asia = cat_military_df.loc[cat_military_df['UN Regions'] == 'East Asia & Pacific', 'GDP'].dropna()
+# ttest_ind(europe, asia)
+```
+
+Interpret the result by considering both the p-value and the actual difference in means. Even if the difference is statistically significant, consider whether the comparison is meaningful given the enormous within-region variation.
+:::
+
+## Looking Ahead
+
+You have now compared distributions across categories using bar, box, violin, and strip plots. In @sec-audience, we step back from the code to think carefully about *who* your audience is and how that shapes every decision you make in data communication.

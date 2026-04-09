@@ -1,0 +1,456 @@
+# Scatterplots {#sec-scatterplots}
+
+Previous modules have explored the distribution of a single continuous variable (histograms in @sec-histograms), the relationship between continuous and categorical variables (catplots in @sec-catplots), and time series as a special kind of continuous data (line plots in @sec-time-series). This chapter explores the relationship between two continuous variables and its corresponding visualization: the scatterplot.
+
+Scatterplots are deceptively simple — two axes, a cloud of dots — but the choices you make about size, color, transparency, annotation, and axis scales can dramatically affect what the reader sees and concludes.
+
+## Setup
+
+```{python}
+import numpy as np
+
+import pandas as pd
+idx = pd.IndexSlice
+pd.options.display.max_columns = 200
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+from matplotlib import ticker
+
+import seaborn as sb
+from scipy import stats
+```
+
+## The Data
+
+We will work with a dataset of U.S. counties combining demographic, economic, political, and health variables. In the Appendix of the companion repository, you can see how several county-level datasets were joined together. The data includes 2020 Census estimates ([source](https://data.census.gov)) about social characteristics (DP02 table), economic characteristics (DP03 table), and demographic characteristics (DP05 table). It also includes the share of votes cast for Donald Trump in the 2016 and 2020 elections ([source](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VOQCHQ)) and cumulative COVID-19 case and death counts from *The New York Times* ([source](https://github.com/nytimes/covid-19-data)). See @sec-datasets for full provenance details.
+
+```{python}
+counties_df = pd.read_csv('us_counties.csv', dtype={0: str}, na_values=['-'])
+counties_df.rename(columns={'Unnamed: 0': 'FIPS'}, inplace=True)
+counties_df.set_index('county_fips', inplace=True)
+print(counties_df.shape)
+counties_df.head()
+```
+
+Let's filter to just Colorado's 64 counties for initial exploration.
+
+```{python}
+co_counties = counties_df.copy()[counties_df['state'] == 'Colorado']
+
+print(co_counties.shape)
+co_counties.head(8)
+```
+
+```{python}
+biggest_co_counties = co_counties.sort_values('Population', ascending=False)['county'].head(10).values
+biggest_co_counties
+```
+
+It is important to emphasize that counties are units of approximately equal geographic size, not equal population. Most Colorado counties have small populations.
+
+```{python}
+ax = co_counties['Population'].hist(bins=np.linspace(0, 8e5, 25), figsize=(8, 4))
+ax.set_ylim((0, 50))
+ax.grid(None)
+ax.set_xlabel('Population')
+ax.set_ylabel('Counties')
+ax.xaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}'))
+```
+
+## Making Scatterplots
+
+There are three common interfaces for creating scatterplots in Python. All produce similar results; choose whichever syntax you find most readable.
+
+### matplotlib
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+
+ax.scatter(
+    x=co_counties['Median_Income'],
+    y=co_counties['covid_deaths_percapita']
+)
+
+ax.set_xlabel('Median Income ($)')
+ax.set_ylabel('COVID-19 Deaths per Capita')
+```
+
+### pandas
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+
+co_counties.plot.scatter(
+    x='Pct_Broadband',
+    y='covid_cases_percapita',
+    ax=ax
+)
+```
+
+### seaborn
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+
+sb.scatterplot(
+    x='Pct_Broadband',
+    y='covid_cases_percapita',
+    data=co_counties,
+    ax=ax
+)
+```
+
+## Customizing Scatterplots
+
+### Point size
+
+Change the size of all points with the `s` parameter.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+
+co_counties.plot.scatter(
+    x='Median_Income',
+    y='covid_deaths_percapita',
+    s=5,
+    ax=ax
+)
+```
+
+Map a third variable to point size to create a bubble chart. This is useful for representing a quantity like college graduation rates without requiring a third axis.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+
+co_counties['size'] = co_counties['Pct_College_Grad'] ** 1.5
+
+co_counties.plot.scatter(
+    x='Median_Income',
+    y='covid_deaths_percapita',
+    s='size',
+    ax=ax
+)
+```
+
+### Transparency
+
+When points overlap heavily, setting `alpha` to a low value (0.1–0.3) reveals the density of the point cloud.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+
+co_counties.plot.scatter(
+    x='Median_Income',
+    y='covid_deaths_percapita',
+    s='size',
+    ax=ax,
+    alpha=.5
+)
+```
+
+### Color
+
+Map a variable to color to add a fourth dimension. The pandas interface uses `c` for a continuous color variable.
+
+```{python}
+ax = co_counties.plot.scatter(
+    x='Population',
+    y='trump_2020'
+)
+
+ax.set_xscale('log')
+```
+
+With seaborn, use `hue` for the color variable and `size` for the size variable.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+
+sb.scatterplot(
+    x='Pct_College_Grad',
+    y='Median_Income',
+    hue='trump_2020',
+    size='covid_deaths',
+    palette='coolwarm',
+    data=co_counties,
+    ax=ax
+)
+```
+
+### Annotations
+
+For small datasets, labeling individual points provides rich context. Loop through the data and use `ax.annotate()` to place text near each point.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+
+co_counties.plot.scatter(
+    x='Pct_College_Grad',
+    y='Median_Income',
+    alpha=.75,
+    ax=ax
+)
+
+for fips, name in co_counties['county'].to_dict().items():
+    if name in biggest_co_counties:
+        x = co_counties.loc[fips, 'Pct_College_Grad']
+        y = co_counties.loc[fips, 'Median_Income']
+        ax.annotate(name, (x, y), fontsize=7, alpha=.8)
+```
+
+::: {.callout-note collapse="true"}
+## Exercise 1: Three interfaces
+
+Make a scatterplot of "Pct_Unemployed" (x-axis) vs. "Median_Income" (y-axis) for Colorado counties. Color the points by "Pct_White". Try all three interfaces (matplotlib, pandas, seaborn) and compare.
+
+**Solution:**
+
+```{python}
+# matplotlib
+f, ax = plt.subplots()
+ax.scatter(
+    x=co_counties['Median_Income'],
+    y=co_counties['Pct_Unemployed'],
+    c=co_counties['Pct_White']
+)
+```
+
+```{python}
+# pandas
+f, ax = plt.subplots()
+co_counties.plot.scatter(x='Median_Income', y='Pct_Unemployed', c='Pct_White', ax=ax)
+```
+
+```{python}
+# seaborn
+f, ax = plt.subplots()
+sb.scatterplot(data=co_counties, x='Median_Income', y='Pct_Unemployed', hue='Pct_White', ax=ax)
+```
+:::
+
+## Conventions for Causal Arguments
+
+Of course correlation is not causation, but whenever you make a scatterplot, you are making an implicit causal argument: one variable is influencing the other. The dominant convention is to place the presumed **cause** on the x-axis and the presumed **effect** on the y-axis.
+
+If you are arguing that broadband connectivity influences COVID exposure behavior, broadband goes on the x-axis and COVID cases on the y-axis.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+counties_df.plot.scatter(x='Pct_Broadband', y='covid_cases_percapita', ax=ax, alpha=.25)
+```
+
+If you reverse the axes, you are implicitly arguing the opposite causal direction — that COVID exposure influences broadband connectivity — which is much harder to justify theoretically.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+counties_df.plot.scatter(x='covid_cases_percapita', y='Pct_Broadband', ax=ax)
+```
+
+Be intentional about this choice. Swapping the axes changes the implicit argument.
+
+## Types of Bivariate Relationships
+
+### Positive relationship
+
+Counties where more of the population was born in the same state also tend to have higher high school graduation rates. The Pearson correlation coefficient quantifies this linear association.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+counties_df.plot.scatter(x='Pct_Born_Same_State', y='Pct_HS_Grad', ax=ax)
+```
+
+```{python}
+counties_df.loc[:, ['Pct_HS_Grad', 'Pct_Born_Same_State']].corr()
+```
+
+A correlation of ~0.46 is moderate-to-high for social science data, where relationships are complex and layered.
+
+### Negative relationship
+
+Counties with more people on public assistance tend to have lower broadband usage.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+counties_df.plot.scatter(x='Pct_Assistance', y='Pct_Broadband', ax=ax)
+```
+
+```{python}
+counties_df.loc[:, ['Pct_Assistance', 'Pct_Broadband']].corr()
+```
+
+### No relationship
+
+There is no obvious linear relationship between percent female and percent Hispanic.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+counties_df.plot.scatter(x='Pct_Female', y='Pct_Hispanic', ax=ax)
+```
+
+```{python}
+counties_df.loc[:, ['Pct_Female', 'Pct_Hispanic']].corr()
+```
+
+### Non-linear relationship
+
+Income and poverty follow a curve: poverty drops steeply as income rises from low levels, then levels off at high incomes. A linear model would miss the shape of this relationship.
+
+```{python}
+f, ax = plt.subplots(figsize=(6, 6))
+counties_df.plot.scatter(x='Median_Income', y='Pct_Family_Poverty', ax=ax)
+```
+
+```{python}
+counties_df.loc[:, ['Median_Income', 'Pct_Family_Poverty']].corr()
+```
+
+### Reversals and surprises
+
+Sometimes changing one variable to a similar variable can completely reverse a relationship. Trump 2016 vote share *increases* with more high school graduates but *decreases* with more college graduates.
+
+```{python}
+f, axs = plt.subplots(nrows=1, ncols=2, figsize=(12, 6), sharey=True,
+                       subplot_kw={'ylim': (0, 100)})
+
+counties_df.plot.scatter(x='Pct_HS_Grad', y='trump_2016', ax=axs[0])
+axs[0].set_title('Trump 2016 vote share increases with more HS grads')
+
+counties_df.plot.scatter(x='Pct_College_Grad', y='trump_2016', ax=axs[1])
+axs[1].set_title('Trump 2016 vote share decreases with more college grads')
+
+f.tight_layout()
+```
+
+```{python}
+counties_df[['Pct_HS_Grad', 'Pct_College_Grad', 'trump_2016']].corr()
+```
+
+## Pair Plots and Correlograms
+
+With many variables, it helps to see all pairwise relationships at once. Seaborn's `pairplot` generates a grid of scatterplots.
+
+```{python}
+select_columns = ['trump_2020', 'covid_cases_percapita', 'Pct_Over_65',
+                  'Pct_White', 'Pct_Unemployed', 'Median_Income', 'Pct_English_Only']
+
+sb.pairplot(data=counties_df[select_columns])
+```
+
+Customize to show only the lower triangle and overlay regression lines.
+
+```{python}
+sb.pairplot(
+    data=counties_df[select_columns],
+    kind='reg',
+    corner=True,
+    plot_kws={
+        'scatter_kws': {'alpha': .1},
+        'line_kws': {'color': 'red'}
+    }
+)
+```
+
+Alternatively, compute the full correlation matrix and display it as a heatmap.
+
+```{python}
+counties_corr = counties_df[select_columns].corr()
+
+f, ax = plt.subplots(figsize=(8, 8))
+sb.heatmap(data=counties_corr, square=True, cmap='viridis', vmin=-1, vmax=1, annot=True, fmt='.2f')
+```
+
+Seaborn's `clustermap` rearranges the rows and columns so that variables with similar correlations are grouped together.
+
+```{python}
+sb.clustermap(data=counties_corr, cmap='viridis', vmin=-1, vmax=1)
+```
+
+::: {.callout-note collapse="true"}
+## Exercise 2: Explore three relationships
+
+Make three scatterplots using different pairs of variables from `counties_df`. For each, describe whether the relationship appears positive, negative, non-linear, or nonexistent. Report the correlation coefficient. Label your axes.
+
+**Solution:**
+
+```{python}
+pairs = [
+    ('Pct_Unemployed', 'Median_Income'),
+    ('Pct_College_Grad', 'Pct_Broadband'),
+    ('Pct_Female', 'Pct_Hispanic')
+]
+
+for x, y in pairs:
+    r = counties_df[[x, y]].corr().iloc[0, 1]
+    print(f"{x} vs {y}: r = {r:.3f}")
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 3: Size, color, and transparency
+
+Create a scatterplot of all U.S. counties with `Pct_Broadband` on the x-axis and `covid_deaths_percapita` on the y-axis. Map population to point size, Trump 2020 vote share to color, and use transparency to handle overplotting. Write a two-sentence interpretation.
+
+**Solution:**
+
+```{python}
+f, ax = plt.subplots(figsize=(10, 7))
+scatter = ax.scatter(
+    x=counties_df['Pct_Broadband'],
+    y=counties_df['covid_deaths_percapita'],
+    s=counties_df['Population'] / 5000,
+    c=counties_df['trump_2020'],
+    cmap='RdBu_r',
+    alpha=0.3,
+    edgecolor='none'
+)
+plt.colorbar(scatter, ax=ax, label='Trump 2020 Vote Share')
+ax.set_xlabel('% Broadband Access')
+ax.set_ylabel('COVID Deaths per Capita')
+```
+
+Counties with lower broadband access tend to have higher per-capita COVID death rates, and these lower-broadband counties also tend to have higher Trump vote shares. However, this cross-sectional pattern cannot establish causation — urbanization, income, and healthcare access all covary with these variables.
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 4: Log-scaled axes
+
+Create a scatterplot of Population vs. Trump 2020 vote share with a log-scaled x-axis. Why does the log transformation help?
+
+**Solution:**
+
+```{python}
+f, ax = plt.subplots(figsize=(8, 6))
+counties_df.plot.scatter(x='Population', y='trump_2020', ax=ax, alpha=.15, s=5)
+ax.set_xscale('log')
+ax.set_xlabel('Population (log scale)')
+ax.set_ylabel('Trump 2020 Vote Share')
+```
+
+The log scale spreads out the thousands of small counties that are otherwise compressed against the y-axis, making the negative relationship between population and Trump vote share visible.
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 5: Correlation heatmap
+
+Select 8–10 variables from the counties data. Compute the correlation matrix and display it as a heatmap with annotations. Which pair of variables has the strongest positive correlation? The strongest negative correlation?
+
+**Solution:**
+
+```{python}
+cols = ['trump_2020', 'Pct_College_Grad', 'Median_Income', 'Pct_Unemployed',
+        'Pct_Broadband', 'Pct_White', 'Pct_Over_65', 'covid_deaths_percapita']
+
+corr = counties_df[cols].corr()
+
+f, ax = plt.subplots(figsize=(8, 8))
+sb.heatmap(corr, annot=True, fmt='.2f', cmap='coolwarm', vmin=-1, vmax=1,
+           square=True, ax=ax)
+```
+
+Examine the annotated values to identify the strongest positive and negative pairs.
+:::
+
+## Looking Ahead
+
+Scatterplots show you relationships, but they do not quantify them precisely. In @sec-linear-models, you will learn to estimate and interpret linear regression models that put a number on the slope, strength, and statistical significance of the relationships you have been visualizing.

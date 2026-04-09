@@ -1,0 +1,60 @@
+# Preface {.unnumbered}
+
+Welcome to *Information Exposition*, a hands-on guide to communicating the findings of data analyses using Python. This book grew out of an undergraduate course at the University of Colorado Boulder designed for information science majors who have completed one or two semesters of programming and want to develop both their computational and communication skills for working with data.
+
+## Who This Book Is For {.unnumbered}
+
+This book is for you if you have some experience writing Python code and want to learn how to load, reshape, visualize, and communicate data effectively. You should be comfortable with basic Python syntax — variables, loops, functions, and importing libraries — but you do not need prior experience with pandas, matplotlib, or statistical modeling. We will build those skills together, chapter by chapter.
+
+If you have taken an introductory data science or statistics course, you will find that this book extends those foundations with a strong emphasis on *communication*: not just producing a correct chart, but producing a chart that tells a clear and honest story to a real audience.
+
+## How This Book Is Organized {.unnumbered}
+
+The book is organized into four parts, each corresponding to a module that pairs computational skills with communication skills.
+
+**Part I: Shaping Data** introduces the foundational pandas operations you will use throughout the rest of the book. You will learn to load data from CSV files, summarize data with groupby-aggregation, combine multiple datasets with concatenation and merging, and reshape data between wide and long formats. The part concludes with a chapter on designing clear and effective data visualizations.
+
+**Part II: Distributions** covers visualizing the shape of data. You will learn to build histograms with matplotlib's object-oriented interface, compare distributions across categories with seaborn's categorical plots, and think carefully about who your audience is and what they need from your analysis.
+
+**Part III: Trends** focuses on temporal data. You will work with Python's `datetime` library and pandas's `Timestamp` objects, visualize time series with rolling averages and resampling, and grapple with the challenge of communicating uncertainty to audiences who crave certainty.
+
+**Part IV: Relationships** explores bivariate and multivariate relationships. You will build scatterplots, estimate and interpret linear regression models, and develop the critical thinking skills to evaluate whether a relationship is causal or merely correlational.
+
+## Recurring Themes {.unnumbered}
+
+Several themes recur across chapters and are worth flagging at the outset.
+
+**Verify your data constantly.** Every chapter reinforces the habit of checking the shape, size, and contents of your data after every operation. Does the number of rows match your expectation? Are there unexpected null values? Did a merge introduce duplicates? These checks are not busywork — they are the difference between trustworthy analysis and garbage.
+
+**Visualization is iterative.** You will rarely produce a publication-ready chart on the first try. The chapters model an iterative process: start with a default plot, identify what is unclear or misleading, and refine through customization of labels, scales, colors, and annotations.
+
+**Communication is as important as computation.** A correct analysis that no one can understand is not useful. Throughout the book, we pay attention to writing, audience, narrative structure, and the ethical responsibilities that come with putting data stories into the world.
+
+## Conventions {.unnumbered}
+
+Code cells appear with syntax highlighting and are ready to run in a Jupyter notebook or Quarto document, provided you have the datasets and libraries installed. Because the datasets are hosted separately from this book, all code cells are shown but not executed during the book's build process.
+
+::: {.callout-tip}
+## Tips
+Green callout boxes like this one offer practical advice, shortcuts, or best practices.
+:::
+
+::: {.callout-warning}
+## Warnings
+Yellow callout boxes highlight common mistakes or pitfalls to avoid.
+:::
+
+::: {.callout-note collapse="true"}
+## Exercises
+Blue collapsible callout boxes contain exercises with solutions. Try the exercise yourself before expanding the solution.
+:::
+
+## Accompanying Materials {.unnumbered}
+
+All datasets used in this book are available in the companion GitHub repository at <https://github.com/cuinfoscience/Information-Exposition-Book/>. See @sec-datasets for a description of each dataset.
+
+The Python environment setup instructions, including how to install Anaconda, Jupyter, and the required libraries, are provided in @sec-setup.
+
+## Acknowledgments {.unnumbered}
+
+This book was developed for INFO 3402: Information Exposition in the Department of Information Science at the University of Colorado Boulder. It draws on the work of many excellent textbooks and resources in data visualization and communication, including Jonathan Schwabish's *Better Data Visualizations*, Claus Wilke's *Fundamentals of Data Visualization*, and the pandas, matplotlib, and seaborn documentation communities.

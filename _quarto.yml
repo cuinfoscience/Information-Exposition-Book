@@ -1,0 +1,59 @@
+project:
+  type: book
+  output-dir: book
+
+book:
+  title: "Information Exposition"
+  author: "Brian C. Keegan, Ph.D."
+  date: today
+  repo-url: https://github.com/cuinfoscience/Information-Exposition-Book/
+  repo-actions: [edit, issue]
+  sidebar:
+    style: docked
+  chapters:
+    - index.qmd
+    - part: "Shaping Data"
+      chapters:
+        - chapters/01-loading.qmd
+        - chapters/02-aggregating.qmd
+        - chapters/03-combining.qmd
+        - chapters/04-reshaping.qmd
+        - chapters/05-clarity.qmd
+    - part: "Distributions"
+      chapters:
+        - chapters/06-histograms.qmd
+        - chapters/07-catplots.qmd
+        - chapters/08-audience.qmd
+    - part: "Trends"
+      chapters:
+        - chapters/09-temporal-data.qmd
+        - chapters/10-time-series.qmd
+        - chapters/11-uncertainty.qmd
+    - part: "Relationships"
+      chapters:
+        - chapters/12-scatterplots.qmd
+        - chapters/13-linear-models.qmd
+        - chapters/14-validity.qmd
+    - part: "Appendices"
+      chapters:
+        - appendices/datasets.qmd
+        - appendices/setup.qmd
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-tools: true
+    code-fold: false
+    code-overflow: wrap
+
+execute:
+  eval: false
+  echo: true
+  warning: false
+
+knitr:
+  opts_chunk:
+    comment: "#>"

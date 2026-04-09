@@ -1,0 +1,155 @@
+# Datasets {#sec-datasets}
+
+This appendix describes each dataset used in the book. All files are available in the companion GitHub repository at <https://github.com/cuinfoscience/Information-Exposition-Book/>. Datasets are organized by the part and chapter in which they first appear.
+
+## Part I: Shaping Data
+
+### ACS 2019 Demographic Profiles (`ACS2019_DP05_state.csv`) {.unnumbered}
+
+**Source:** U.S. Census Bureau, American Community Survey 5-Year Estimates, Table DP05 (Demographic and Housing Estimates). Retrieved from <https://data.census.gov>.
+
+**Description:** State-level demographic estimates including population by age, sex, race, and Hispanic origin. Each row is a U.S. state or territory. Columns follow the Census naming convention with prefixes for "Estimate," "Margin of Error," and "Percent." Multiple codes represent different types of missing data: `(X)` for not applicable, `*****` for controlled estimates, `-` for too few observations, `+` for upper-bound medians, and `***` for open-ended distribution boundaries.
+
+**Used in:** @sec-loading
+
+### CDC Weekly Mortality Data (`CDC_deaths.csv`) {.unnumbered}
+
+**Source:** Centers for Disease Control and Prevention, National Center for Health Statistics. Weekly counts of deaths by cause and state, derived from two CDC datasets: [2014–2019](https://data.cdc.gov/NCHS/Weekly-Counts-of-Deaths-by-State-and-Select-Causes/3yf8-kanr) and [2020–2023](https://data.cdc.gov/NCHS/Weekly-Provisional-Counts-of-Deaths-by-State-and-S/muzy-jte6).
+
+**Description:** Weekly death counts for each of 52 U.S. states and territories (50 states plus D.C. and Puerto Rico) from 2014 through 2023, broken down by cause of death including heart disease, cancer, diabetes, septicemia, influenza and pneumonia, chronic lower respiratory diseases, cerebrovascular diseases, Alzheimer disease, and COVID-19. The "Week date" column contains the ending date of each epidemiological week. The 2014 and 2020 data include a 53rd epidemiological week due to calendar alignment. Missing values have been filled with zeros.
+
+**Used in:** @sec-aggregating, @sec-clarity, @sec-reshaping, @sec-uncertainty
+
+### Lahman Baseball Database (`Lahman/`) {.unnumbered}
+
+**Source:** Sean Lahman's Baseball Database, <http://seanlahman.com/>.
+
+**Description:** A collection of CSV files covering Major League Baseball statistics. The book uses several tables from this database. `Batting.csv` contains season-level batting statistics for every player, with each row being a player-season-team combination identified by `playerID`, `yearID`, and `teamID`. `People.csv` contains biographical information for every player and manager including birth date, birth country, and death date. `HallOfFame.csv` tracks Hall of Fame balloting. `Salaries.csv` records player salary data. `CollegePlaying.csv` and `Schools.csv` link players to their college backgrounds.
+
+**Used in:** @sec-combining
+
+### Retrosheet Game Logs (`Retrosheet/GL*.TXT`) {.unnumbered}
+
+**Source:** Retrosheet, <http://www.retrosheet.org/gamelogs/index.html>. Column documentation: <https://www.retrosheet.org/gamelogs/glfields.txt>.
+
+**Description:** 151 files, one per MLB season from 1871 through 2021. Each row is a single game with 161 columns recording date (column 1), visiting team (column 4), home team (column 7), visiting team score (column 10), home team score (column 11), game day/night indicator (column 13), attendance (column 18), and detailed box score data for pitchers, batters, and fielders. Files have no header row; columns are documented starting from 1 (not 0) in the Retrosheet documentation.
+
+**Used in:** @sec-combining
+
+### Denver International Airport Passenger Traffic (`passengers.csv`) {.unnumbered}
+
+**Source:** Denver International Airport Statistics Office, supplemented by Bureau of Transportation Statistics data.
+
+**Description:** Monthly passenger counts by airline at Denver International Airport from January 1995 through late 2021. Columns represent individual airlines (American, Delta, Frontier, Other, Southwest, United, United Express) plus a "Grand" total and a "Cargo" column. The airport opened in February 1995. Data was originally provided as an Excel file with separate sheets for passengers and flights, from which the passenger data was extracted and cleaned.
+
+**Used in:** @sec-reshaping, @sec-clarity, @sec-audience, @sec-time-series
+
+### Bureau of Transportation Statistics Passengers (`transtats_passengers.xlsx`) {.unnumbered}
+
+**Source:** U.S. Department of Transportation, Bureau of Transportation Statistics, <https://www.transtats.bts.gov/Data_Elements.aspx?Data=1> (select "Denver, CO: Denver International").
+
+**Description:** Monthly passenger enplanement data for Denver International Airport. Used to validate the DIA-provided statistics. Contains Year, Month, and TOTAL columns, with annual total rows that must be filtered out.
+
+**Used in:** @sec-combining, @sec-reshaping
+
+## Part II: Distributions
+
+### Boulder and Broomfield Weather (`boulder_weather.csv`, `broomfield_weather.csv`) {.unnumbered}
+
+**Source:** NOAA Global Historical Climatology Network Daily (GHCN-D).
+
+**Description:** Daily weather observations from stations near Boulder and Broomfield, Colorado, covering approximately 2010–2021. Pipe-delimited (`|`) files with columns for date (DATE), temperature (TEMP), maximum temperature (MAX), minimum temperature (MIN), precipitation (PRCP), wind speed (WDSP), and other measurements. Values are in U.S. customary units (Fahrenheit, inches, miles per hour). The two datasets have slightly different date ranges, so an inner join on DATE is necessary to compare the same days.
+
+**Used in:** @sec-histograms
+
+### Colorado County COVID-19 Data (`co_county_covid.csv`) {.unnumbered}
+
+**Source:** Derived from Colorado Department of Public Health and Environment reports.
+
+**Description:** Monthly COVID-19 case and death counts by Colorado county, covering 2020–2022. Each row is a county-month observation with columns for county name, month, case count (Cases), and death count (Deaths). The data exhibits strong right skew: most county-months have few cases while a small number of county-months (primarily Denver and its suburbs) have thousands.
+
+**Used in:** @sec-histograms
+
+### House of Representatives Disbursement Data (`2021Q3-house-disburse-detail.csv`) {.unnumbered}
+
+**Source:** ProPublica, <https://projects.propublica.org/represent/expenditures>.
+
+**Description:** Detailed spending records for every U.S. House office in the third quarter of 2021. Columns include the office's BIOGUIDE_ID (a standardized identifier for every senator and representative since 1790), spending category (CATEGORY), payee, amount (AMOUNT), and sort sequence (SORT SEQUENCE). The SORT SEQUENCE column includes "DETAIL" rows for individual transactions and "SUBTOTAL" rows for aggregations — filtering to only "DETAIL" rows avoids double-counting. Rows with null BIOGUIDE_ID represent non-member offices (committees, officers, administrators).
+
+**Used in:** @sec-catplots
+
+### House Members Data (`house_members.csv`) {.unnumbered}
+
+**Source:** Derived from the ProPublica Congress API, VoteView DW-NOMINATE scores, and MIT Election Data + Science Lab house election returns. See the Week 07 notebook appendix for construction details.
+
+**Description:** Biographical and political data for members of the U.S. House of Representatives including party caucus (D, R, or I), state, full state name (state-fullname), office building, prior congressional service (prior-congress), DW-NOMINATE ideology scores (nominate_dim1, nominate_dim2), and election-related data. The prior-congress field indicates whether the member is an incumbent (nonzero) or a newcomer (zero).
+
+**Used in:** @sec-catplots
+
+### Country Military Data (`country_military.csv`) {.unnumbered}
+
+**Source:** World Bank, World Development Indicators, <https://databank.worldbank.org/source/world-development-indicators>.
+
+**Description:** Cross-national panel data on military expenditures (as percentage of GDP and of government expenditure), armed forces personnel (total and as percentage of labor force), arms imports and exports (SIPRI values), labor force, and GDP for 266 countries from 2010–2020. Missing values are coded as `..` in the raw file and should be passed to `read_csv` via the `na_values` parameter.
+
+**Used in:** @sec-catplots
+
+### Regional Classifications (`regional_classifications.csv`) {.unnumbered}
+
+**Source:** United Nations Statistics Division and World Bank regional classification lists.
+
+**Description:** Country-level regional classification data with columns for Country Name, Iso3 code, UN Regions, UN Sub-regions, World Bank Regions, and World Bank Income Groups. Used to add categorical grouping variables to the country military data for catplot visualizations.
+
+**Used in:** @sec-catplots
+
+## Part III: Trends
+
+### S&P 500 Historical Data (`sp500.csv`) {.unnumbered}
+
+**Source:** Retrieved via the `yfinance` Python library using the `^GSPC` ticker symbol.
+
+**Description:** Daily market data for the S&P 500 index from January 2010 to October 2023. Columns include Date, Open, High, Low, Close, Adj Close (adjusted for dividends and splits), and Volume. The data contains trading days only — weekends and holidays have no entries, which creates gaps in a daily time series that must be handled via reindexing (see @sec-temporal-data).
+
+**Used in:** @sec-temporal-data, @sec-time-series
+
+### NYC Taxi Pickups (`nyc_pickups.csv`) {.unnumbered}
+
+**Source:** New York City Taxi and Limousine Commission, <https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page>. Derived from March 2020 yellow cab and for-hire vehicle (FHV) trip data.
+
+**Description:** Minute-level pickup counts for yellow cabs and rideshare services (Uber, Lyft) in New York City for March 2020. Each row is a timestamp (one per minute) with corresponding pickup counts for yellowcab and rideshare. The data captures the dramatic impact of COVID-19 lockdowns on ride activity and exhibits strong hourly (circadian), daily (weekday/weekend), and within-month patterns.
+
+**Used in:** @sec-time-series
+
+### Berkeley Earth Surface Temperature (`avg_temp_1880_2024.csv`) {.unnumbered}
+
+**Source:** Berkeley Earth, <http://berkeleyearth.org/data/>. "Daily Land" average temperature estimates.
+
+**Description:** Daily average land surface temperature estimates from 1880 to 2024. Each row is a date with the corresponding average temperature in degrees Celsius, computed as an anomaly from the 1951–1980 average of 8.59°C added back to produce an absolute temperature. This long-duration, high-frequency dataset (50,000+ observations) is ideal for illustrating resampling, rolling averages, seasonal decomposition, and long-term trend detection.
+
+**Used in:** @sec-time-series, @sec-uncertainty
+
+### Wikipedia Pageview Data {.unnumbered}
+
+**Source:** Retrieved via the `wikifunctions` library ([source](https://github.com/brianckeegan/wikifunctions/)) from the Wikimedia Pageviews API.
+
+**Description:** Daily pageview counts for Wikipedia articles. The book uses the "University of Colorado Boulder" article as the primary example. The data exhibits strong weekly (lower on weekends) and seasonal (academic calendar) patterns. The `wikifunctions` library is not available via `conda` or `pip` and must be placed in the same directory as the notebook.
+
+**Used in:** @sec-time-series
+
+## Part IV: Relationships
+
+### U.S. Counties Data (`us_counties.csv`) {.unnumbered}
+
+**Source:** Compiled from multiple sources: U.S. Census Bureau ACS 5-Year Estimates (DP02 social characteristics, DP03 economic characteristics, DP05 demographic characteristics), MIT Election Data + Science Lab (county-level presidential returns 2000–2020), and *The New York Times* COVID-19 county-level tracking project.
+
+**Description:** A merged cross-sectional dataset of approximately 3,200 U.S. counties. Variables include demographic characteristics (Population, Pct_Under_18, Pct_Over_65, Pct_Female, Pct_White, Pct_Hispanic, Pct_Born_Same_State), economic characteristics (Median_Income, Pct_Unemployed, Pct_Family_Poverty, Pct_Broadband, Pct_Assistance), education (Pct_HS_Grad, Pct_College_Grad), language (Pct_English_Only), household structure (Pct_Single_Female), 2016 and 2020 presidential vote shares (trump_2016, trump_2020, 16_20_shift), and cumulative COVID-19 case and death counts (covid_cases, covid_deaths) with per-capita derivatives. The first column is the FIPS code — a five-digit county identifier that should be read as a string (not an integer) to preserve leading zeros. The `-` character is used for missing values and should be passed to `na_values` in `read_csv`.
+
+**Used in:** @sec-scatterplots, @sec-linear-models
+
+### CDC WONDER Mortality Data (`wonder_cod.txt`) {.unnumbered}
+
+**Source:** CDC WONDER database, <https://wonder.cdc.gov/>. Underlying Cause of Death query system.
+
+**Description:** County-level drug/alcohol-induced death counts and population from 1999 through 2020, extracted using the "Drug/Alcohol Induced Causes" option and filtered to three ICD-10 cause groups: Unintentional (X40–X44), Suicide (X60–X64), and Undetermined (Y10–Y14). Tab-delimited with columns for County, County Code, Year, Deaths, and Population. Not all counties are represented (only approximately 1,380 of 3,350) because the CDC suppresses counts of fewer than 10 for privacy. The "State" column must be derived by splitting the "County" field on the comma delimiter. A crude death rate per 100,000 should be computed as `Deaths / Population * 100000`.
+
+**Used in:** @sec-validity

@@ -1,0 +1,472 @@
+# Combining Data {#sec-combining}
+
+So far you have worked with single datasets. In practice, the data you need is almost always spread across multiple files or sources. This chapter introduces two fundamental operations for combining data: **concatenation** (stacking datasets with the same columns on top of each other) and **merging** (joining datasets that share a common identifier column). These operations correspond to adding rows and adding columns, respectively.
+
+We will use baseball data to illustrate both operations. Baseball has a long tradition of meticulous statistical record-keeping, and its datasets provide a clean and intuitive context for learning these skills. So we are going to take a break from last week's very happy data about death statistics to work with baseball data this week.
+
+The [Retrosheet game logs](http://www.retrosheet.org/gamelogs/index.html) and [Lahman Database](http://seanlahman.com/) are the two most famous baseball datasets. Much of the data you see on sites like [Baseball-Reference](http://www.baseball-reference.com) is [derived from](https://www.baseball-reference.com/about/coverage.shtml) these sources.
+
+## Setup
+
+```{python}
+import numpy as np
+import pandas as pd
+import os
+
+pd.options.display.max_columns = 200
+pd.options.display.float_format = '{:,.2f}'.format
+```
+
+## Setting and Resetting the Index
+
+Before combining data, you need to understand how pandas uses the index. The index is the row label — by default an integer starting at 0, but it can be set to any column.
+
+`.reset_index()` ([docs](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.reset_index.html)) turns an index back into a regular column. `.set_index()` ([docs](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.set_index.html)) turns a column into the index.
+
+```{python}
+batting_df = pd.read_csv('Lahman/Batting.csv')
+
+batting_df.tail()
+```
+
+Make a pivot table of annual runs by team (review from @sec-aggregating).
+
+```{python}
+team_annual_hrs = pd.pivot_table(
+    data=batting_df,
+    index='yearID',
+    columns='teamID',
+    values='R',
+    aggfunc='sum'
+)
+
+team_annual_hrs.shape
+```
+
+```{python}
+team_annual_hrs.loc[1998:].dropna(axis='columns')
+```
+
+Reset the index to turn "yearID" back into a column.
+
+```{python}
+reset = team_annual_hrs.reset_index()
+reset
+```
+
+Set it back.
+
+```{python}
+reset.set_index('yearID', inplace=True)
+reset
+```
+
+```{python}
+reset.loc[2021].dropna().sort_values(ascending=False)
+```
+
+::: {.callout-tip}
+## When to set an index
+Set a column as the index when you will frequently use it for lookups (like dates or unique identifiers). Reset the index when you need that column available for merging or groupby operations.
+:::
+
+## Concatenation {#sec-concat}
+
+A `concat` lets you add rows on top of each other when the columns are the same or similar. Think of it as stacking two spreadsheets that have the same column headers.
+
+### Checking the data first
+
+Let's start by loading a single season of game log data.
+
+```{python}
+gamelog_1921 = pd.read_csv('Retrosheet/GL1921.TXT')
+gamelog_1921.head(2)
+```
+
+The data does not have column names — pandas assumes the first row contains headers. We need to tell `read_csv` there is no header row.
+
+```{python}
+gamelog_1921 = pd.read_csv('Retrosheet/GL1921.TXT', header=None)
+gamelog_1921.head(2)
+```
+
+Now the columns are numbered 0 to 160, but the [Retrosheet documentation](https://www.retrosheet.org/gamelogs/glfields.txt) indexes columns starting from 1. To avoid future confusion, let's fix this now.
+
+```{python}
+gamelog_1921.columns = range(1, 162)
+gamelog_1921.head(2)
+```
+
+What is the "shape" of this data? The `.shape` attribute returns the number of rows and columns as a tuple.
+
+```{python}
+gamelog_1921.shape
+```
+
+The 1921 data has 1,229 rows (games) and 161 columns. Compare to 2021 — almost twice as many games because of league expansion, but still 161 columns.
+
+```{python}
+gamelog_2021 = pd.read_csv('Retrosheet/GL2021.TXT', header=None)
+gamelog_2021.columns = range(1, 162)
+gamelog_2021.shape
+```
+
+The 2020 season was shortened by the COVID-19 pandemic.
+
+```{python}
+gamelog_2020 = pd.read_csv('Retrosheet/GL2020.TXT', header=None)
+gamelog_2020.shape
+```
+
+A quick concatenation of two seasons:
+
+```{python}
+pd.concat([gamelog_1921, gamelog_2021]).shape
+```
+
+### Looping through files
+
+With 151 season files, loading them one by one is impractical. The `os.listdir` function takes a directory path and returns a list of filenames. We will use it on the "Retrosheet" folder.
+
+```{python}
+sorted(os.listdir('Retrosheet/'))
+```
+
+First, verify that all files have the same number of columns — a critical check before concatenating.
+
+```{python}
+for file in os.listdir('Retrosheet/'):
+    if 'gl' in file.lower():
+        _df = pd.read_csv('Retrosheet/' + file, header=None)
+        if _df.shape[1] != 161:
+            print(f"WARNING: {file} has {_df.shape[1]} columns")
+```
+
+If nothing prints, all 151 files have exactly 161 columns. Now load them all into a list.
+
+```{python}
+gamelog_list = []
+
+for file in sorted(os.listdir('Retrosheet/')):
+    if file.startswith('GL'):
+        _df = pd.read_csv('Retrosheet/' + file, header=None)
+        _df.columns = range(1, 162)
+        gamelog_list.append(_df)
+```
+
+Develop a practice of *constantly* verifying that your operations match your expectations. We had 151 files, so our list should have 151 objects.
+
+```{python}
+len(gamelog_list)
+```
+
+::: {.callout-warning}
+## Validate before concatenating
+Always verify that all DataFrames you plan to concatenate have the same number of columns. A single mismatched file will introduce `NaN` values across hundreds of thousands of rows.
+:::
+
+### Using `pd.concat`
+
+Concatenate all seasons into a single DataFrame.
+
+```{python}
+gamelogs_df = pd.concat(objs=gamelog_list)
+
+gamelogs_df.shape
+```
+
+### Managing indices after concatenation
+
+One interesting (and frustrating) consequence of concatenation is that the indices from each parent DataFrame are preserved. This means index values like 0, 1, 2, ... repeat for every season.
+
+```{python}
+gamelogs_df.loc[13]
+```
+
+There are 151 rows named 13 — one from each season. This is usually a problem. You have two options.
+
+**Option 1:** Use `.reset_index(drop=True)` after concatenating. The `drop=True` parameter discards the old index rather than turning it into a column.
+
+```{python}
+gamelogs_df_reset = gamelogs_df.reset_index(drop=True)
+
+gamelogs_df_reset.loc[2000]
+```
+
+**Option 2:** Use `ignore_index=True` inside `pd.concat`. This is the lazy (and preferred) option because it handles the problem at the point of concatenation.
+
+```{python}
+gamelogs_df_ignore = pd.concat(
+    objs=gamelog_list,
+    ignore_index=True
+)
+
+gamelogs_df_ignore.loc[1000]
+```
+
+### Filtering concatenated data
+
+With all 151 seasons in a single DataFrame, you can do interesting cross-historical analyses. Let's extract the year from the date column and find all Boston Red Sox vs. New York Yankees games.
+
+```{python}
+gamelogs_df_reset['year'] = gamelogs_df_reset[1].astype(str).str.slice(0, 4)
+```
+
+```{python}
+# Boston vs. Yankees games
+away_condition = gamelogs_df_reset[4].isin(['BOS', 'NYA'])
+home_condition = gamelogs_df_reset[7].isin(['BOS', 'NYA'])
+
+sox_yankees_df = gamelogs_df_reset[home_condition & away_condition]
+sox_yankees_df
+```
+
+```{python}
+pd.pivot_table(
+    data=sox_yankees_df,
+    index=4,
+    columns=7,
+    values=[10, 11],
+    aggfunc='mean'
+)
+```
+
+## Merging {#sec-merge}
+
+A `merge` lets you add columns next to each other when the rows share a common identifier. This is more commonly known as a **join**. Pandas has both a [`merge`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html) function and a [`.join()`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.join.html) method, but `merge` is more general and is what we will use.
+
+### Preparing for a merge
+
+Load the People and Batting tables from the Lahman database.
+
+```{python}
+people_df = pd.read_csv('Lahman/People.csv')
+print(people_df.shape)
+people_df.head(2)
+```
+
+```{python}
+batting_df = pd.read_csv('Lahman/Batting.csv').sort_values(['playerID', 'yearID'])
+print(batting_df.shape)
+batting_df.head(10)
+```
+
+### Identifying join keys
+
+What columns do these two DataFrames have in common? Set operations on the column names reveal the shared keys.
+
+```{python}
+set(batting_df.columns) & set(people_df.columns)
+```
+
+The `playerID` column is present in both. But do they cover the same set of players?
+
+```{python}
+print(f"Unique players in batting: {len(set(batting_df['playerID']))}")
+print(f"Unique players in people: {len(set(people_df['playerID']))}")
+print(f"Players in both: {len(set(batting_df['playerID']) & set(people_df['playerID']))}")
+```
+
+There are more people in the People table than in the Batting table because the People table includes pitchers, managers, and other non-batters.
+
+### Checking for duplicates
+
+Are there repeated player IDs in either table? Understanding this is critical for predicting the shape of your merged result.
+
+```{python}
+people_df['playerID'].value_counts()
+```
+
+Each player appears exactly once in People — it is a lookup table. But in Batting:
+
+```{python}
+batting_df['playerID'].value_counts()
+```
+
+Players appear multiple times because the Batting table has one row per player-season (and even per player-team within a season for traded players). This means our merge will be a **one-to-many** join: each person row will match multiple batting rows.
+
+### Types of joins
+
+Pandas supports four types of joins through the `how` parameter.
+
+#### Left join
+
+A left join preserves all rows in the left DataFrame. Rows from the right that do not match get `NaN`.
+
+```{python}
+people_batting_left = pd.merge(
+    left=people_df,
+    right=batting_df,
+    left_on='playerID',
+    right_on='playerID',
+    how='left'
+)
+
+print(people_df.shape, batting_df.shape, people_batting_left.shape)
+people_batting_left.head(12)
+```
+
+#### Right join
+
+A right join preserves all rows in the right DataFrame. Rows from the left that do not match get `NaN`.
+
+```{python}
+people_batting_right = pd.merge(
+    left=people_df,
+    right=batting_df,
+    left_on='playerID',
+    right_on='playerID',
+    how='right'
+)
+
+print(people_df.shape, batting_df.shape, people_batting_right.shape)
+people_batting_right.head(9)
+```
+
+#### Outer join
+
+An outer join preserves all rows from both DataFrames. Non-matching rows get `NaN` on the side that did not match.
+
+```{python}
+people_batting_outer = pd.merge(
+    left=people_df,
+    right=batting_df,
+    left_on='playerID',
+    right_on='playerID',
+    how='outer'
+)
+
+print(people_df.shape, batting_df.shape, people_batting_outer.shape)
+```
+
+#### Inner join
+
+An inner join preserves only rows where the key exists in *both* DataFrames. Everything else is dropped.
+
+```{python}
+people_batting_inner = pd.merge(
+    left=people_df,
+    right=batting_df,
+    left_on='playerID',
+    right_on='playerID',
+    how='inner'
+)
+
+print(people_df.shape, batting_df.shape, people_batting_inner.shape)
+```
+
+### Validating the merge
+
+Always check the shape of your merged DataFrame. Ask yourself: how many rows and columns should the result have? If the number of rows is unexpectedly large, you may have a many-to-many merge — which is almost never what you intended.
+
+## Exercises
+
+::: {.callout-note collapse="true"}
+## Exercise 1: Do the big concatenation
+
+Concatenate all 151 seasons of gamelog data in `gamelog_list` together. Make sure the index is unique. What is the `.shape` of the combined DataFrame?
+
+**Solution:**
+
+```{python}
+gamelogs_all = pd.concat(gamelog_list, ignore_index=True)
+print(gamelogs_all.shape)
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 2: Find extreme matches
+
+The [Retrosheet documentation](https://www.retrosheet.org/gamelogs/glfields.txt) explains that column 10 is the visiting team score and column 11 is the home team score. Column 18 is the game attendance.
+
+What team scored the most runs ever in a single game? What was the highest-attended game?
+
+**Solution:**
+
+```{python}
+# Highest visiting team score
+max_visitor_idx = gamelogs_df_reset[10].idxmax()
+print("Highest visiting score:")
+print(gamelogs_df_reset.loc[max_visitor_idx, [1, 4, 7, 10, 11]])
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 3: Make a pivot table (review)
+
+Column 3 is the day of the week. Column 13 is whether the game was a night or day game. Column 18 is attendance. Make a pivot table showing average attendance by day of the week and day/night status.
+
+**Solution:**
+
+```{python}
+pd.pivot_table(
+    data=gamelogs_df_reset,
+    index=3,
+    columns=13,
+    values=18,
+    aggfunc='mean'
+).loc[['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']]
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 4: Which country produced the most Hall of Famers?
+
+Join the "HallOfFame" and "People" tables from the Lahman database. Filter to inducted players. Do an aggregation to count Hall of Famers by birth country.
+
+**Solution:**
+
+```{python}
+halloffame_df = pd.read_csv('Lahman/HallOfFame.csv')
+
+# Filter to inducted players
+inducted = halloffame_df[
+    (halloffame_df['inducted'] == 'Y') &
+    (halloffame_df['category'] == 'Player')
+]
+
+# Join
+joined = pd.merge(
+    left=inducted,
+    right=people_df,
+    on='playerID',
+    how='left'
+)
+
+# Aggregate
+joined.groupby('birthCountry').agg({'playerID': 'nunique'}).sort_values(
+    'playerID', ascending=False
+).head(10)
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 5: Three-way join
+
+Which schools produce the highest-paid players? Load the "Salaries", "Schools", and "CollegePlaying" tables from the Lahman database. Develop a strategy for joining all three and answering the question.
+
+**Solution:**
+
+```{python}
+salaries_df = pd.read_csv('Lahman/Salaries.csv')
+college_df = pd.read_csv('Lahman/CollegePlaying.csv')
+schools_df = pd.read_csv('Lahman/Schools.csv')
+
+# Step 1: Join salaries to college playing on playerID
+sal_college = pd.merge(salaries_df, college_df, on='playerID', how='inner')
+
+# Step 2: Join schools on schoolID
+sal_college_school = pd.merge(sal_college, schools_df, on='schoolID', how='left')
+
+# Step 3: Aggregate
+sal_college_school.groupby('name_full').agg(
+    {'salary': 'mean'}
+).sort_values('salary', ascending=False).head(10)
+```
+
+This is definitely biased towards schools that produce a small number of players with enormous contracts.
+:::
+
+## Looking Ahead
+
+You can now combine datasets by stacking rows (concatenation) or joining on shared keys (merging). In @sec-reshaping, you will learn to reshape a *single* dataset between wide and long formats using stack, unstack, melt, and pivot — operations that are essential for both analysis and visualization.

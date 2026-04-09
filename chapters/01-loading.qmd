@@ -1,0 +1,383 @@
+# Loading Data {#sec-loading}
+
+Every data analysis begins with the same mundane but critical step: getting data into your computing environment. This chapter introduces pandas's `read_csv` function and the many parameters that give you fine-grained control over how raw files become usable DataFrames. By the end of this chapter, you will be able to load a CSV file, inspect its contents, handle messy headers and missing values, filter columns, sort rows, and compute new columns from existing ones.
+
+These skills may feel mechanical, but they form the foundation for everything that follows. A DataFrame that is loaded incorrectly — with the wrong header row, unrecognized missing values, or columns stored as the wrong data type — will silently corrupt every analysis built on top of it.
+
+## Setup
+
+We begin by importing the libraries we will use throughout the book. If any of these imports fail, see @sec-setup for installation instructions.
+
+```{python}
+# Embed visualization outputs in the notebook
+%matplotlib inline
+
+# Import matplotlib's pyplot
+import matplotlib.pyplot as plt
+
+# Import numpy
+import numpy as np
+
+# Import pandas
+import pandas as pd
+
+# Customize pandas to display more columns than the default
+pd.options.display.max_columns = 500
+```
+
+A quick sanity check: does your environment execute code correctly?
+
+```{python}
+1 + 1
+```
+
+```{python}
+print("{0} has the best haircut of any INFO faculty!".format('Brian Keegan'))
+```
+
+If those cells ran without errors, you are ready to work with data.
+
+## Loading a CSV File
+
+The workhorse function for reading tabular data in pandas is `read_csv`. At its simplest, you pass it a file path and it returns a DataFrame. We will work with data from the U.S. Census Bureau's American Community Survey (ACS), specifically the DP05 table of demographic and housing estimates by state. This dataset is included in the book's repository as `ACS2019_DP05_state.csv`. See @sec-datasets for provenance details.
+
+```{python}
+# From https://data.census.gov
+census_df = pd.read_csv('ACS2019_DP05_state.csv')
+```
+
+## Inspecting the Data
+
+Before doing anything else, *look at the data*. The `.head()` method shows the first five rows by default. Use `.tail()` for the last five, and `.shape` to see the number of rows and columns as a tuple.
+
+```{python}
+census_df.head()
+```
+
+```{python}
+census_df.shape
+```
+
+::: {.callout-tip}
+## Build the habit early
+After every operation that changes a DataFrame — loading, filtering, merging, grouping — check `.shape` and `.head()`. This takes seconds and catches problems before they compound.
+:::
+
+You should notice something odd right away: the column names may not be what you expect. Census data files often include a metadata row at the top that `read_csv` interprets as column names, pushing the actual column names down into the first row of data. Let's look at that first row to confirm.
+
+```{python}
+census_df.loc[0]
+```
+
+### Understanding the Census documentation
+
+The Census Bureau's documentation explains several special codes that appear throughout the data:
+
+1. An `**` entry in the margin of error column indicates too few sample observations to compute a standard error.
+2. A `-` entry in the estimate column indicates too few observations, or that a ratio of medians cannot be calculated.
+3. A `+` following a median estimate means the median falls in the upper interval of an open-ended distribution.
+4. A `***` entry indicates the median falls in the lowest or upper interval of an open-ended distribution.
+5. A `*****` entry indicates the estimate is controlled and a sampling variability test is not appropriate.
+6. An `N` entry indicates the number of sample cases is too small.
+7. An `(X)` means the estimate is not applicable or not available.
+
+That is a lot of different ways to say "missing." We will need to handle all of them.
+
+## Fixing Headers with `read_csv` Parameters
+
+Pandas's `read_csv` function has dozens of parameters documented in the [User Guide for CSV files](https://pandas.pydata.org/docs/user_guide/io.html#csv-text-files) and the [`read_csv` API reference](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html). We will use several of the most important ones throughout this chapter.
+
+### Strategy 1: Tell `read_csv` which row to use
+
+The `header` parameter tells pandas which row (or rows) to use as column names. If the real column names are in the second row (index 1), pass `header=[1]`.
+
+```{python}
+dp05_df = pd.read_csv('ACS2019_DP05_state.csv', header=[1])
+
+dp05_df.head()
+```
+
+### Strategy 2: Fix headers after loading
+
+Alternatively, you can reassign the `.columns` attribute using the values in the misplaced row, then drop that row.
+
+```{python}
+census_df.columns = census_df.loc[0]
+census_df = census_df.drop(index=0)
+census_df.head()
+```
+
+Both strategies work. The first is generally preferable because it handles the problem at the point of loading, reducing the chance that you forget to clean it up later. Throughout this book, we will favor making `read_csv` do the work whenever possible.
+
+## Handling Missing Values
+
+The `na_values` parameter accepts a list of strings that `read_csv` should treat as `NaN` (Not a Number, pandas's standard missing value indicator). Given the Census documentation above, we need to handle several codes simultaneously.
+
+### Strategy 1: Tell `read_csv` to handle it
+
+```{python}
+dp05_df = pd.read_csv(
+    'ACS2019_DP05_state.csv',
+    header=[1],
+    na_values=['(X)', '*****', '-', '+', '***']
+)
+
+dp05_df.head()
+```
+
+### Strategy 2: Replace values after loading
+
+If you have already loaded the data, you can use `.replace()` to swap specific values for `NaN`.
+
+```{python}
+dp05_df = pd.read_csv('ACS2019_DP05_state.csv', header=[1])
+
+# Option A: replace inplace
+dp05_df.replace({'*****': np.nan, '(X)': np.nan}, inplace=True)
+
+# Option B: overwrite the variable (equivalent)
+# dp05_df = dp05_df.replace({'*****': np.nan, '(X)': np.nan})
+```
+
+### Strategy 3: Drop the offending columns entirely
+
+In some cases, if entire columns are full of missing values, you may decide to drop them rather than impute. This is a valid choice, but be aware of what information you lose.
+
+::: {.callout-warning}
+## Don't ignore missing value codes
+If you skip this step, columns that should be numeric will be stored as strings because of stray characters like `(X)`. Numeric operations like `.sum()` and `.mean()` will fail silently or raise confusing errors downstream.
+:::
+
+## Filtering Columns
+
+The ACS reports each variable as a triplet: an estimate, a margin of error, and a percentage. If you only need the estimates, you can filter columns during loading or after.
+
+### Strategy 1: Use `usecols` during loading
+
+The `usecols` parameter accepts a function that is called on each column name. If the function returns `True`, the column is included.
+
+```{python}
+dp05_df = pd.read_csv(
+    'ACS2019_DP05_state.csv',
+    header=1,
+    na_values=['(X)', '*****', '-', '+', '***'],
+    usecols=lambda col: 'Estimate' in col or 'Geographic Area Name' in col
+)
+
+dp05_df.head()
+```
+
+### Strategy 2: Filter columns after loading
+
+You can iterate over `.columns` and select those that match your criteria, then subset the DataFrame.
+
+```{python}
+estimate_columns = []
+
+for col in dp05_df.columns:
+    if 'Estimate' in col:
+        estimate_columns.append(col)
+
+estimate_columns += ['Geographic Area Name']
+
+# Give me all the rows, but only the columns in estimate_columns
+dp05_estimates_df = dp05_df.loc[:, estimate_columns]
+```
+
+::: {.callout-tip}
+## List comprehensions
+The loop above can be written more concisely as a list comprehension:
+
+```python
+estimate_columns = [col for col in dp05_df.columns if 'Estimate' in col]
+```
+
+List comprehensions are a Pythonic pattern you will see frequently. They are shorter and often faster than equivalent `for` loops.
+:::
+
+## Sorting
+
+The `.sort_values()` method sorts a DataFrame by one or more columns. To find the states with the largest Asian population:
+
+```{python}
+cols = ['Geographic Area Name', 'Estimate!!RACE!!Total population!!One race!!Asian']
+
+dp05_df.sort_values(
+    by='Estimate!!RACE!!Total population!!One race!!Asian',
+    ascending=False
+).loc[:, cols]
+```
+
+California, New York, and Texas top the list — but these are also the three most populous states. Is the Asian population large relative to the total population, or is it simply large because the state is large?
+
+## Computing New Columns
+
+States with large Asian populations may simply have large total populations. We lost the percentages when we filtered to only "Estimate" columns in the step above. Let's compute our own percentage. You create a new column by assigning the result of an arithmetic operation between existing columns.
+
+```{python}
+num = 'Estimate!!RACE!!Total population!!One race!!Asian'
+den = 'Estimate!!SEX AND AGE!!Total population'
+
+# Make a new column dividing Asian population column by Total population column
+dp05_df['Asian percentage'] = dp05_df[num] / dp05_df[den]
+
+# Sort on the new column
+dp05_df.sort_values('Asian percentage', ascending=False)[
+    ['Geographic Area Name', 'Asian percentage']
+].head(10)
+```
+
+Now the story is very different. Hawaii leads by a wide margin, followed by California and New Jersey. The raw count and the percentage tell very different stories — a theme we will return to throughout this book.
+
+## Putting It All Together
+
+Here is the complete, clean loading pipeline for this dataset in a single cell. This is a pattern you will repeat at the start of almost every analysis: load with the right parameters, verify the shape, and inspect the first few rows.
+
+```{python}
+dp05_df = pd.read_csv(
+    'ACS2019_DP05_state.csv',
+    header=1,
+    na_values=['(X)', '*****', '-', '+', '***'],
+    usecols=lambda col: 'Estimate' in col or 'Geographic Area Name' in col
+)
+
+print(dp05_df.shape)
+dp05_df.head()
+```
+
+## Exercises
+
+::: {.callout-note collapse="true"}
+## Exercise 1: Fix the header problem
+
+Load `ACS2019_DP05_state.csv` *without* using the `header` parameter. Observe the problem. Then use *both* strategies (the `read_csv` parameter approach and the post-hoc approach) to fix it. Verify that both produce the same result.
+
+**Solution:**
+
+```{python}
+# Strategy 1: Make read_csv do it
+dp05_v1 = pd.read_csv('ACS2019_DP05_state.csv', header=[1])
+
+# Strategy 2: Fix it after
+dp05_v2 = pd.read_csv('ACS2019_DP05_state.csv')
+dp05_v2.columns = dp05_v2.loc[0]
+dp05_v2 = dp05_v2.drop(index=0)
+
+# Both should have the same shape
+print(dp05_v1.shape, dp05_v2.shape)
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 2: Handle multiple missing value codes
+
+Load the data with `header=[1]` but *without* the `na_values` parameter. Use the `.replace()` method after loading to convert all six types of Census missing value codes into `NaN`. Verify that the numeric columns now have the correct `float64` data type.
+
+**Solution:**
+
+```{python}
+dp05_df = pd.read_csv('ACS2019_DP05_state.csv', header=[1])
+
+# Replace all missing value codes
+missing_codes = ['(X)', '*****', '-', '+', '***', 'N']
+dp05_df = dp05_df.replace({code: np.nan for code in missing_codes})
+
+dp05_df.head()
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 3: Filter to "Estimate" columns only
+
+Using the `usecols` parameter inside `read_csv`, load only columns that contain the string "Estimate" plus the "Geographic Area Name" column. Then do the same thing using a post-hoc filter. Verify both approaches produce DataFrames with the same number of columns.
+
+**Solution:**
+
+```{python}
+# Strategy 1: usecols
+dp05_v1 = pd.read_csv(
+    'ACS2019_DP05_state.csv',
+    header=1,
+    na_values=['(X)', '*****', '-', '+', '***'],
+    usecols=lambda col: 'Estimate' in col or 'Geographic Area Name' in col
+)
+
+# Strategy 2: post-hoc
+dp05_v2 = pd.read_csv('ACS2019_DP05_state.csv', header=1,
+                        na_values=['(X)', '*****', '-', '+', '***'])
+keep = [c for c in dp05_v2.columns if 'Estimate' in c or 'Geographic Area Name' in c]
+dp05_v2 = dp05_v2[keep]
+
+print(dp05_v1.shape, dp05_v2.shape)
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 4: Sort by Asian population
+
+Sort the `dp05_df` DataFrame by the "Estimate!!RACE!!Total population!!One race!!Asian" column. What states have the largest Asian population?
+
+**Solution:**
+
+```{python}
+cols = ['Geographic Area Name', 'Estimate!!RACE!!Total population!!One race!!Asian']
+
+dp05_df.sort_values(
+    by='Estimate!!RACE!!Total population!!One race!!Asian',
+    ascending=False
+).loc[:, cols].head(10)
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 5: Compute and sort on a new column
+
+States with a large Asian population may simply have large populations. Compute the *percentage* of the population that is Asian by dividing the Asian population column by the total population column. Store as "Asian percentage." Sort on this new column and show the top 5 and bottom 5 states.
+
+**Solution:**
+
+```{python}
+num = 'Estimate!!RACE!!Total population!!One race!!Asian'
+den = 'Estimate!!SEX AND AGE!!Total population'
+
+dp05_df['Asian percentage'] = dp05_df[num] / dp05_df[den]
+
+# Top 5
+print("Top 5:")
+print(dp05_df.sort_values('Asian percentage', ascending=False)[
+    ['Geographic Area Name', 'Asian percentage']
+].head(5))
+
+# Bottom 5
+print("\nBottom 5:")
+print(dp05_df.sort_values('Asian percentage', ascending=True)[
+    ['Geographic Area Name', 'Asian percentage']
+].head(5))
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 6: Explore other `read_csv` parameters
+
+Read the [pandas documentation for `read_csv`](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html). Experiment with these parameters:
+
+- `dtype`: Force specific columns to a type (e.g., keep FIPS codes as strings).
+- `index_col`: Set a column as the DataFrame's index during loading.
+- `nrows`: Load only the first *n* rows — useful for previewing very large files.
+
+When might each be useful?
+
+**Solution:**
+
+```{python}
+# nrows lets you peek at a huge file without loading it all
+test_df = pd.read_csv('ACS2019_DP05_state.csv', header=1, nrows=5)
+test_df.head()
+```
+
+`dtype` is essential when numeric-looking columns (like ZIP codes `06510` or FIPS codes `08031`) should be treated as strings to preserve leading zeros. `index_col` saves a separate `.set_index()` call when you know which column should be the index. `nrows` is invaluable for previewing files with millions of rows without exhausting your computer's memory.
+:::
+
+## Looking Ahead
+
+You now know how to load a CSV file with control over headers, missing values, column selection, and data types. In @sec-aggregating, you will learn how to summarize the rows of a DataFrame using groupby-aggregation — one of the most powerful and commonly used operations in data analysis.

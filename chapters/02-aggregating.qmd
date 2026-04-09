@@ -1,0 +1,432 @@
+# Aggregating and Summarizing {#sec-aggregating}
+
+In @sec-loading you learned to load and inspect a single dataset. But raw data rarely answers questions directly — you need to *summarize* it. How many cancer deaths occurred in each year? What was the average across states? What state had the most heart disease deaths?
+
+This chapter introduces **groupby-aggregation**, an extremely common and very powerful mechanism for summarizing data. The idea is deceptively simple: **split** your data into groups that share some common value, **apply** a summary function to each group, and **combine** the results back into a single table. Mastering this pattern will serve you in virtually every data analysis you undertake.
+
+## Setup
+
+```{python}
+import numpy as np
+import pandas as pd
+
+idx = pd.IndexSlice
+
+pd.options.display.max_columns = 200
+```
+
+## The Data
+
+We will work with weekly mortality data from the Centers for Disease Control and Prevention (CDC), which records deaths by cause for each U.S. state and week from 2014 through 2023. See @sec-datasets for details.
+
+```{python}
+deaths_df = pd.read_csv(
+    'CDC_deaths.csv',
+    parse_dates=['Week date']
+)
+
+deaths_df.head()
+```
+
+Notice the `parse_dates` parameter: it tells `read_csv` to convert the "Week date" column from a string into a proper `Timestamp` object. We will explore temporal data in depth in @sec-temporal-data.
+
+## Understanding Repeated Values
+
+Before summarizing, you need to understand the structure of your data. The `.value_counts()` method counts how many times each unique value appears in a column.
+
+```{python}
+deaths_df['State'].value_counts()
+```
+
+There are 52 "states" in this data: the 50 states plus the District of Columbia and Puerto Rico. Each state has observations for each week of each year.
+
+```{python}
+deaths_df['Year'].value_counts()
+```
+
+Some years have more observations than others. Why? The `.sort_index()` method, chained after `.value_counts()`, sorts the results by the index (in this case, the year) rather than by count.
+
+```{python}
+deaths_df['Week'].value_counts().sort_index()
+```
+
+There are 104 observations of a 53rd week. Since we have 52 states and this happens in two years, that is 52 × 2 = 104. Let's verify: which years and dates have a 53rd week?
+
+Here we use the `.loc` selector to do [Boolean indexing](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#boolean-indexing) — selecting rows that match a condition — while simultaneously selecting specific columns.
+
+```{python}
+deaths_df.loc[
+    deaths_df['Week'] == 53,  # Select the rows that are 53rd weeks
+    ['Week date', 'Year']     # Select these columns
+].value_counts()              # Count the values
+```
+
+The 53rd weeks end in early January 2015 and early January 2021, which technically belong to the 2014 and 2020 epidemiological years. This kind of calendrical irregularity is very common in real data.
+
+::: {.callout-tip}
+## Explore before you aggregate
+Before running any groupby, spend time understanding how values repeat in your data. Unexpected duplicates or missing groups will silently produce wrong summaries.
+:::
+
+## Building Intuition: The Manual Way
+
+What were the total cancer deaths in the United States in 2014? You could answer this manually by filtering to 2014 and selecting the "Malignant neoplasms" column.
+
+```{python}
+# Make a "baby DataFrame" for the year 2014 and the column "Malignant neoplasms"
+cancer_2014 = deaths_df.loc[
+    deaths_df['Year'] == 2014,  # Rows
+    ['Malignant neoplasms']      # Columns
+]
+
+print(len(cancer_2014))
+cancer_2014
+```
+
+There are 2,756 rows of data. Let's verify: 2014 is one of the years with 53 weeks and there are 52 states, so 52 × 53 = 2,756. Good — the numbers match our expectations.
+
+```{python}
+53 * 52
+```
+
+Now apply a function. We want the total, so we `.sum()` the Series.
+
+```{python}
+cancer_2014.sum()
+```
+
+To get totals for every year, you would need to repeat this process — a tedious and error-prone loop.
+
+```{python}
+# Make an empty container to store results
+total_deaths_d = {}
+
+# Loop through the year values of 2014 to 2023
+for year in range(2014, 2024):
+    # Make the baby DataFrame for cancer deaths in the year
+    cancer_deaths = deaths_df.loc[deaths_df['Year'] == year, 'Malignant neoplasms']
+
+    # Sum the values and store the result
+    total_deaths_d[year] = cancer_deaths.sum()
+
+total_deaths_d
+```
+
+This works, but programmers are — first and foremost — lazy!
+
+## Groupby-Aggregation
+
+The brilliance of groupby-aggregation is that you can accomplish the same thing in a single line, which both saves time and reduces the chances of errors.
+
+```{python}
+deaths_df.groupby(['Year']).agg({'Malignant neoplasms': 'sum'})
+```
+
+You will almost always use groupby in combination with `.agg()`. Let's break the operation into its three conceptual steps.
+
+### Splitting with `.groupby()`
+
+The [`.groupby()`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html) operation splits the data into groups. The most important concept you need to internalize is that when you do a `groupby`, you are making a "baby DataFrame" where the rows all share something in common — whatever value you grouped on.
+
+```{python}
+deaths_gb_year = deaths_df.groupby(['Year'])
+```
+
+What is this groupby object? Not a whole lot to look at on its own.
+
+```{python}
+deaths_gb_year
+```
+
+But you can peek inside it with `.get_group()` to retrieve the baby DataFrame for a specific year.
+
+```{python}
+deaths_gb_year.get_group(2023)
+```
+
+### Applying a Function
+
+Now that we have baby DataFrames for each year, we want to apply some function that reduces all the data down to a single summary value. In our cancer example, we are adding up 2,756 rows of state-week numbers into a single total.
+
+```{python}
+deaths_gb_year.get_group(2014)['Malignant neoplasms'].sum()
+```
+
+We could do this for each year.
+
+```{python}
+for year in range(2014, 2024):
+    print(year, deaths_gb_year.get_group(year)['Malignant neoplasms'].sum())
+```
+
+You can apply just about any numeric aggregation function. Some common ones:
+
+- `len` — Number of rows in the baby DataFrame
+- `sum` — Total value of a column
+- `mean` — Average value of a column
+- `min` and `max` — Minimum and maximum values
+- `count` — Count of non-null values
+
+```{python}
+deaths_gb_year['Malignant neoplasms'].apply(np.mean)
+```
+
+### Combining with `.agg()`
+
+The [`.agg()`](https://pandas.pydata.org/pandas-docs/version/0.23/generated/pandas.DataFrame.agg.html) function serves to both apply and combine the results on a GroupBy object. There are several strategies for using `.agg()`.
+
+**Single column, single function:** Pass an aggregation dictionary where the key is the column name and the value is the function.
+
+```{python}
+deaths_df.groupby(['Year']).agg({'Diabetes mellitus': 'sum'})
+```
+
+You can chain a `.plot()` call directly onto this result for a quick visualization. We will cover visualization in depth starting in @sec-histograms.
+
+```{python}
+deaths_gb_year['Diabetes mellitus'].agg('sum').plot(kind='bar')
+```
+
+## Multiple Aggregation Functions
+
+You can pass a list of aggregation functions to apply multiple summaries to the same column at once.
+
+```{python}
+deaths_gb_year['Diabetes mellitus'].agg(['mean', 'min', 'max', 'count', 'sum'])
+```
+
+You can also pass a list of numpy functions, which is more explicit. Note how the function name becomes the column name.
+
+```{python}
+deaths_gb_year['Diabetes mellitus'].agg([np.mean, np.min, np.max, len, np.sum])
+```
+
+### Aggregation Dictionaries
+
+The real power comes when you want to apply different functions to different columns. An **aggregation dictionary** maps column names to functions (or lists of functions).
+
+```{python}
+agg_d = {
+    'Diabetes mellitus': [np.mean, np.min, np.max, len, np.sum],
+    'Diseases of heart': ['sum', 'mean']
+}
+
+deaths_gb_year.agg(agg_d)
+```
+
+This returns a DataFrame with a **MultiIndex** on the columns — the first level is the column name and the second level is the function name.
+
+```{python}
+agg_d = {
+    'Diabetes mellitus': [np.mean, min, max, len, np.sum],
+    'Septicemia': [np.mean, np.median, min, max, np.sum]
+}
+
+deaths_agg_year = deaths_gb_year.agg(agg_d)
+deaths_agg_year
+```
+
+You can access a specific value from the MultiIndexed columns by passing a tuple.
+
+```{python}
+deaths_agg_year.loc[2014, ('Diabetes mellitus', 'sum')]
+```
+
+```{python}
+deaths_agg_year[('Septicemia', 'sum')]
+```
+
+### Simplifying MultiIndex columns
+
+You can drop the top level of the MultiIndex and relabel the columns for clarity.
+
+```{python}
+deaths_agg_year.columns = deaths_agg_year.columns.droplevel(0)
+
+deaths_agg_year.columns = [
+    'mean_diabetes', 'min_diabetes', 'max_diabetes',
+    'count_diabetes', 'total_diabetes',
+    'mean_septicemia', 'median_septicemia', 'min_septicemia',
+    'max_septicemia', 'total_septicemia'
+]
+
+deaths_agg_year.head()
+```
+
+## Grouping by Multiple Values
+
+You can group on more than one column by passing a list to `.groupby()`.
+
+```{python}
+disease_cols = deaths_df.columns[6:]
+disease_cols
+```
+
+```{python}
+deaths_gb_year_state = deaths_df.groupby(['Year', 'State'])
+```
+
+Create an aggregation dictionary that sums each disease column.
+
+```{python}
+disease_agg_d = {col: 'sum' for col in disease_cols}
+
+deaths_gb_year_state_agg = deaths_gb_year_state.agg(disease_agg_d)
+deaths_gb_year_state_agg
+```
+
+The index is now a MultiIndex comprised of tuples of `(Year, State)`. You can access any row by passing the tuple to `.loc`.
+
+```{python}
+deaths_gb_year_state_agg.loc[(2020, 'Colorado')].sort_values()
+```
+
+This shows deaths in Colorado in 2020, sorted by cause. COVID-19 was a leading cause, exceeding both cancer and heart disease in some calculations.
+
+### Accessing levels of a MultiIndex
+
+You can access one level of a MultiIndex using slicing. All state-level deaths in 2014:
+
+```{python}
+deaths_gb_year_state_agg.loc[2014]
+```
+
+To access the *other* level — all years for a single state — you need the `IndexSlice` helper.
+
+```{python}
+idx = pd.IndexSlice
+
+deaths_gb_year_state_agg.loc[idx[:, 'California'], 'Alzheimer disease']
+```
+
+```{python}
+deaths_gb_year_state_agg.loc[idx[:, 'California'], ['Cerebrovascular diseases']]
+```
+
+This is an extremely powerful pattern for slicing MultiIndexed data.
+
+## Pivot Tables
+
+You may have encountered pivot tables in spreadsheet applications. Pandas has a similar function that reshapes data while simultaneously aggregating it.
+
+```{python}
+allcause_pivot = pd.pivot_table(
+    data=deaths_df,
+    index="State",
+    columns="Week",
+    values="Influenza and pneumonia",
+    aggfunc='sum'
+)
+
+allcause_pivot.T.plot(legend=False)
+```
+
+You can also make MultiIndexed pivot tables by passing lists of columns.
+
+```{python}
+lower_respiratory_pivot = pd.pivot_table(
+    data=deaths_df,
+    index=["State", "Year"],
+    columns="Week",
+    values="Chronic lower respiratory diseases",
+    aggfunc="sum"
+)
+
+lower_respiratory_pivot
+```
+
+## Exercises
+
+::: {.callout-note collapse="true"}
+## Exercise 1: Annual "All Cause" deaths
+
+Perform a groupby-aggregation to compute the total "All Cause" deaths by year. How much higher were deaths in 2020 than 2019?
+
+**Solution:**
+
+```{python}
+all_cause = deaths_df.groupby('Year').agg({'All Cause': 'sum'})
+all_cause
+```
+
+```{python}
+diff = all_cause.loc[2020, 'All Cause'] - all_cause.loc[2019, 'All Cause']
+pct = diff / all_cause.loc[2019, 'All Cause'] * 100
+print(f"Difference: {diff:,.0f} deaths ({pct:.1f}% increase)")
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 2: Weekly flu and pneumonia patterns
+
+Make a pivot table with the Week as an index, Year as columns, and the total "Influenza and pneumonia" deaths as values. What is the deadliest week of the year on average for flu and pneumonia?
+
+**Solution:**
+
+```{python}
+flu_pivot = pd.pivot_table(
+    data=deaths_df,
+    index='Week',
+    columns='Year',
+    values='Influenza and pneumonia',
+    aggfunc='sum'
+)
+
+# Average across years for each week
+flu_pivot.mean(axis=1).sort_values(ascending=False).head(5)
+```
+
+The deadliest weeks tend to be in early January (weeks 1–4), corresponding to the peak of flu season.
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 3: Top heart disease state
+
+Perform a groupby-aggregation to compute the total number of "Diseases of heart" deaths by state across all years. What state had the most heart disease deaths from 2014 through 2023?
+
+**Solution:**
+
+```{python}
+heart_by_state = deaths_df.groupby('State').agg({'Diseases of heart': 'sum'})
+heart_by_state.sort_values('Diseases of heart', ascending=False).head(5)
+```
+
+California is likely at the top, reflecting its large population.
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 4: Heart disease in Colorado
+
+What is the total number of heart disease deaths in Colorado from 2014 to the present?
+
+**Solution:**
+
+```{python}
+co_hearts = deaths_df.loc[
+    deaths_df['State'] == 'Colorado'
+].groupby('Year').agg({'Diseases of heart': 'sum'})
+
+co_hearts
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Exercise 5: Comparing diabetes deaths in 2019 and 2020
+
+Perform a groupby-aggregation on Year and State and compute the total "Diabetes mellitus" deaths. Use slicing to compare diabetes deaths in 2019 and 2020 for Utah and Colorado.
+
+**Solution:**
+
+```{python}
+diabetes_agg = deaths_df.groupby(['Year', 'State']).agg({'Diabetes mellitus': 'sum'})
+
+for state in ['Colorado', 'Utah']:
+    d2019 = diabetes_agg.loc[(2019, state), 'Diabetes mellitus']
+    d2020 = diabetes_agg.loc[(2020, state), 'Diabetes mellitus']
+    print(f"{state}: 2019={d2019:,.0f}, 2020={d2020:,.0f}, change={d2020-d2019:+,.0f}")
+```
+:::
+
+## Looking Ahead
+
+Groupby-aggregation is a powerful tool for summarizing data, but it operates on a single dataset. In @sec-combining, you will learn how to combine multiple datasets together using concatenation and merging so that you can enrich your analyses with additional context — like joining demographic data to health data to compute per-capita rates.

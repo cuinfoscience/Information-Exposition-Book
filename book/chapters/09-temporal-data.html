@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>9&nbsp; Working with Temporal Data – Information Exposition</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/10-time-series.html" rel="next">
+<link href="../chapters/08-audience.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-710deee90218c0747833ed862e9a1c0d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/09-temporal-data.html">Trends</a></li><li class="breadcrumb-item"><a href="../chapters/09-temporal-data.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Working with Temporal Data</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Information Exposition</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/cuinfoscience/Information-Exposition-Book/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Shaping Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-loading.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Loading Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-aggregating.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Aggregating and Summarizing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-combining.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Combining Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-reshaping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reshaping and Tidying</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-clarity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Clarity in Data Communication</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Distributions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-histograms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Histograms</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-catplots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Categorical Plots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-audience.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Writing for an Audience</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Trends</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-temporal-data.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Working with Temporal Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-time-series.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Time Series Visualization and Patterns</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Communicating Uncertainty</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Relationships</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-scatterplots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Scatterplots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13-linear-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Linear Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14-validity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Validity and Causal Reasoning</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/datasets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Datasets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Python Environment Setup</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup"><span class="header-section-number">9.1</span> Setup</a></li>
+  <li><a href="#pythons-datetime-library" id="toc-pythons-datetime-library" class="nav-link" data-scroll-target="#pythons-datetime-library"><span class="header-section-number">9.2</span> Python’s <code>datetime</code> Library</a>
+  <ul class="collapse">
+  <li><a href="#creating-datetime-objects" id="toc-creating-datetime-objects" class="nav-link" data-scroll-target="#creating-datetime-objects"><span class="header-section-number">9.2.1</span> Creating <code>datetime</code> objects</a></li>
+  <li><a href="#attributes-and-methods" id="toc-attributes-and-methods" class="nav-link" data-scroll-target="#attributes-and-methods"><span class="header-section-number">9.2.2</span> Attributes and methods</a></li>
+  <li><a href="#strftime-and-strptime" id="toc-strftime-and-strptime" class="nav-link" data-scroll-target="#strftime-and-strptime"><span class="header-section-number">9.2.3</span> <code>strftime</code> and <code>strptime</code></a></li>
+  <li><a href="#unix-timestamps" id="toc-unix-timestamps" class="nav-link" data-scroll-target="#unix-timestamps"><span class="header-section-number">9.2.4</span> Unix timestamps</a></li>
+  <li><a href="#timedelta" id="toc-timedelta" class="nav-link" data-scroll-target="#timedelta"><span class="header-section-number">9.2.5</span> <code>timedelta</code></a></li>
+  </ul></li>
+  <li><a href="#dates-and-times-in-pandas" id="toc-dates-and-times-in-pandas" class="nav-link" data-scroll-target="#dates-and-times-in-pandas"><span class="header-section-number">9.3</span> Dates and Times in Pandas</a>
+  <ul class="collapse">
+  <li><a href="#timestamp" id="toc-timestamp" class="nav-link" data-scroll-target="#timestamp"><span class="header-section-number">9.3.1</span> <code>Timestamp</code></a></li>
+  <li><a href="#additional-attributes-and-methods" id="toc-additional-attributes-and-methods" class="nav-link" data-scroll-target="#additional-attributes-and-methods"><span class="header-section-number">9.3.2</span> Additional attributes and methods</a></li>
+  <li><a href="#pd.to_datetime" id="toc-pd.to_datetime" class="nav-link" data-scroll-target="#pd.to_datetime"><span class="header-section-number">9.3.3</span> <code>pd.to_datetime</code></a></li>
+  <li><a href="#parsing-dates-during-csv-loading" id="toc-parsing-dates-during-csv-loading" class="nav-link" data-scroll-target="#parsing-dates-during-csv-loading"><span class="header-section-number">9.3.4</span> Parsing dates during CSV loading</a></li>
+  </ul></li>
+  <li><a href="#date_range" id="toc-date_range" class="nav-link" data-scroll-target="#date_range"><span class="header-section-number">9.4</span> <code>date_range</code></a></li>
+  <li><a href="#indexing-and-slicing-with-datetime-indices" id="toc-indexing-and-slicing-with-datetime-indices" class="nav-link" data-scroll-target="#indexing-and-slicing-with-datetime-indices"><span class="header-section-number">9.5</span> Indexing and Slicing with Datetime Indices</a></li>
+  <li><a href="#plotting-temporal-data" id="toc-plotting-temporal-data" class="nav-link" data-scroll-target="#plotting-temporal-data"><span class="header-section-number">9.6</span> Plotting Temporal Data</a></li>
+  <li><a href="#rolling-averages" id="toc-rolling-averages" class="nav-link" data-scroll-target="#rolling-averages"><span class="header-section-number">9.7</span> Rolling Averages</a></li>
+  <li><a href="#reindexing" id="toc-reindexing" class="nav-link" data-scroll-target="#reindexing"><span class="header-section-number">9.8</span> Reindexing</a></li>
+  <li><a href="#grouping-temporal-data" id="toc-grouping-temporal-data" class="nav-link" data-scroll-target="#grouping-temporal-data"><span class="header-section-number">9.9</span> Grouping Temporal Data</a></li>
+  <li><a href="#looking-ahead" id="toc-looking-ahead" class="nav-link" data-scroll-target="#looking-ahead"><span class="header-section-number">9.10</span> Looking Ahead</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/Information-Exposition-Book/edit/main/chapters/09-temporal-data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/Information-Exposition-Book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/09-temporal-data.html">Trends</a></li><li class="breadcrumb-item"><a href="../chapters/09-temporal-data.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Working with Temporal Data</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span id="sec-temporal-data" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Working with Temporal Data</span></span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Dates and times are among the most common — and most frustrating — data types you will encounter. Sixty seconds in a minute, sixty minutes in an hour, twenty-four hours in a day, seven days in a week, and then months of varying lengths: 28, 29, 30, or 31 days depending on the month and whether it is a leap year. Add time zones, daylight saving time, and inconsistent string formatting across countries and systems, and you have a recipe for subtle but consequential errors.</p>
+<p>This chapter introduces Python’s <code>datetime</code> library and pandas’s <code>Timestamp</code> objects. By the end, you will be able to parse dates from strings, compute time differences, extract temporal components, create date ranges, set datetime indices, slice data by date, plot time series, and compute rolling averages. These skills are the foundation for the pattern-finding techniques in <a href="10-time-series.html" class="quarto-xref"><span>Chapter 10</span></a>.</p>
+<section id="setup" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">9.1</span> Setup</h2>
+<div id="01545613" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>np.set_printoptions(suppress<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> pd.IndexSlice</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>pd.options.display.max_columns <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sb</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="pythons-datetime-library" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="pythons-datetime-library"><span class="header-section-number">9.2</span> Python’s <code>datetime</code> Library</h2>
+<p>A “classic” joke among Python programmers is the very justifiable confusion between the <code>datetime</code> <em>object</em> within the <code>datetime</code> <em>module</em>. Time and dates are confusing to work with, so let’s take a moment to embrace the awkwardness.</p>
+<div id="dcce89d9" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="creating-datetime-objects" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="creating-datetime-objects"><span class="header-section-number">9.2.1</span> Creating <code>datetime</code> objects</h3>
+<p>The <code>.now()</code> method gets the current time.</p>
+<div id="f318cc6c" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>now <span class="op">=</span> datetime.datetime.now()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>now</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>There is also a <code>.utcnow()</code> that gets <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">Coordinated Universal Time</a> — basically the time at 0° longitude in London — rather than your system’s local time.</p>
+<div id="3bb010c4" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>utc <span class="op">=</span> datetime.datetime.utcnow()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>utc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You create a specific <code>datetime</code> by passing year, month, day, and optionally hour, minute, and second as integers.</p>
+<div id="c009375c" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>birthday <span class="op">=</span> datetime.datetime(<span class="dv">1984</span>, <span class="dv">2</span>, <span class="dv">13</span>, <span class="dv">7</span>, <span class="dv">30</span>, <span class="dv">15</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>birthday</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Strings are not datetimes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Passing a string like <code>'2020-09-25'</code> to <code>datetime.datetime()</code> will raise a <code>TypeError</code>. Python’s <code>datetime</code> constructor expects integers, not strings. To convert strings to datetimes, use <code>strptime</code> (described below).</p>
+</div>
+</div>
+<div id="f540a71d" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>datetime.datetime(<span class="st">'2020-09-25'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="attributes-and-methods" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="attributes-and-methods"><span class="header-section-number">9.2.2</span> Attributes and methods</h3>
+<p>Every <code>datetime</code> object has attributes for its individual components: <code>.year</code>, <code>.month</code>, <code>.day</code>, <code>.hour</code>, <code>.minute</code>, <code>.second</code>.</p>
+<div id="634f838f" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>now.second</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Methods for converting to simpler objects:</p>
+<div id="682cd96a" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>now.date()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="6b8a6683" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>now.time()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Other powerful methods include <code>.weekday()</code> (Monday=0 through Sunday=6), <code>.isoweekday()</code> (Monday=1 through Sunday=7), and <code>.isoformat()</code> for standardized string output.</p>
+<div id="f759411e" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(now)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="b40c6fe5" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>now.isoformat()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="strftime-and-strptime" class="level3" data-number="9.2.3">
+<h3 data-number="9.2.3" class="anchored" data-anchor-id="strftime-and-strptime"><span class="header-section-number">9.2.3</span> <code>strftime</code> and <code>strptime</code></h3>
+<p>Dates and times are often stored as strings like “2020-07-04” or “07/04/2020” to represent July 4, 2020 in the U.S. — or April 7, 2020 in Europe. (See? Dates and times can be really frustrating! Check out <a href="https://en.wikipedia.org/wiki/Date_format_by_country">date format by country</a>.)</p>
+<p>If you want to convert a <code>datetime</code> to a string, use <code>strftime</code> (f for <strong>f</strong>ormat). If you want to convert a string to a <code>datetime</code>, use <code>strptime</code> (p for <strong>p</strong>arse). Both use a shared grammar of format codes documented in <a href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior">strftime and strptime behavior</a>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Code</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>%Y</code></td>
+<td>4-digit year</td>
+<td>2024</td>
+</tr>
+<tr class="even">
+<td><code>%m</code></td>
+<td>2-digit month</td>
+<td>03</td>
+</tr>
+<tr class="odd">
+<td><code>%d</code></td>
+<td>2-digit day</td>
+<td>15</td>
+</tr>
+<tr class="even">
+<td><code>%H</code></td>
+<td>24-hour hour</td>
+<td>14</td>
+</tr>
+<tr class="odd">
+<td><code>%M</code></td>
+<td>Minute</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td><code>%S</code></td>
+<td>Second</td>
+<td>45</td>
+</tr>
+<tr class="odd">
+<td><code>%A</code></td>
+<td>Full weekday name</td>
+<td>Monday</td>
+</tr>
+<tr class="even">
+<td><code>%B</code></td>
+<td>Full month name</td>
+<td>March</td>
+</tr>
+<tr class="odd">
+<td><code>%b</code></td>
+<td>Abbreviated month</td>
+<td>Mar</td>
+</tr>
+<tr class="even">
+<td><code>%p</code></td>
+<td>AM/PM</td>
+<td>PM</td>
+</tr>
+</tbody>
+</table>
+<p>Format a <code>datetime</code> as a custom string:</p>
+<div id="72ebd529" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>datetime.datetime(<span class="dv">2024</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">12</span>, <span class="dv">0</span>, <span class="dv">0</span>).strftime(<span class="st">"%A! %b </span><span class="sc">%d</span><span class="st">, %Y and we're at %S seconds"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Parse a string into a <code>datetime</code>:</p>
+<div id="f6f6ddad" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>str_time <span class="op">=</span> datetime.datetime.strptime(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Friday, February 29, 9960 11:27 am'</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'%A, %B </span><span class="sc">%d</span><span class="st">, %Y %H:%M %p'</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>str_time</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="unix-timestamps" class="level3" data-number="9.2.4">
+<h3 data-number="9.2.4" class="anchored" data-anchor-id="unix-timestamps"><span class="header-section-number">9.2.4</span> Unix timestamps</h3>
+<p>Sometimes computer scientists represent time as the number of seconds elapsed since midnight on January 1, 1970. That moment was second 0, and every second since is incremented. This is popularly known as “<a href="https://en.wikipedia.org/wiki/Unix_time">Unix time</a>” or the “Unix epoch.”</p>
+<div id="805f3dda" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>now.timestamp()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You can convert Unix timestamps back to <code>datetime</code> objects with <code>fromtimestamp</code>.</p>
+<div id="e2c3cfa7" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>datetime.datetime.fromtimestamp(<span class="dv">10000000000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>The Year 2038 Problem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Many of you are too young to remember the panic around the <a href="https://en.wikipedia.org/wiki/Year_2000_problem">Y2K problem</a>. But there is a much bigger problem known as the <a href="https://en.wikipedia.org/wiki/Year_2038_problem">Year 2038 problem</a>: 32-bit systems that store time as Unix timestamps will overflow on January 19, 2038 at 3:14:07 UTC when the timestamp exceeds <span class="math inline">\(2^{31} - 1 = 2{,}147{,}483{,}647\)</span>. Mark that date in your calendars.</p>
+</div>
+</div>
+</section>
+<section id="timedelta" class="level3" data-number="9.2.5">
+<h3 data-number="9.2.5" class="anchored" data-anchor-id="timedelta"><span class="header-section-number">9.2.5</span> <code>timedelta</code></h3>
+<p>Subtracting one <code>datetime</code> from another produces a <code>timedelta</code> object representing the elapsed time.</p>
+<div id="135b0e8b" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>birthday_td <span class="op">=</span> now <span class="op">-</span> birthday</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>birthday_td</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="3c1fa876" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>birthday_td.seconds</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You can add a <code>timedelta</code> to a <code>datetime</code> to compute a future or past date.</p>
+<div id="b1089a4e" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>birthday <span class="op">+</span> datetime.timedelta(seconds<span class="op">=</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You can convert <code>timedelta</code> objects into floats by dividing by a “unit” <code>timedelta</code>. This returns your age in days:</p>
+<div id="5165872c" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>birthday_td <span class="op">/</span> datetime.timedelta(hours<span class="op">=</span><span class="dv">24</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="dates-and-times-in-pandas" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="dates-and-times-in-pandas"><span class="header-section-number">9.3</span> Dates and Times in Pandas</h2>
+<p>Pandas has its own type called <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Timestamp.html"><code>Timestamp</code></a> for representing dates and times, distinct from <code>datetime</code>. There are good reasons for pandas to have its own representation, but juggling two distinct and sometimes incompatible date representations within Python can definitely be frustrating.</p>
+<section id="timestamp" class="level3" data-number="9.3.1">
+<h3 data-number="9.3.1" class="anchored" data-anchor-id="timestamp"><span class="header-section-number">9.3.1</span> <code>Timestamp</code></h3>
+<p>The biggest and most powerful difference between <code>datetime.datetime</code> and <code>pd.Timestamp</code> is that <code>Timestamp</code> will automatically recognize and convert strings to <code>Timestamp</code>s without needing the gnarly <code>strftime</code>/<code>strptime</code> syntax.</p>
+<p>Note that pandas’s <code>Timestamp</code> is very, <em>very</em>, <strong>very</strong> different from the Unix time <code>.timestamp()</code> method in <code>datetime</code>.</p>
+<div id="1e2aab97" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ts_now <span class="op">=</span> pd.Timestamp(<span class="st">'2024-04-17 7:25'</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>ts_now</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Pass a <code>datetime</code> object to pandas’s <code>Timestamp</code>:</p>
+<div id="ea0775de" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ts_birthday <span class="op">=</span> pd.Timestamp(birthday)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ts_birthday</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Confirm that these are really different types:</p>
+<div id="fed53d83" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(birthday)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="d99198f6" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(ts_birthday)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="additional-attributes-and-methods" class="level3" data-number="9.3.2">
+<h3 data-number="9.3.2" class="anchored" data-anchor-id="additional-attributes-and-methods"><span class="header-section-number">9.3.2</span> Additional attributes and methods</h3>
+<p>Pandas <code>Timestamp</code> objects have all the attributes of <code>datetime</code> plus several extras: <code>.quarter</code> (what quarter of the year), <code>.is_leap_year</code> (boolean), <code>.day_name()</code>, <code>.to_pydatetime()</code> (convert back to <code>datetime</code>).</p>
+<div id="96b026ad" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ts_birthday.to_pydatetime()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="0e3065bb" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>pd.Timestamp(<span class="st">'2024-01-13'</span>).is_leap_year</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="e26ccda6" class="cell" data-execution_count="26">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ts_birthday.is_leap_year</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="pd.to_datetime" class="level3" data-number="9.3.3">
+<h3 data-number="9.3.3" class="anchored" data-anchor-id="pd.to_datetime"><span class="header-section-number">9.3.3</span> <code>pd.to_datetime</code></h3>
+<p>Just as <code>Timestamp</code> auto-magically converts individual strings, the <code>to_datetime()</code> function can take an array of misshapen and inconsistently typed date representations and convert them all into a uniform array of <code>Timestamp</code> objects.</p>
+<div id="5e28d09b" class="cell" data-execution_count="27">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>misshapen_data <span class="op">=</span> [</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'July 4, 2020'</span>,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'9/11/01'</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    datetime.datetime(<span class="dv">1984</span>, <span class="dv">2</span>, <span class="dv">13</span>, <span class="dv">7</span>),</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    datetime.date(<span class="dv">2006</span>, <span class="dv">6</span>, <span class="dv">6</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>pd.to_datetime(misshapen_data, <span class="bu">format</span><span class="op">=</span><span class="st">'mixed'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="parsing-dates-during-csv-loading" class="level3" data-number="9.3.4">
+<h3 data-number="9.3.4" class="anchored" data-anchor-id="parsing-dates-during-csv-loading"><span class="header-section-number">9.3.4</span> Parsing dates during CSV loading</h3>
+<p>When reading a CSV file, you have two options for converting date columns. The first is to pass column names to the <code>parse_dates</code> parameter in <code>read_csv</code>.</p>
+<div id="869b880b" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>sp500_df <span class="op">=</span> pd.read_csv(<span class="st">'sp500.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'Date'</span>])</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>sp500_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="924db4a3" class="cell" data-execution_count="29">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="dv">0</span>, <span class="st">'Date'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The second option is to convert after loading with <code>pd.to_datetime</code>.</p>
+<div id="086d8cf6" class="cell" data-execution_count="30">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>sp500_df <span class="op">=</span> pd.read_csv(<span class="st">'sp500.csv'</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="dv">0</span>, <span class="st">'Date'</span>]  <span class="co"># Still a string</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="d12d6a92" class="cell" data-execution_count="31">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>sp500_df[<span class="st">'Date'</span>] <span class="op">=</span> pd.to_datetime(sp500_df[<span class="st">'Date'</span>])</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="dv">0</span>, <span class="st">'Date'</span>]  <span class="co"># Now a Timestamp</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="date_range" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="date_range"><span class="header-section-number">9.4</span> <code>date_range</code></h2>
+<p>The <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.date_range.html"><code>date_range</code></a> function creates an array of evenly spaced dates. Key parameters: <code>start</code>, <code>end</code>, <code>freq</code> (defaulting to daily), and <code>periods</code>.</p>
+<div id="7330f9d9" class="cell" data-execution_count="32">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>pd.date_range(start<span class="op">=</span><span class="st">'March 1, 2022'</span>, end<span class="op">=</span><span class="st">'March 31, 2024'</span>, freq<span class="op">=</span><span class="st">'D'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="08cd88b8" class="cell" data-execution_count="33">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>pd.date_range(start<span class="op">=</span><span class="st">'2022-03-01'</span>, end<span class="op">=</span><span class="st">'2022-03-31'</span>, freq<span class="op">=</span><span class="st">'H'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Create 12 hourly timestamps starting now:</p>
+<div id="4575c1f5" class="cell" data-execution_count="34">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>pd.date_range(start<span class="op">=</span><span class="st">'2024-03-07 00:00'</span>, periods<span class="op">=</span><span class="dv">12</span>, freq<span class="op">=</span><span class="st">'H'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Create only business days (look up <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases">frequency aliases</a>):</p>
+<div id="1a5e3312" class="cell" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>pd.date_range(start<span class="op">=</span><span class="st">'2020-01-01'</span>, end<span class="op">=</span><span class="st">'2024-03-07'</span>, freq<span class="op">=</span><span class="st">'B'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Exercise 1: Quarter starts since 2000
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Create a <code>date_range</code> of quarter starts from January 1, 2000 to today. How many quarters is that?</p>
+<p><strong>Solution:</strong></p>
+<div id="c37f5141" class="cell" data-execution_count="36">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>quarters <span class="op">=</span> pd.date_range(start<span class="op">=</span><span class="st">'2000-01-01'</span>, end<span class="op">=</span><span class="st">'2024-10-17'</span>, freq<span class="op">=</span><span class="st">'QS'</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(quarters)<span class="sc">}</span><span class="ss"> quarters"</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>quarters</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="indexing-and-slicing-with-datetime-indices" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="indexing-and-slicing-with-datetime-indices"><span class="header-section-number">9.5</span> Indexing and Slicing with Datetime Indices</h2>
+<p>We often use the <code>Timestamp</code> column as an index, which enables powerful date-based slicing.</p>
+<div id="8812b2c7" class="cell" data-execution_count="37">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>sp500_df.set_index(<span class="st">'Date'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>sp500_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Access a specific date — you can use several different string formats:</p>
+<div id="47bfaeb6" class="cell" data-execution_count="38">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'2020 Mar 23'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="bfa10c3f" class="cell" data-execution_count="39">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'March 23, 2020'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="e5f5ff1f" class="cell" data-execution_count="40">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'2020-03-23'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="49012a61" class="cell" data-execution_count="41">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[pd.Timestamp(<span class="st">'2020-03-23'</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Slice a date range using strings:</p>
+<div id="87b49f10" class="cell" data-execution_count="42">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'2020-03-01'</span>:<span class="st">'2020-03-31'</span>, <span class="st">'Adj Close'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Slice an entire year with just the year string:</p>
+<div id="9264df16" class="cell" data-execution_count="43">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'2020'</span>, <span class="st">'Adj Close'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You can also slice with <code>datetime</code> and <code>Timestamp</code> objects:</p>
+<div id="dab11f65" class="cell" data-execution_count="44">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[datetime.datetime(<span class="dv">2020</span>, <span class="dv">3</span>, <span class="dv">1</span>):datetime.datetime(<span class="dv">2020</span>, <span class="dv">3</span>, <span class="dv">31</span>), <span class="st">'Adj Close'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Exercise 2: Load and slice weather data
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Load the Boulder weather data with dates parsed. Set the “DATE” column as the index. Slice to just 2020 data.</p>
+<p><strong>Solution:</strong></p>
+<div id="28340cbf" class="cell" data-execution_count="45">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>weather_df <span class="op">=</span> pd.read_csv(<span class="st">'boulder_weather.csv'</span>, sep<span class="op">=</span><span class="st">'|'</span>, parse_dates<span class="op">=</span>[<span class="st">'DATE'</span>])</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>weather_df.set_index(<span class="st">'DATE'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>weather_df.loc[<span class="st">'2020'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="plotting-temporal-data" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="plotting-temporal-data"><span class="header-section-number">9.6</span> Plotting Temporal Data</h2>
+<p>With a datetime index, pandas handles x-axis formatting automatically.</p>
+<div id="2ee65c0b" class="cell" data-execution_count="46">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'2020'</span>:, <span class="st">'Adj Close'</span>].plot(ax<span class="op">=</span>ax)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'S&amp;P500 Adjusted Closing Values, 2020–present'</span>)</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Adjusted Close'</span>)</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Date'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>If the x-axis labels overlap, use <code>f.autofmt_xdate()</code> to rotate them.</p>
+<div id="e34c3f5d" class="cell" data-execution_count="47">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'2022'</span>:, <span class="st">'Adj Close'</span>].plot(ax<span class="op">=</span>ax)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'S&amp;P500 Adjusted Closing Values, 2022–present'</span>)</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Adjusted Close'</span>)</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>f.autofmt_xdate(rotation<span class="op">=</span><span class="dv">0</span>, ha<span class="op">=</span><span class="st">'center'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Exercise 3: Plot the weather data for 2019
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Plot the daily temperature (“TEMP”) from the Boulder weather data for the year 2019. Label your axes.</p>
+<p><strong>Solution:</strong></p>
+<div id="eca620cc" class="cell" data-execution_count="48">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>weather_df.loc[<span class="st">'2019'</span>, <span class="st">'TEMP'</span>].plot(ax<span class="op">=</span>ax)</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Temperature (°F)'</span>)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Daily Temperatures in Boulder, CO (2019)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="rolling-averages" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="rolling-averages"><span class="header-section-number">9.7</span> Rolling Averages</h2>
+<p>A rolling average smooths out noisy data by averaging observations over a sliding window. You chain <code>.rolling()</code> with an aggregation method like <code>.mean()</code>, <code>.median()</code>, or <code>.max()</code>.</p>
+<div id="a655e7f7" class="cell" data-execution_count="49">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>sp500_2020 <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'Raw'</span>] <span class="op">=</span> sp500_df.loc[:, <span class="st">'Adj Close'</span>]</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'7-day'</span>] <span class="op">=</span> sp500_2020[<span class="st">'Raw'</span>].rolling(<span class="dv">7</span>).mean()</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'90-day'</span>] <span class="op">=</span> sp500_2020[<span class="st">'Raw'</span>].rolling(<span class="dv">90</span>).mean()</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'365-day'</span>] <span class="op">=</span> sp500_2020[<span class="st">'Raw'</span>].rolling(<span class="dv">365</span>).mean()</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>sp500_2020.head(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="0ed5dd7e" class="cell" data-execution_count="50">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'Raw'</span>].plot(ax<span class="op">=</span>ax, lw<span class="op">=</span><span class="dv">1</span>, c<span class="op">=</span><span class="st">'tab:blue'</span>, label<span class="op">=</span><span class="st">'Raw'</span>)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'7-day'</span>].plot(ax<span class="op">=</span>ax, lw<span class="op">=</span><span class="dv">2</span>, c<span class="op">=</span><span class="st">'tab:orange'</span>, label<span class="op">=</span><span class="st">'7-day'</span>)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'90-day'</span>].plot(ax<span class="op">=</span>ax, lw<span class="op">=</span><span class="dv">2</span>, c<span class="op">=</span><span class="st">'tab:green'</span>, label<span class="op">=</span><span class="st">'90-day'</span>)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'365-day'</span>].plot(ax<span class="op">=</span>ax, lw<span class="op">=</span><span class="dv">3</span>, c<span class="op">=</span><span class="st">'tab:red'</span>, label<span class="op">=</span><span class="st">'365-day'</span>)</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Adjusted Close ($)'</span>)</span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'S&amp;P 500 with Rolling Averages'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Choosing window size
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A short window (7 days) preserves detail but remains noisy. A long window (365 days) reveals long-term trends but lags behind recent changes. Choose a window based on the time scale of the pattern you want to reveal.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Exercise 4: Rolling average of temperatures
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Plot a 30-day rolling average of Boulder temperatures since 2018. How does it compare to the raw daily data?</p>
+<p><strong>Solution:</strong></p>
+<div id="7a760a52" class="cell" data-execution_count="51">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>weather_df.loc[<span class="st">'2018'</span>:, <span class="st">'TEMP'</span>].plot(ax<span class="op">=</span>ax, alpha<span class="op">=</span><span class="fl">0.3</span>, label<span class="op">=</span><span class="st">'Daily'</span>)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>weather_df.loc[<span class="st">'2018'</span>:, <span class="st">'TEMP'</span>].rolling(<span class="dv">30</span>).mean().plot(ax<span class="op">=</span>ax, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'30-day avg'</span>)</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Temperature (°F)'</span>)</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Boulder Daily Temperatures with 30-Day Rolling Average'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="reindexing" class="level2" data-number="9.8">
+<h2 data-number="9.8" class="anchored" data-anchor-id="reindexing"><span class="header-section-number">9.8</span> Reindexing</h2>
+<p>Temporal data often has gaps — the stock market is closed on weekends and holidays, but social media data is continuous. Comparing both requires a common index. The <code>.reindex()</code> method updates a DataFrame’s index to match a new one, filling gaps with <code>NaN</code>.</p>
+<div id="d422936b" class="cell" data-execution_count="52">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>sp500_df.index.<span class="bu">min</span>(), sp500_df.index.<span class="bu">max</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="540ceae2" class="cell" data-execution_count="53">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>sp500_daterange <span class="op">=</span> pd.date_range(</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>    start<span class="op">=</span>sp500_df.index.<span class="bu">min</span>(),</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    end<span class="op">=</span>sp500_df.index.<span class="bu">max</span>(),</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    freq<span class="op">=</span><span class="st">'D'</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Trading days: </span><span class="sc">{</span>sp500_df<span class="sc">.</span>index<span class="sc">.</span>size<span class="sc">}</span><span class="ss">, Calendar days: </span><span class="sc">{</span>sp500_daterange<span class="sc">.</span>size<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="979b6443" class="cell" data-execution_count="54">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>sp500_reindexed_df <span class="op">=</span> sp500_df.reindex(sp500_daterange)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sp500_reindexed_df.shape)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>sp500_reindexed_df.head(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The NaN values on Saturdays and Sundays are visible. You could fill them with <code>.fillna(method='ffill')</code> (forward-fill the previous trading day’s value) depending on your analytical needs.</p>
+</section>
+<section id="grouping-temporal-data" class="level2" data-number="9.9">
+<h2 data-number="9.9" class="anchored" data-anchor-id="grouping-temporal-data"><span class="header-section-number">9.9</span> Grouping Temporal Data</h2>
+<p>You can use <code>pd.Grouper</code> inside <code>.groupby()</code> to aggregate time series to a lower frequency. Here we compute the total monthly trading volume.</p>
+<div id="a172a753" class="cell" data-execution_count="55">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>sp500_df.groupby(</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    pd.Grouper(freq<span class="op">=</span><span class="st">'MS'</span>)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>).agg({<span class="st">'Volume'</span>: <span class="st">'sum'</span>}).plot()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Exercise 5: Monthly average wind speed
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Group the Boulder weather data by month using <code>pd.Grouper(freq='MS')</code> and compute the average wind speed (“WDSP”). Plot the result.</p>
+<p><strong>Solution:</strong></p>
+<div id="5b1c955d" class="cell" data-execution_count="56">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>monthly_wind <span class="op">=</span> weather_df.groupby(pd.Grouper(freq<span class="op">=</span><span class="st">'MS'</span>)).agg({<span class="st">'WDSP'</span>: <span class="st">'mean'</span>})</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>monthly_wind.plot(ax<span class="op">=</span>ax, legend<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Wind Speed (mph)'</span>)</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Monthly Average Wind Speed in Boulder'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Exercise 6: Parse a custom date format
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Given the string <code>"13-Feb-1984 07:30:15"</code>, use <code>datetime.datetime.strptime</code> to parse it. Then convert it to a pandas <code>Timestamp</code>.</p>
+<p><strong>Solution:</strong></p>
+<div id="7fbaa982" class="cell" data-execution_count="57">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>dt <span class="op">=</span> datetime.datetime.strptime(<span class="st">"13-Feb-1984 07:30:15"</span>, <span class="st">"</span><span class="sc">%d</span><span class="st">-%b-%Y %H:%M:%S"</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>ts <span class="op">=</span> pd.Timestamp(dt)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Exercise 7: Compute your age
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Create a <code>datetime</code> object for your birthday. Compute a <code>timedelta</code> representing your current age. Express your age in days, hours, and approximate years.</p>
+<p><strong>Solution:</strong></p>
+<div id="cf78ae2b" class="cell" data-execution_count="58">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>my_birthday <span class="op">=</span> datetime.datetime(<span class="dv">2002</span>, <span class="dv">6</span>, <span class="dv">15</span>)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> datetime.datetime.now() <span class="op">-</span> my_birthday</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Days: </span><span class="sc">{</span>age<span class="sc">.</span>days<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Hours: </span><span class="sc">{</span>age<span class="sc">.</span>days <span class="op">*</span> <span class="dv">24</span> <span class="op">+</span> age<span class="sc">.</span>seconds <span class="op">//</span> <span class="dv">3600</span><span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Years: </span><span class="sc">{</span>age <span class="op">/</span> datetime<span class="sc">.</span>timedelta(days<span class="op">=</span><span class="fl">365.25</span>)<span class="sc">:.1f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="looking-ahead" class="level2" data-number="9.10">
+<h2 data-number="9.10" class="anchored" data-anchor-id="looking-ahead"><span class="header-section-number">9.10</span> Looking Ahead</h2>
+<p>You now have the tools to parse, manipulate, and index temporal data in Python. In <a href="10-time-series.html" class="quarto-xref"><span>Chapter 10</span></a>, you will put these skills to work finding common temporal patterns — hourly rhythms, weekly cycles, annual seasonality — and learning techniques for decomposing time series into their component signals.</p>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/08-audience.html" class="pagination-link" aria-label="Writing for an Audience">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Writing for an Audience</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/10-time-series.html" class="pagination-link" aria-label="Time Series Visualization and Patterns">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Time Series Visualization and Patterns</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Working with Temporal Data {#sec-temporal-data}</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>Dates and times are among the most common — and most frustrating — data types you will encounter. Sixty seconds in a minute, sixty minutes in an hour, twenty-four hours in a day, seven days in a week, and then months of varying lengths: 28, 29, 30, or 31 days depending on the month and whether it is a leap year. Add time zones, daylight saving time, and inconsistent string formatting across countries and systems, and you have a recipe for subtle but consequential errors.</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>This chapter introduces Python's <span class="in">`datetime`</span> library and pandas's <span class="in">`Timestamp`</span> objects. By the end, you will be able to parse dates from strings, compute time differences, extract temporal components, create date ranges, set datetime indices, slice data by date, plot time series, and compute rolling averages. These skills are the foundation for the pattern-finding techniques in @sec-time-series.</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setup</span></span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>np.set_printoptions(suppress<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> pd.IndexSlice</span>
+<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a>pd.options.display.max_columns <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-22"><a href="#cb59-22" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sb</span>
+<span id="cb59-23"><a href="#cb59-23" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-24"><a href="#cb59-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-25"><a href="#cb59-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## Python's `datetime` Library</span></span>
+<span id="cb59-26"><a href="#cb59-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-27"><a href="#cb59-27" aria-hidden="true" tabindex="-1"></a>A "classic" joke among Python programmers is the very justifiable confusion between the <span class="in">`datetime`</span> *object* within the `datetime` *module*. Time and dates are confusing to work with, so let's take a moment to embrace the awkwardness.</span>
+<span id="cb59-28"><a href="#cb59-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-31"><a href="#cb59-31" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-32"><a href="#cb59-32" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime</span>
+<span id="cb59-33"><a href="#cb59-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-34"><a href="#cb59-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-35"><a href="#cb59-35" aria-hidden="true" tabindex="-1"></a><span class="fu">### Creating `datetime` objects</span></span>
+<span id="cb59-36"><a href="#cb59-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-37"><a href="#cb59-37" aria-hidden="true" tabindex="-1"></a>The <span class="in">`.now()`</span> method gets the current time.</span>
+<span id="cb59-38"><a href="#cb59-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-41"><a href="#cb59-41" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-42"><a href="#cb59-42" aria-hidden="true" tabindex="-1"></a>now <span class="op">=</span> datetime.datetime.now()</span>
+<span id="cb59-43"><a href="#cb59-43" aria-hidden="true" tabindex="-1"></a>now</span>
+<span id="cb59-44"><a href="#cb59-44" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-45"><a href="#cb59-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-46"><a href="#cb59-46" aria-hidden="true" tabindex="-1"></a>There is also a <span class="in">`.utcnow()`</span> that gets <span class="co">[</span><span class="ot">Coordinated Universal Time</span><span class="co">](https://en.wikipedia.org/wiki/Coordinated_Universal_Time)</span> — basically the time at 0° longitude in London — rather than your system's local time.</span>
+<span id="cb59-47"><a href="#cb59-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-50"><a href="#cb59-50" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-51"><a href="#cb59-51" aria-hidden="true" tabindex="-1"></a>utc <span class="op">=</span> datetime.datetime.utcnow()</span>
+<span id="cb59-52"><a href="#cb59-52" aria-hidden="true" tabindex="-1"></a>utc</span>
+<span id="cb59-53"><a href="#cb59-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-54"><a href="#cb59-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-55"><a href="#cb59-55" aria-hidden="true" tabindex="-1"></a>You create a specific <span class="in">`datetime`</span> by passing year, month, day, and optionally hour, minute, and second as integers.</span>
+<span id="cb59-56"><a href="#cb59-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-59"><a href="#cb59-59" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-60"><a href="#cb59-60" aria-hidden="true" tabindex="-1"></a>birthday <span class="op">=</span> datetime.datetime(<span class="dv">1984</span>, <span class="dv">2</span>, <span class="dv">13</span>, <span class="dv">7</span>, <span class="dv">30</span>, <span class="dv">15</span>)</span>
+<span id="cb59-61"><a href="#cb59-61" aria-hidden="true" tabindex="-1"></a>birthday</span>
+<span id="cb59-62"><a href="#cb59-62" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-63"><a href="#cb59-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-64"><a href="#cb59-64" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb59-65"><a href="#cb59-65" aria-hidden="true" tabindex="-1"></a><span class="fu">## Strings are not datetimes</span></span>
+<span id="cb59-66"><a href="#cb59-66" aria-hidden="true" tabindex="-1"></a>Passing a string like <span class="in">`'2020-09-25'`</span> to <span class="in">`datetime.datetime()`</span> will raise a <span class="in">`TypeError`</span>. Python's <span class="in">`datetime`</span> constructor expects integers, not strings. To convert strings to datetimes, use <span class="in">`strptime`</span> (described below).</span>
+<span id="cb59-67"><a href="#cb59-67" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb59-68"><a href="#cb59-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-71"><a href="#cb59-71" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-72"><a href="#cb59-72" aria-hidden="true" tabindex="-1"></a><span class="co">#| error: true</span></span>
+<span id="cb59-73"><a href="#cb59-73" aria-hidden="true" tabindex="-1"></a>datetime.datetime(<span class="st">'2020-09-25'</span>)</span>
+<span id="cb59-74"><a href="#cb59-74" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-75"><a href="#cb59-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-76"><a href="#cb59-76" aria-hidden="true" tabindex="-1"></a><span class="fu">### Attributes and methods</span></span>
+<span id="cb59-77"><a href="#cb59-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-78"><a href="#cb59-78" aria-hidden="true" tabindex="-1"></a>Every <span class="in">`datetime`</span> object has attributes for its individual components: <span class="in">`.year`</span>, <span class="in">`.month`</span>, <span class="in">`.day`</span>, <span class="in">`.hour`</span>, <span class="in">`.minute`</span>, <span class="in">`.second`</span>.</span>
+<span id="cb59-79"><a href="#cb59-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-82"><a href="#cb59-82" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-83"><a href="#cb59-83" aria-hidden="true" tabindex="-1"></a>now.second</span>
+<span id="cb59-84"><a href="#cb59-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-85"><a href="#cb59-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-86"><a href="#cb59-86" aria-hidden="true" tabindex="-1"></a>Methods for converting to simpler objects:</span>
+<span id="cb59-87"><a href="#cb59-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-90"><a href="#cb59-90" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-91"><a href="#cb59-91" aria-hidden="true" tabindex="-1"></a>now.date()</span>
+<span id="cb59-92"><a href="#cb59-92" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-93"><a href="#cb59-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-96"><a href="#cb59-96" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-97"><a href="#cb59-97" aria-hidden="true" tabindex="-1"></a>now.time()</span>
+<span id="cb59-98"><a href="#cb59-98" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-99"><a href="#cb59-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-100"><a href="#cb59-100" aria-hidden="true" tabindex="-1"></a>Other powerful methods include <span class="in">`.weekday()`</span> (Monday=0 through Sunday=6), <span class="in">`.isoweekday()`</span> (Monday=1 through Sunday=7), and <span class="in">`.isoformat()`</span> for standardized string output.</span>
+<span id="cb59-101"><a href="#cb59-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-104"><a href="#cb59-104" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-105"><a href="#cb59-105" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(now)</span>
+<span id="cb59-106"><a href="#cb59-106" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-107"><a href="#cb59-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-110"><a href="#cb59-110" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-111"><a href="#cb59-111" aria-hidden="true" tabindex="-1"></a>now.isoformat()</span>
+<span id="cb59-112"><a href="#cb59-112" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-113"><a href="#cb59-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-114"><a href="#cb59-114" aria-hidden="true" tabindex="-1"></a><span class="fu">### `strftime` and `strptime`</span></span>
+<span id="cb59-115"><a href="#cb59-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-116"><a href="#cb59-116" aria-hidden="true" tabindex="-1"></a>Dates and times are often stored as strings like "2020-07-04" or "07/04/2020" to represent July 4, 2020 in the U.S. — or April 7, 2020 in Europe. (See? Dates and times can be really frustrating! Check out <span class="co">[</span><span class="ot">date format by country</span><span class="co">](https://en.wikipedia.org/wiki/Date_format_by_country)</span>.)</span>
+<span id="cb59-117"><a href="#cb59-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-118"><a href="#cb59-118" aria-hidden="true" tabindex="-1"></a>If you want to convert a <span class="in">`datetime`</span> to a string, use <span class="in">`strftime`</span> (f for **f**ormat). If you want to convert a string to a `datetime`, use `strptime` (p for **p**arse). Both use a shared grammar of format codes documented in <span class="co">[</span><span class="ot">strftime and strptime behavior</span><span class="co">](https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior)</span>.</span>
+<span id="cb59-119"><a href="#cb59-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-120"><a href="#cb59-120" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Code <span class="pp">|</span> Meaning <span class="pp">|</span> Example <span class="pp">|</span></span>
+<span id="cb59-121"><a href="#cb59-121" aria-hidden="true" tabindex="-1"></a><span class="pp">|------|---------|---------|</span></span>
+<span id="cb59-122"><a href="#cb59-122" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`%Y`</span> <span class="pp">|</span> 4-digit year <span class="pp">|</span> 2024 <span class="pp">|</span></span>
+<span id="cb59-123"><a href="#cb59-123" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`%m`</span> <span class="pp">|</span> 2-digit month <span class="pp">|</span> 03 <span class="pp">|</span></span>
+<span id="cb59-124"><a href="#cb59-124" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`%d`</span> <span class="pp">|</span> 2-digit day <span class="pp">|</span> 15 <span class="pp">|</span></span>
+<span id="cb59-125"><a href="#cb59-125" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`%H`</span> <span class="pp">|</span> 24-hour hour <span class="pp">|</span> 14 <span class="pp">|</span></span>
+<span id="cb59-126"><a href="#cb59-126" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`%M`</span> <span class="pp">|</span> Minute <span class="pp">|</span> 30 <span class="pp">|</span></span>
+<span id="cb59-127"><a href="#cb59-127" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`%S`</span> <span class="pp">|</span> Second <span class="pp">|</span> 45 <span class="pp">|</span></span>
+<span id="cb59-128"><a href="#cb59-128" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`%A`</span> <span class="pp">|</span> Full weekday name <span class="pp">|</span> Monday <span class="pp">|</span></span>
+<span id="cb59-129"><a href="#cb59-129" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`%B`</span> <span class="pp">|</span> Full month name <span class="pp">|</span> March <span class="pp">|</span></span>
+<span id="cb59-130"><a href="#cb59-130" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`%b`</span> <span class="pp">|</span> Abbreviated month <span class="pp">|</span> Mar <span class="pp">|</span></span>
+<span id="cb59-131"><a href="#cb59-131" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`%p`</span> <span class="pp">|</span> AM/PM <span class="pp">|</span> PM <span class="pp">|</span></span>
+<span id="cb59-132"><a href="#cb59-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-133"><a href="#cb59-133" aria-hidden="true" tabindex="-1"></a>Format a <span class="in">`datetime`</span> as a custom string:</span>
+<span id="cb59-134"><a href="#cb59-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-137"><a href="#cb59-137" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-138"><a href="#cb59-138" aria-hidden="true" tabindex="-1"></a>datetime.datetime(<span class="dv">2024</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">12</span>, <span class="dv">0</span>, <span class="dv">0</span>).strftime(<span class="st">"%A! %b </span><span class="sc">%d</span><span class="st">, %Y and we're at %S seconds"</span>)</span>
+<span id="cb59-139"><a href="#cb59-139" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-140"><a href="#cb59-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-141"><a href="#cb59-141" aria-hidden="true" tabindex="-1"></a>Parse a string into a <span class="in">`datetime`</span>:</span>
+<span id="cb59-142"><a href="#cb59-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-145"><a href="#cb59-145" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-146"><a href="#cb59-146" aria-hidden="true" tabindex="-1"></a>str_time <span class="op">=</span> datetime.datetime.strptime(</span>
+<span id="cb59-147"><a href="#cb59-147" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Friday, February 29, 9960 11:27 am'</span>,</span>
+<span id="cb59-148"><a href="#cb59-148" aria-hidden="true" tabindex="-1"></a>    <span class="st">'%A, %B </span><span class="sc">%d</span><span class="st">, %Y %H:%M %p'</span></span>
+<span id="cb59-149"><a href="#cb59-149" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb59-150"><a href="#cb59-150" aria-hidden="true" tabindex="-1"></a>str_time</span>
+<span id="cb59-151"><a href="#cb59-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-152"><a href="#cb59-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-153"><a href="#cb59-153" aria-hidden="true" tabindex="-1"></a><span class="fu">### Unix timestamps</span></span>
+<span id="cb59-154"><a href="#cb59-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-155"><a href="#cb59-155" aria-hidden="true" tabindex="-1"></a>Sometimes computer scientists represent time as the number of seconds elapsed since midnight on January 1, 1970. That moment was second 0, and every second since is incremented. This is popularly known as "<span class="co">[</span><span class="ot">Unix time</span><span class="co">](https://en.wikipedia.org/wiki/Unix_time)</span>" or the "Unix epoch."</span>
+<span id="cb59-156"><a href="#cb59-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-159"><a href="#cb59-159" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-160"><a href="#cb59-160" aria-hidden="true" tabindex="-1"></a>now.timestamp()</span>
+<span id="cb59-161"><a href="#cb59-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-162"><a href="#cb59-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-163"><a href="#cb59-163" aria-hidden="true" tabindex="-1"></a>You can convert Unix timestamps back to <span class="in">`datetime`</span> objects with <span class="in">`fromtimestamp`</span>.</span>
+<span id="cb59-164"><a href="#cb59-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-167"><a href="#cb59-167" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-168"><a href="#cb59-168" aria-hidden="true" tabindex="-1"></a>datetime.datetime.fromtimestamp(<span class="dv">10000000000</span>)</span>
+<span id="cb59-169"><a href="#cb59-169" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-170"><a href="#cb59-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-171"><a href="#cb59-171" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb59-172"><a href="#cb59-172" aria-hidden="true" tabindex="-1"></a><span class="fu">## The Year 2038 Problem</span></span>
+<span id="cb59-173"><a href="#cb59-173" aria-hidden="true" tabindex="-1"></a>Many of you are too young to remember the panic around the <span class="co">[</span><span class="ot">Y2K problem</span><span class="co">](https://en.wikipedia.org/wiki/Year_2000_problem)</span>. But there is a much bigger problem known as the <span class="co">[</span><span class="ot">Year 2038 problem</span><span class="co">](https://en.wikipedia.org/wiki/Year_2038_problem)</span>: 32-bit systems that store time as Unix timestamps will overflow on January 19, 2038 at 3<span class="sc">:14:</span>07 UTC when the timestamp exceeds $2^{31} - 1 = 2{,}147{,}483{,}647$. Mark that date in your calendars.</span>
+<span id="cb59-174"><a href="#cb59-174" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb59-175"><a href="#cb59-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-176"><a href="#cb59-176" aria-hidden="true" tabindex="-1"></a><span class="fu">### `timedelta`</span></span>
+<span id="cb59-177"><a href="#cb59-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-178"><a href="#cb59-178" aria-hidden="true" tabindex="-1"></a>Subtracting one <span class="in">`datetime`</span> from another produces a <span class="in">`timedelta`</span> object representing the elapsed time.</span>
+<span id="cb59-179"><a href="#cb59-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-182"><a href="#cb59-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-183"><a href="#cb59-183" aria-hidden="true" tabindex="-1"></a>birthday_td <span class="op">=</span> now <span class="op">-</span> birthday</span>
+<span id="cb59-184"><a href="#cb59-184" aria-hidden="true" tabindex="-1"></a>birthday_td</span>
+<span id="cb59-185"><a href="#cb59-185" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-186"><a href="#cb59-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-189"><a href="#cb59-189" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-190"><a href="#cb59-190" aria-hidden="true" tabindex="-1"></a>birthday_td.seconds</span>
+<span id="cb59-191"><a href="#cb59-191" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-192"><a href="#cb59-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-193"><a href="#cb59-193" aria-hidden="true" tabindex="-1"></a>You can add a <span class="in">`timedelta`</span> to a <span class="in">`datetime`</span> to compute a future or past date.</span>
+<span id="cb59-194"><a href="#cb59-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-197"><a href="#cb59-197" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-198"><a href="#cb59-198" aria-hidden="true" tabindex="-1"></a>birthday <span class="op">+</span> datetime.timedelta(seconds<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb59-199"><a href="#cb59-199" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-200"><a href="#cb59-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-201"><a href="#cb59-201" aria-hidden="true" tabindex="-1"></a>You can convert <span class="in">`timedelta`</span> objects into floats by dividing by a "unit" <span class="in">`timedelta`</span>. This returns your age in days:</span>
+<span id="cb59-202"><a href="#cb59-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-205"><a href="#cb59-205" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-206"><a href="#cb59-206" aria-hidden="true" tabindex="-1"></a>birthday_td <span class="op">/</span> datetime.timedelta(hours<span class="op">=</span><span class="dv">24</span>)</span>
+<span id="cb59-207"><a href="#cb59-207" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-208"><a href="#cb59-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-209"><a href="#cb59-209" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dates and Times in Pandas</span></span>
+<span id="cb59-210"><a href="#cb59-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-211"><a href="#cb59-211" aria-hidden="true" tabindex="-1"></a>Pandas has its own type called <span class="co">[</span><span class="ot">`Timestamp`</span><span class="co">](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Timestamp.html)</span> for representing dates and times, distinct from <span class="in">`datetime`</span>. There are good reasons for pandas to have its own representation, but juggling two distinct and sometimes incompatible date representations within Python can definitely be frustrating.</span>
+<span id="cb59-212"><a href="#cb59-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-213"><a href="#cb59-213" aria-hidden="true" tabindex="-1"></a><span class="fu">### `Timestamp`</span></span>
+<span id="cb59-214"><a href="#cb59-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-215"><a href="#cb59-215" aria-hidden="true" tabindex="-1"></a>The biggest and most powerful difference between <span class="in">`datetime.datetime`</span> and <span class="in">`pd.Timestamp`</span> is that <span class="in">`Timestamp`</span> will automatically recognize and convert strings to <span class="in">`Timestamp`</span>s without needing the gnarly <span class="in">`strftime`</span>/<span class="in">`strptime`</span> syntax.</span>
+<span id="cb59-216"><a href="#cb59-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-217"><a href="#cb59-217" aria-hidden="true" tabindex="-1"></a>Note that pandas's <span class="in">`Timestamp`</span> is very, *very*, **very** different from the Unix time <span class="in">`.timestamp()`</span> method in <span class="in">`datetime`</span>.</span>
+<span id="cb59-218"><a href="#cb59-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-221"><a href="#cb59-221" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-222"><a href="#cb59-222" aria-hidden="true" tabindex="-1"></a>ts_now <span class="op">=</span> pd.Timestamp(<span class="st">'2024-04-17 7:25'</span>)</span>
+<span id="cb59-223"><a href="#cb59-223" aria-hidden="true" tabindex="-1"></a>ts_now</span>
+<span id="cb59-224"><a href="#cb59-224" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-225"><a href="#cb59-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-226"><a href="#cb59-226" aria-hidden="true" tabindex="-1"></a>Pass a <span class="in">`datetime`</span> object to pandas's <span class="in">`Timestamp`</span>:</span>
+<span id="cb59-227"><a href="#cb59-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-230"><a href="#cb59-230" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-231"><a href="#cb59-231" aria-hidden="true" tabindex="-1"></a>ts_birthday <span class="op">=</span> pd.Timestamp(birthday)</span>
+<span id="cb59-232"><a href="#cb59-232" aria-hidden="true" tabindex="-1"></a>ts_birthday</span>
+<span id="cb59-233"><a href="#cb59-233" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-234"><a href="#cb59-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-235"><a href="#cb59-235" aria-hidden="true" tabindex="-1"></a>Confirm that these are really different types:</span>
+<span id="cb59-236"><a href="#cb59-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-239"><a href="#cb59-239" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-240"><a href="#cb59-240" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(birthday)</span>
+<span id="cb59-241"><a href="#cb59-241" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-242"><a href="#cb59-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-245"><a href="#cb59-245" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-246"><a href="#cb59-246" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(ts_birthday)</span>
+<span id="cb59-247"><a href="#cb59-247" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-248"><a href="#cb59-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-249"><a href="#cb59-249" aria-hidden="true" tabindex="-1"></a><span class="fu">### Additional attributes and methods</span></span>
+<span id="cb59-250"><a href="#cb59-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-251"><a href="#cb59-251" aria-hidden="true" tabindex="-1"></a>Pandas <span class="in">`Timestamp`</span> objects have all the attributes of <span class="in">`datetime`</span> plus several extras: <span class="in">`.quarter`</span> (what quarter of the year), <span class="in">`.is_leap_year`</span> (boolean), <span class="in">`.day_name()`</span>, <span class="in">`.to_pydatetime()`</span> (convert back to <span class="in">`datetime`</span>).</span>
+<span id="cb59-252"><a href="#cb59-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-255"><a href="#cb59-255" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-256"><a href="#cb59-256" aria-hidden="true" tabindex="-1"></a>ts_birthday.to_pydatetime()</span>
+<span id="cb59-257"><a href="#cb59-257" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-258"><a href="#cb59-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-261"><a href="#cb59-261" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-262"><a href="#cb59-262" aria-hidden="true" tabindex="-1"></a>pd.Timestamp(<span class="st">'2024-01-13'</span>).is_leap_year</span>
+<span id="cb59-263"><a href="#cb59-263" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-264"><a href="#cb59-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-267"><a href="#cb59-267" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-268"><a href="#cb59-268" aria-hidden="true" tabindex="-1"></a>ts_birthday.is_leap_year</span>
+<span id="cb59-269"><a href="#cb59-269" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-270"><a href="#cb59-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-271"><a href="#cb59-271" aria-hidden="true" tabindex="-1"></a><span class="fu">### `pd.to_datetime`</span></span>
+<span id="cb59-272"><a href="#cb59-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-273"><a href="#cb59-273" aria-hidden="true" tabindex="-1"></a>Just as <span class="in">`Timestamp`</span> auto-magically converts individual strings, the <span class="in">`to_datetime()`</span> function can take an array of misshapen and inconsistently typed date representations and convert them all into a uniform array of <span class="in">`Timestamp`</span> objects.</span>
+<span id="cb59-274"><a href="#cb59-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-277"><a href="#cb59-277" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-278"><a href="#cb59-278" aria-hidden="true" tabindex="-1"></a>misshapen_data <span class="op">=</span> [</span>
+<span id="cb59-279"><a href="#cb59-279" aria-hidden="true" tabindex="-1"></a>    <span class="st">'July 4, 2020'</span>,</span>
+<span id="cb59-280"><a href="#cb59-280" aria-hidden="true" tabindex="-1"></a>    <span class="st">'9/11/01'</span>,</span>
+<span id="cb59-281"><a href="#cb59-281" aria-hidden="true" tabindex="-1"></a>    datetime.datetime(<span class="dv">1984</span>, <span class="dv">2</span>, <span class="dv">13</span>, <span class="dv">7</span>),</span>
+<span id="cb59-282"><a href="#cb59-282" aria-hidden="true" tabindex="-1"></a>    datetime.date(<span class="dv">2006</span>, <span class="dv">6</span>, <span class="dv">6</span>)</span>
+<span id="cb59-283"><a href="#cb59-283" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb59-284"><a href="#cb59-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-285"><a href="#cb59-285" aria-hidden="true" tabindex="-1"></a>pd.to_datetime(misshapen_data, <span class="bu">format</span><span class="op">=</span><span class="st">'mixed'</span>)</span>
+<span id="cb59-286"><a href="#cb59-286" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-287"><a href="#cb59-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-288"><a href="#cb59-288" aria-hidden="true" tabindex="-1"></a><span class="fu">### Parsing dates during CSV loading</span></span>
+<span id="cb59-289"><a href="#cb59-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-290"><a href="#cb59-290" aria-hidden="true" tabindex="-1"></a>When reading a CSV file, you have two options for converting date columns. The first is to pass column names to the <span class="in">`parse_dates`</span> parameter in <span class="in">`read_csv`</span>.</span>
+<span id="cb59-291"><a href="#cb59-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-294"><a href="#cb59-294" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-295"><a href="#cb59-295" aria-hidden="true" tabindex="-1"></a>sp500_df <span class="op">=</span> pd.read_csv(<span class="st">'sp500.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'Date'</span>])</span>
+<span id="cb59-296"><a href="#cb59-296" aria-hidden="true" tabindex="-1"></a>sp500_df.head()</span>
+<span id="cb59-297"><a href="#cb59-297" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-298"><a href="#cb59-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-301"><a href="#cb59-301" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-302"><a href="#cb59-302" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="dv">0</span>, <span class="st">'Date'</span>]</span>
+<span id="cb59-303"><a href="#cb59-303" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-304"><a href="#cb59-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-305"><a href="#cb59-305" aria-hidden="true" tabindex="-1"></a>The second option is to convert after loading with <span class="in">`pd.to_datetime`</span>.</span>
+<span id="cb59-306"><a href="#cb59-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-309"><a href="#cb59-309" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-310"><a href="#cb59-310" aria-hidden="true" tabindex="-1"></a>sp500_df <span class="op">=</span> pd.read_csv(<span class="st">'sp500.csv'</span>)</span>
+<span id="cb59-311"><a href="#cb59-311" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="dv">0</span>, <span class="st">'Date'</span>]  <span class="co"># Still a string</span></span>
+<span id="cb59-312"><a href="#cb59-312" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-313"><a href="#cb59-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-316"><a href="#cb59-316" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-317"><a href="#cb59-317" aria-hidden="true" tabindex="-1"></a>sp500_df[<span class="st">'Date'</span>] <span class="op">=</span> pd.to_datetime(sp500_df[<span class="st">'Date'</span>])</span>
+<span id="cb59-318"><a href="#cb59-318" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="dv">0</span>, <span class="st">'Date'</span>]  <span class="co"># Now a Timestamp</span></span>
+<span id="cb59-319"><a href="#cb59-319" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-320"><a href="#cb59-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-321"><a href="#cb59-321" aria-hidden="true" tabindex="-1"></a><span class="fu">## `date_range`</span></span>
+<span id="cb59-322"><a href="#cb59-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-323"><a href="#cb59-323" aria-hidden="true" tabindex="-1"></a>The <span class="co">[</span><span class="ot">`date_range`</span><span class="co">](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.date_range.html)</span> function creates an array of evenly spaced dates. Key parameters: <span class="in">`start`</span>, <span class="in">`end`</span>, <span class="in">`freq`</span> (defaulting to daily), and <span class="in">`periods`</span>.</span>
+<span id="cb59-324"><a href="#cb59-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-327"><a href="#cb59-327" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-328"><a href="#cb59-328" aria-hidden="true" tabindex="-1"></a>pd.date_range(start<span class="op">=</span><span class="st">'March 1, 2022'</span>, end<span class="op">=</span><span class="st">'March 31, 2024'</span>, freq<span class="op">=</span><span class="st">'D'</span>)</span>
+<span id="cb59-329"><a href="#cb59-329" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-330"><a href="#cb59-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-333"><a href="#cb59-333" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-334"><a href="#cb59-334" aria-hidden="true" tabindex="-1"></a>pd.date_range(start<span class="op">=</span><span class="st">'2022-03-01'</span>, end<span class="op">=</span><span class="st">'2022-03-31'</span>, freq<span class="op">=</span><span class="st">'H'</span>)</span>
+<span id="cb59-335"><a href="#cb59-335" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-336"><a href="#cb59-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-337"><a href="#cb59-337" aria-hidden="true" tabindex="-1"></a>Create 12 hourly timestamps starting now:</span>
+<span id="cb59-338"><a href="#cb59-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-341"><a href="#cb59-341" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-342"><a href="#cb59-342" aria-hidden="true" tabindex="-1"></a>pd.date_range(start<span class="op">=</span><span class="st">'2024-03-07 00:00'</span>, periods<span class="op">=</span><span class="dv">12</span>, freq<span class="op">=</span><span class="st">'H'</span>)</span>
+<span id="cb59-343"><a href="#cb59-343" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-344"><a href="#cb59-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-345"><a href="#cb59-345" aria-hidden="true" tabindex="-1"></a>Create only business days (look up <span class="co">[</span><span class="ot">frequency aliases</span><span class="co">](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases)</span>):</span>
+<span id="cb59-346"><a href="#cb59-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-349"><a href="#cb59-349" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-350"><a href="#cb59-350" aria-hidden="true" tabindex="-1"></a>pd.date_range(start<span class="op">=</span><span class="st">'2020-01-01'</span>, end<span class="op">=</span><span class="st">'2024-03-07'</span>, freq<span class="op">=</span><span class="st">'B'</span>)</span>
+<span id="cb59-351"><a href="#cb59-351" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-352"><a href="#cb59-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-353"><a href="#cb59-353" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb59-354"><a href="#cb59-354" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise 1: Quarter starts since 2000</span></span>
+<span id="cb59-355"><a href="#cb59-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-356"><a href="#cb59-356" aria-hidden="true" tabindex="-1"></a>Create a <span class="in">`date_range`</span> of quarter starts from January 1, 2000 to today. How many quarters is that?</span>
+<span id="cb59-357"><a href="#cb59-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-358"><a href="#cb59-358" aria-hidden="true" tabindex="-1"></a>**Solution:**</span>
+<span id="cb59-359"><a href="#cb59-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-362"><a href="#cb59-362" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-363"><a href="#cb59-363" aria-hidden="true" tabindex="-1"></a>quarters <span class="op">=</span> pd.date_range(start<span class="op">=</span><span class="st">'2000-01-01'</span>, end<span class="op">=</span><span class="st">'2024-10-17'</span>, freq<span class="op">=</span><span class="st">'QS'</span>)</span>
+<span id="cb59-364"><a href="#cb59-364" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(quarters)<span class="sc">}</span><span class="ss"> quarters"</span>)</span>
+<span id="cb59-365"><a href="#cb59-365" aria-hidden="true" tabindex="-1"></a>quarters</span>
+<span id="cb59-366"><a href="#cb59-366" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-367"><a href="#cb59-367" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb59-368"><a href="#cb59-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-369"><a href="#cb59-369" aria-hidden="true" tabindex="-1"></a><span class="fu">## Indexing and Slicing with Datetime Indices</span></span>
+<span id="cb59-370"><a href="#cb59-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-371"><a href="#cb59-371" aria-hidden="true" tabindex="-1"></a>We often use the <span class="in">`Timestamp`</span> column as an index, which enables powerful date-based slicing.</span>
+<span id="cb59-372"><a href="#cb59-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-375"><a href="#cb59-375" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-376"><a href="#cb59-376" aria-hidden="true" tabindex="-1"></a>sp500_df.set_index(<span class="st">'Date'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb59-377"><a href="#cb59-377" aria-hidden="true" tabindex="-1"></a>sp500_df.head()</span>
+<span id="cb59-378"><a href="#cb59-378" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-379"><a href="#cb59-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-380"><a href="#cb59-380" aria-hidden="true" tabindex="-1"></a>Access a specific date — you can use several different string formats:</span>
+<span id="cb59-381"><a href="#cb59-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-384"><a href="#cb59-384" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-385"><a href="#cb59-385" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'2020 Mar 23'</span>]</span>
+<span id="cb59-386"><a href="#cb59-386" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-387"><a href="#cb59-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-390"><a href="#cb59-390" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-391"><a href="#cb59-391" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'March 23, 2020'</span>]</span>
+<span id="cb59-392"><a href="#cb59-392" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-393"><a href="#cb59-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-396"><a href="#cb59-396" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-397"><a href="#cb59-397" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'2020-03-23'</span>]</span>
+<span id="cb59-398"><a href="#cb59-398" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-399"><a href="#cb59-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-402"><a href="#cb59-402" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-403"><a href="#cb59-403" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[pd.Timestamp(<span class="st">'2020-03-23'</span>)]</span>
+<span id="cb59-404"><a href="#cb59-404" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-405"><a href="#cb59-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-406"><a href="#cb59-406" aria-hidden="true" tabindex="-1"></a>Slice a date range using strings:</span>
+<span id="cb59-407"><a href="#cb59-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-410"><a href="#cb59-410" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-411"><a href="#cb59-411" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'2020-03-01'</span>:<span class="st">'2020-03-31'</span>, <span class="st">'Adj Close'</span>]</span>
+<span id="cb59-412"><a href="#cb59-412" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-413"><a href="#cb59-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-414"><a href="#cb59-414" aria-hidden="true" tabindex="-1"></a>Slice an entire year with just the year string:</span>
+<span id="cb59-415"><a href="#cb59-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-418"><a href="#cb59-418" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-419"><a href="#cb59-419" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'2020'</span>, <span class="st">'Adj Close'</span>]</span>
+<span id="cb59-420"><a href="#cb59-420" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-421"><a href="#cb59-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-422"><a href="#cb59-422" aria-hidden="true" tabindex="-1"></a>You can also slice with <span class="in">`datetime`</span> and <span class="in">`Timestamp`</span> objects:</span>
+<span id="cb59-423"><a href="#cb59-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-426"><a href="#cb59-426" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-427"><a href="#cb59-427" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[datetime.datetime(<span class="dv">2020</span>, <span class="dv">3</span>, <span class="dv">1</span>):datetime.datetime(<span class="dv">2020</span>, <span class="dv">3</span>, <span class="dv">31</span>), <span class="st">'Adj Close'</span>]</span>
+<span id="cb59-428"><a href="#cb59-428" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-429"><a href="#cb59-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-430"><a href="#cb59-430" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb59-431"><a href="#cb59-431" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise 2: Load and slice weather data</span></span>
+<span id="cb59-432"><a href="#cb59-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-433"><a href="#cb59-433" aria-hidden="true" tabindex="-1"></a>Load the Boulder weather data with dates parsed. Set the "DATE" column as the index. Slice to just 2020 data.</span>
+<span id="cb59-434"><a href="#cb59-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-435"><a href="#cb59-435" aria-hidden="true" tabindex="-1"></a>**Solution:**</span>
+<span id="cb59-436"><a href="#cb59-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-439"><a href="#cb59-439" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-440"><a href="#cb59-440" aria-hidden="true" tabindex="-1"></a>weather_df <span class="op">=</span> pd.read_csv(<span class="st">'boulder_weather.csv'</span>, sep<span class="op">=</span><span class="st">'|'</span>, parse_dates<span class="op">=</span>[<span class="st">'DATE'</span>])</span>
+<span id="cb59-441"><a href="#cb59-441" aria-hidden="true" tabindex="-1"></a>weather_df.set_index(<span class="st">'DATE'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb59-442"><a href="#cb59-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-443"><a href="#cb59-443" aria-hidden="true" tabindex="-1"></a>weather_df.loc[<span class="st">'2020'</span>]</span>
+<span id="cb59-444"><a href="#cb59-444" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-445"><a href="#cb59-445" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb59-446"><a href="#cb59-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-447"><a href="#cb59-447" aria-hidden="true" tabindex="-1"></a><span class="fu">## Plotting Temporal Data</span></span>
+<span id="cb59-448"><a href="#cb59-448" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-449"><a href="#cb59-449" aria-hidden="true" tabindex="-1"></a>With a datetime index, pandas handles x-axis formatting automatically.</span>
+<span id="cb59-450"><a href="#cb59-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-453"><a href="#cb59-453" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-454"><a href="#cb59-454" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb59-455"><a href="#cb59-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-456"><a href="#cb59-456" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'2020'</span>:, <span class="st">'Adj Close'</span>].plot(ax<span class="op">=</span>ax)</span>
+<span id="cb59-457"><a href="#cb59-457" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-458"><a href="#cb59-458" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'S&amp;P500 Adjusted Closing Values, 2020–present'</span>)</span>
+<span id="cb59-459"><a href="#cb59-459" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Adjusted Close'</span>)</span>
+<span id="cb59-460"><a href="#cb59-460" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Date'</span>)</span>
+<span id="cb59-461"><a href="#cb59-461" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-462"><a href="#cb59-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-463"><a href="#cb59-463" aria-hidden="true" tabindex="-1"></a>If the x-axis labels overlap, use <span class="in">`f.autofmt_xdate()`</span> to rotate them.</span>
+<span id="cb59-464"><a href="#cb59-464" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-467"><a href="#cb59-467" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-468"><a href="#cb59-468" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb59-469"><a href="#cb59-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-470"><a href="#cb59-470" aria-hidden="true" tabindex="-1"></a>sp500_df.loc[<span class="st">'2022'</span>:, <span class="st">'Adj Close'</span>].plot(ax<span class="op">=</span>ax)</span>
+<span id="cb59-471"><a href="#cb59-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-472"><a href="#cb59-472" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'S&amp;P500 Adjusted Closing Values, 2022–present'</span>)</span>
+<span id="cb59-473"><a href="#cb59-473" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Adjusted Close'</span>)</span>
+<span id="cb59-474"><a href="#cb59-474" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-475"><a href="#cb59-475" aria-hidden="true" tabindex="-1"></a>f.autofmt_xdate(rotation<span class="op">=</span><span class="dv">0</span>, ha<span class="op">=</span><span class="st">'center'</span>)</span>
+<span id="cb59-476"><a href="#cb59-476" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-477"><a href="#cb59-477" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-478"><a href="#cb59-478" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb59-479"><a href="#cb59-479" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise 3: Plot the weather data for 2019</span></span>
+<span id="cb59-480"><a href="#cb59-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-481"><a href="#cb59-481" aria-hidden="true" tabindex="-1"></a>Plot the daily temperature ("TEMP") from the Boulder weather data for the year 2019. Label your axes.</span>
+<span id="cb59-482"><a href="#cb59-482" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-483"><a href="#cb59-483" aria-hidden="true" tabindex="-1"></a>**Solution:**</span>
+<span id="cb59-484"><a href="#cb59-484" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-487"><a href="#cb59-487" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-488"><a href="#cb59-488" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb59-489"><a href="#cb59-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-490"><a href="#cb59-490" aria-hidden="true" tabindex="-1"></a>weather_df.loc[<span class="st">'2019'</span>, <span class="st">'TEMP'</span>].plot(ax<span class="op">=</span>ax)</span>
+<span id="cb59-491"><a href="#cb59-491" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-492"><a href="#cb59-492" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Temperature (°F)'</span>)</span>
+<span id="cb59-493"><a href="#cb59-493" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Daily Temperatures in Boulder, CO (2019)'</span>)</span>
+<span id="cb59-494"><a href="#cb59-494" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-495"><a href="#cb59-495" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb59-496"><a href="#cb59-496" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-497"><a href="#cb59-497" aria-hidden="true" tabindex="-1"></a><span class="fu">## Rolling Averages</span></span>
+<span id="cb59-498"><a href="#cb59-498" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-499"><a href="#cb59-499" aria-hidden="true" tabindex="-1"></a>A rolling average smooths out noisy data by averaging observations over a sliding window. You chain <span class="in">`.rolling()`</span> with an aggregation method like <span class="in">`.mean()`</span>, <span class="in">`.median()`</span>, or <span class="in">`.max()`</span>.</span>
+<span id="cb59-500"><a href="#cb59-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-503"><a href="#cb59-503" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-504"><a href="#cb59-504" aria-hidden="true" tabindex="-1"></a>sp500_2020 <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb59-505"><a href="#cb59-505" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-506"><a href="#cb59-506" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'Raw'</span>] <span class="op">=</span> sp500_df.loc[:, <span class="st">'Adj Close'</span>]</span>
+<span id="cb59-507"><a href="#cb59-507" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'7-day'</span>] <span class="op">=</span> sp500_2020[<span class="st">'Raw'</span>].rolling(<span class="dv">7</span>).mean()</span>
+<span id="cb59-508"><a href="#cb59-508" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'90-day'</span>] <span class="op">=</span> sp500_2020[<span class="st">'Raw'</span>].rolling(<span class="dv">90</span>).mean()</span>
+<span id="cb59-509"><a href="#cb59-509" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'365-day'</span>] <span class="op">=</span> sp500_2020[<span class="st">'Raw'</span>].rolling(<span class="dv">365</span>).mean()</span>
+<span id="cb59-510"><a href="#cb59-510" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-511"><a href="#cb59-511" aria-hidden="true" tabindex="-1"></a>sp500_2020.head(<span class="dv">10</span>)</span>
+<span id="cb59-512"><a href="#cb59-512" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-513"><a href="#cb59-513" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-516"><a href="#cb59-516" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-517"><a href="#cb59-517" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb59-518"><a href="#cb59-518" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-519"><a href="#cb59-519" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'Raw'</span>].plot(ax<span class="op">=</span>ax, lw<span class="op">=</span><span class="dv">1</span>, c<span class="op">=</span><span class="st">'tab:blue'</span>, label<span class="op">=</span><span class="st">'Raw'</span>)</span>
+<span id="cb59-520"><a href="#cb59-520" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'7-day'</span>].plot(ax<span class="op">=</span>ax, lw<span class="op">=</span><span class="dv">2</span>, c<span class="op">=</span><span class="st">'tab:orange'</span>, label<span class="op">=</span><span class="st">'7-day'</span>)</span>
+<span id="cb59-521"><a href="#cb59-521" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'90-day'</span>].plot(ax<span class="op">=</span>ax, lw<span class="op">=</span><span class="dv">2</span>, c<span class="op">=</span><span class="st">'tab:green'</span>, label<span class="op">=</span><span class="st">'90-day'</span>)</span>
+<span id="cb59-522"><a href="#cb59-522" aria-hidden="true" tabindex="-1"></a>sp500_2020[<span class="st">'365-day'</span>].plot(ax<span class="op">=</span>ax, lw<span class="op">=</span><span class="dv">3</span>, c<span class="op">=</span><span class="st">'tab:red'</span>, label<span class="op">=</span><span class="st">'365-day'</span>)</span>
+<span id="cb59-523"><a href="#cb59-523" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-524"><a href="#cb59-524" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
+<span id="cb59-525"><a href="#cb59-525" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Adjusted Close ($)'</span>)</span>
+<span id="cb59-526"><a href="#cb59-526" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'S&amp;P 500 with Rolling Averages'</span>)</span>
+<span id="cb59-527"><a href="#cb59-527" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-528"><a href="#cb59-528" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-529"><a href="#cb59-529" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb59-530"><a href="#cb59-530" aria-hidden="true" tabindex="-1"></a><span class="fu">## Choosing window size</span></span>
+<span id="cb59-531"><a href="#cb59-531" aria-hidden="true" tabindex="-1"></a>A short window (7 days) preserves detail but remains noisy. A long window (365 days) reveals long-term trends but lags behind recent changes. Choose a window based on the time scale of the pattern you want to reveal.</span>
+<span id="cb59-532"><a href="#cb59-532" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb59-533"><a href="#cb59-533" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-534"><a href="#cb59-534" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb59-535"><a href="#cb59-535" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise 4: Rolling average of temperatures</span></span>
+<span id="cb59-536"><a href="#cb59-536" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-537"><a href="#cb59-537" aria-hidden="true" tabindex="-1"></a>Plot a 30-day rolling average of Boulder temperatures since 2018. How does it compare to the raw daily data?</span>
+<span id="cb59-538"><a href="#cb59-538" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-539"><a href="#cb59-539" aria-hidden="true" tabindex="-1"></a>**Solution:**</span>
+<span id="cb59-540"><a href="#cb59-540" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-543"><a href="#cb59-543" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-544"><a href="#cb59-544" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb59-545"><a href="#cb59-545" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-546"><a href="#cb59-546" aria-hidden="true" tabindex="-1"></a>weather_df.loc[<span class="st">'2018'</span>:, <span class="st">'TEMP'</span>].plot(ax<span class="op">=</span>ax, alpha<span class="op">=</span><span class="fl">0.3</span>, label<span class="op">=</span><span class="st">'Daily'</span>)</span>
+<span id="cb59-547"><a href="#cb59-547" aria-hidden="true" tabindex="-1"></a>weather_df.loc[<span class="st">'2018'</span>:, <span class="st">'TEMP'</span>].rolling(<span class="dv">30</span>).mean().plot(ax<span class="op">=</span>ax, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'30-day avg'</span>)</span>
+<span id="cb59-548"><a href="#cb59-548" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-549"><a href="#cb59-549" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb59-550"><a href="#cb59-550" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Temperature (°F)'</span>)</span>
+<span id="cb59-551"><a href="#cb59-551" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Boulder Daily Temperatures with 30-Day Rolling Average'</span>)</span>
+<span id="cb59-552"><a href="#cb59-552" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-553"><a href="#cb59-553" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb59-554"><a href="#cb59-554" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-555"><a href="#cb59-555" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reindexing</span></span>
+<span id="cb59-556"><a href="#cb59-556" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-557"><a href="#cb59-557" aria-hidden="true" tabindex="-1"></a>Temporal data often has gaps — the stock market is closed on weekends and holidays, but social media data is continuous. Comparing both requires a common index. The <span class="in">`.reindex()`</span> method updates a DataFrame's index to match a new one, filling gaps with <span class="in">`NaN`</span>.</span>
+<span id="cb59-558"><a href="#cb59-558" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-561"><a href="#cb59-561" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-562"><a href="#cb59-562" aria-hidden="true" tabindex="-1"></a>sp500_df.index.<span class="bu">min</span>(), sp500_df.index.<span class="bu">max</span>()</span>
+<span id="cb59-563"><a href="#cb59-563" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-564"><a href="#cb59-564" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-567"><a href="#cb59-567" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-568"><a href="#cb59-568" aria-hidden="true" tabindex="-1"></a>sp500_daterange <span class="op">=</span> pd.date_range(</span>
+<span id="cb59-569"><a href="#cb59-569" aria-hidden="true" tabindex="-1"></a>    start<span class="op">=</span>sp500_df.index.<span class="bu">min</span>(),</span>
+<span id="cb59-570"><a href="#cb59-570" aria-hidden="true" tabindex="-1"></a>    end<span class="op">=</span>sp500_df.index.<span class="bu">max</span>(),</span>
+<span id="cb59-571"><a href="#cb59-571" aria-hidden="true" tabindex="-1"></a>    freq<span class="op">=</span><span class="st">'D'</span></span>
+<span id="cb59-572"><a href="#cb59-572" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb59-573"><a href="#cb59-573" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-574"><a href="#cb59-574" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Trading days: </span><span class="sc">{</span>sp500_df<span class="sc">.</span>index<span class="sc">.</span>size<span class="sc">}</span><span class="ss">, Calendar days: </span><span class="sc">{</span>sp500_daterange<span class="sc">.</span>size<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb59-575"><a href="#cb59-575" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-576"><a href="#cb59-576" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-579"><a href="#cb59-579" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-580"><a href="#cb59-580" aria-hidden="true" tabindex="-1"></a>sp500_reindexed_df <span class="op">=</span> sp500_df.reindex(sp500_daterange)</span>
+<span id="cb59-581"><a href="#cb59-581" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sp500_reindexed_df.shape)</span>
+<span id="cb59-582"><a href="#cb59-582" aria-hidden="true" tabindex="-1"></a>sp500_reindexed_df.head(<span class="dv">10</span>)</span>
+<span id="cb59-583"><a href="#cb59-583" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-584"><a href="#cb59-584" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-585"><a href="#cb59-585" aria-hidden="true" tabindex="-1"></a>The NaN values on Saturdays and Sundays are visible. You could fill them with <span class="in">`.fillna(method='ffill')`</span> (forward-fill the previous trading day's value) depending on your analytical needs.</span>
+<span id="cb59-586"><a href="#cb59-586" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-587"><a href="#cb59-587" aria-hidden="true" tabindex="-1"></a><span class="fu">## Grouping Temporal Data</span></span>
+<span id="cb59-588"><a href="#cb59-588" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-589"><a href="#cb59-589" aria-hidden="true" tabindex="-1"></a>You can use <span class="in">`pd.Grouper`</span> inside <span class="in">`.groupby()`</span> to aggregate time series to a lower frequency. Here we compute the total monthly trading volume.</span>
+<span id="cb59-590"><a href="#cb59-590" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-593"><a href="#cb59-593" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-594"><a href="#cb59-594" aria-hidden="true" tabindex="-1"></a>sp500_df.groupby(</span>
+<span id="cb59-595"><a href="#cb59-595" aria-hidden="true" tabindex="-1"></a>    pd.Grouper(freq<span class="op">=</span><span class="st">'MS'</span>)</span>
+<span id="cb59-596"><a href="#cb59-596" aria-hidden="true" tabindex="-1"></a>).agg({<span class="st">'Volume'</span>: <span class="st">'sum'</span>}).plot()</span>
+<span id="cb59-597"><a href="#cb59-597" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-598"><a href="#cb59-598" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-599"><a href="#cb59-599" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb59-600"><a href="#cb59-600" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise 5: Monthly average wind speed</span></span>
+<span id="cb59-601"><a href="#cb59-601" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-602"><a href="#cb59-602" aria-hidden="true" tabindex="-1"></a>Group the Boulder weather data by month using <span class="in">`pd.Grouper(freq='MS')`</span> and compute the average wind speed ("WDSP"). Plot the result.</span>
+<span id="cb59-603"><a href="#cb59-603" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-604"><a href="#cb59-604" aria-hidden="true" tabindex="-1"></a>**Solution:**</span>
+<span id="cb59-605"><a href="#cb59-605" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-608"><a href="#cb59-608" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-609"><a href="#cb59-609" aria-hidden="true" tabindex="-1"></a>monthly_wind <span class="op">=</span> weather_df.groupby(pd.Grouper(freq<span class="op">=</span><span class="st">'MS'</span>)).agg({<span class="st">'WDSP'</span>: <span class="st">'mean'</span>})</span>
+<span id="cb59-610"><a href="#cb59-610" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-611"><a href="#cb59-611" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb59-612"><a href="#cb59-612" aria-hidden="true" tabindex="-1"></a>monthly_wind.plot(ax<span class="op">=</span>ax, legend<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb59-613"><a href="#cb59-613" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Wind Speed (mph)'</span>)</span>
+<span id="cb59-614"><a href="#cb59-614" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Monthly Average Wind Speed in Boulder'</span>)</span>
+<span id="cb59-615"><a href="#cb59-615" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-616"><a href="#cb59-616" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb59-617"><a href="#cb59-617" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-618"><a href="#cb59-618" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb59-619"><a href="#cb59-619" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise 6: Parse a custom date format</span></span>
+<span id="cb59-620"><a href="#cb59-620" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-621"><a href="#cb59-621" aria-hidden="true" tabindex="-1"></a>Given the string <span class="in">`"13-Feb-1984 07:30:15"`</span>, use <span class="in">`datetime.datetime.strptime`</span> to parse it. Then convert it to a pandas <span class="in">`Timestamp`</span>.</span>
+<span id="cb59-622"><a href="#cb59-622" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-623"><a href="#cb59-623" aria-hidden="true" tabindex="-1"></a>**Solution:**</span>
+<span id="cb59-624"><a href="#cb59-624" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-627"><a href="#cb59-627" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-628"><a href="#cb59-628" aria-hidden="true" tabindex="-1"></a>dt <span class="op">=</span> datetime.datetime.strptime(<span class="st">"13-Feb-1984 07:30:15"</span>, <span class="st">"</span><span class="sc">%d</span><span class="st">-%b-%Y %H:%M:%S"</span>)</span>
+<span id="cb59-629"><a href="#cb59-629" aria-hidden="true" tabindex="-1"></a>ts <span class="op">=</span> pd.Timestamp(dt)</span>
+<span id="cb59-630"><a href="#cb59-630" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ts)</span>
+<span id="cb59-631"><a href="#cb59-631" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-632"><a href="#cb59-632" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb59-633"><a href="#cb59-633" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-634"><a href="#cb59-634" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb59-635"><a href="#cb59-635" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise 7: Compute your age</span></span>
+<span id="cb59-636"><a href="#cb59-636" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-637"><a href="#cb59-637" aria-hidden="true" tabindex="-1"></a>Create a <span class="in">`datetime`</span> object for your birthday. Compute a <span class="in">`timedelta`</span> representing your current age. Express your age in days, hours, and approximate years.</span>
+<span id="cb59-638"><a href="#cb59-638" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-639"><a href="#cb59-639" aria-hidden="true" tabindex="-1"></a>**Solution:**</span>
+<span id="cb59-640"><a href="#cb59-640" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-643"><a href="#cb59-643" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb59-644"><a href="#cb59-644" aria-hidden="true" tabindex="-1"></a>my_birthday <span class="op">=</span> datetime.datetime(<span class="dv">2002</span>, <span class="dv">6</span>, <span class="dv">15</span>)</span>
+<span id="cb59-645"><a href="#cb59-645" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> datetime.datetime.now() <span class="op">-</span> my_birthday</span>
+<span id="cb59-646"><a href="#cb59-646" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-647"><a href="#cb59-647" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Days: </span><span class="sc">{</span>age<span class="sc">.</span>days<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb59-648"><a href="#cb59-648" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Hours: </span><span class="sc">{</span>age<span class="sc">.</span>days <span class="op">*</span> <span class="dv">24</span> <span class="op">+</span> age<span class="sc">.</span>seconds <span class="op">//</span> <span class="dv">3600</span><span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb59-649"><a href="#cb59-649" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Years: </span><span class="sc">{</span>age <span class="op">/</span> datetime<span class="sc">.</span>timedelta(days<span class="op">=</span><span class="fl">365.25</span>)<span class="sc">:.1f}</span><span class="ss">"</span>)</span>
+<span id="cb59-650"><a href="#cb59-650" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb59-651"><a href="#cb59-651" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb59-652"><a href="#cb59-652" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-653"><a href="#cb59-653" aria-hidden="true" tabindex="-1"></a><span class="fu">## Looking Ahead</span></span>
+<span id="cb59-654"><a href="#cb59-654" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-655"><a href="#cb59-655" aria-hidden="true" tabindex="-1"></a>You now have the tools to parse, manipulate, and index temporal data in Python. In @sec-time-series, you will put these skills to work finding common temporal patterns — hourly rhythms, weekly cycles, annual seasonality — and learning techniques for decomposing time series into their component signals.</span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/cuinfoscience/Information-Exposition-Book/edit/main/chapters/09-temporal-data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/Information-Exposition-Book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
