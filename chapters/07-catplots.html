@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-710deee90218c0747833ed862e9a1c0d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-d1385d2e7dd819d8e2833b0cdae6eae6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -369,7 +369,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This chapter introduces the <a href="https://seaborn.pydata.org/">seaborn</a> library’s <code>catplot</code> function, which provides a unified interface for bar plots, box plots, violin plots, strip plots, and more. You will also learn to perform basic statistical tests to evaluate whether observed differences between categories are meaningful or likely due to chance. The central idea tying these plots together is that you have two or more categories of data and want to compare their distributions — in other words, analyzing the relationships between continuous <em>and</em> categorical variables of interest.</p>
 <section id="setup" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">7.1</span> Setup</h2>
-<div id="4ec63077" class="cell" data-execution_count="1">
+<div id="a66b763c" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>np.set_printoptions(suppress<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -386,11 +386,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="refresher-statistical-significance-testing" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="refresher-statistical-significance-testing"><span class="header-section-number">7.2</span> Refresher: Statistical Significance Testing</h2>
 <p>Before diving into the visualizations, let’s review the intuition behind a statistical significance test. The independent samples <strong>t-test</strong> evaluates whether two groups have different means.</p>
-<div id="736f1a2c" class="cell" data-execution_count="2">
+<div id="9fb35b6c" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> ttest_ind</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Create two random distributions with different means to see what a “real” difference looks like.</p>
-<div id="0cf1a7cd" class="cell" data-execution_count="3">
+<div id="2a948828" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rand_first <span class="op">=</span> np.random.normal(loc<span class="op">=</span><span class="dv">3</span>, scale<span class="op">=</span><span class="dv">2</span>, size<span class="op">=</span><span class="dv">100</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>rand_second <span class="op">=</span> np.random.normal(loc<span class="op">=</span><span class="dv">6</span>, scale<span class="op">=</span><span class="dv">2</span>, size<span class="op">=</span><span class="dv">100</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -403,7 +403,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>ax.axvline(rand_first.mean(), c<span class="op">=</span><span class="st">'tab:blue'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>ax.axvline(rand_second.mean(), c<span class="op">=</span><span class="st">'tab:orange'</span>, lw<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="a568dc20" class="cell" data-execution_count="4">
+<div id="0bf8cbd7" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ttest_ind(rand_first, rand_second)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A small p-value (well below 0.05) tells us that the observed difference is unlikely to have occurred by chance. A large p-value would tell us we cannot reject the null hypothesis that the two groups have the same mean.</p>
@@ -411,25 +411,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-data-house-expenditures" class="level2" data-number="7.3">
 <h2 data-number="7.3" class="anchored" data-anchor-id="the-data-house-expenditures"><span class="header-section-number">7.3</span> The Data: House Expenditures</h2>
 <p>We will use U.S. House of Representatives office expenditure data from <a href="https://projects.propublica.org/represent/expenditures">ProPublica</a> for the third quarter of 2021. Each row is a detailed disbursement — a single spending transaction — by a congressional office.</p>
-<div id="a01bfb7c" class="cell" data-execution_count="5">
+<div id="a6a0fe31" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>house_21q3_df <span class="op">=</span> pd.read_csv(<span class="st">'2021Q3-house-disburse-detail.csv'</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>house_21q3_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="understanding-the-data-structure" class="level3" data-number="7.3.1">
 <h3 data-number="7.3.1" class="anchored" data-anchor-id="understanding-the-data-structure"><span class="header-section-number">7.3.1</span> Understanding the data structure</h3>
 <p>The “SORT SEQUENCE” column includes subtotals and other aggregated rows. We want only the detail-level transactions to avoid double-counting.</p>
-<div id="bb106e62" class="cell" data-execution_count="6">
+<div id="ad810ce3" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>house_21q3_df[<span class="st">'SORT SEQUENCE'</span>].value_counts()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In addition to representatives’ offices, there are offices for various officers and administrators. The <code>BIOGUIDE_ID</code> is a standardized identifier for every senator and representative going back to 1790. Rows without a <code>BIOGUIDE_ID</code> are non-member offices.</p>
-<div id="2391880a" class="cell" data-execution_count="7">
+<div id="316a20f1" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>house_21q3_df[<span class="st">'BIOGUIDE_ID'</span>].value_counts()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="filtering" class="level3" data-number="7.3.2">
 <h3 data-number="7.3.2" class="anchored" data-anchor-id="filtering"><span class="header-section-number">7.3.2</span> Filtering</h3>
 <p>Filter to only detail-level transactions for actual representatives.</p>
-<div id="74fc4a3d" class="cell" data-execution_count="8">
+<div id="1f1eaf7c" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>c0 <span class="op">=</span> house_21q3_df[<span class="st">'SORT SEQUENCE'</span>] <span class="op">==</span> <span class="st">'DETAIL'</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>c1 <span class="op">=</span> house_21q3_df[<span class="st">'BIOGUIDE_ID'</span>].notnull()</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -439,18 +439,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> house_21q3_df[c0 <span class="op">&amp;</span> c1]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>What is the average total spending per member’s office?</p>
-<div id="e8bc65c8" class="cell" data-execution_count="9">
+<div id="e322e281" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>filtered_df.groupby(<span class="st">'BIOGUIDE_ID'</span>).agg({<span class="st">'AMOUNT'</span>: <span class="st">'sum'</span>}).mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="joining-member-data" class="level3" data-number="7.3.3">
 <h3 data-number="7.3.3" class="anchored" data-anchor-id="joining-member-data"><span class="header-section-number">7.3.3</span> Joining member data</h3>
 <p>To compare spending by party, we need to merge the expenditure data with member information that includes party affiliation, state, and other context.</p>
-<div id="e9943284" class="cell" data-execution_count="10">
+<div id="55046787" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>members_df <span class="op">=</span> pd.read_csv(<span class="st">'house_members.csv'</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>members_df.head(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="b235ecdf" class="cell" data-execution_count="11">
+<div id="9585a9d3" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>joined_df <span class="op">=</span> pd.merge(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    left<span class="op">=</span>filtered_df,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    right<span class="op">=</span>members_df,</span>
@@ -467,13 +467,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="top-spending-state-delegations" class="level3" data-number="7.3.4">
 <h3 data-number="7.3.4" class="anchored" data-anchor-id="top-spending-state-delegations"><span class="header-section-number">7.3.4</span> Top-spending state delegations</h3>
 <p>Which state delegations spend the most? A simple aggregation shows raw totals, but larger delegations naturally spend more.</p>
-<div id="1e925f16" class="cell" data-execution_count="12">
+<div id="fd7e4f58" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>joined_df.groupby(<span class="st">'state-fullname'</span>).agg({<span class="st">'AMOUNT'</span>: <span class="st">'sum'</span>}).sort_values(</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'AMOUNT'</span>, ascending<span class="op">=</span><span class="va">False</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Normalizing by the number of representatives in each delegation reveals spending <em>per member</em>.</p>
-<div id="ee57c3f2" class="cell" data-execution_count="13">
+<div id="3e1344ae" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>top_spenders <span class="op">=</span> joined_df.groupby(<span class="st">'state-fullname'</span>).agg(</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    {<span class="st">'AMOUNT'</span>: <span class="st">'sum'</span>, <span class="st">'bioguideID'</span>: <span class="st">'nunique'</span>}</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -485,7 +485,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="bar-plots" class="level2" data-number="7.4">
 <h2 data-number="7.4" class="anchored" data-anchor-id="bar-plots"><span class="header-section-number">7.4</span> Bar Plots</h2>
 <p>Seaborn’s <code>catplot</code> function with <code>kind='bar'</code> shows the mean (or other summary statistic) for each category, with error bars representing the 95% confidence interval by default.</p>
-<div id="a836e866" class="cell" data-execution_count="14">
+<div id="deed2ebb" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sb.catplot(</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>joined_df,</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'caucus'</span>,</span>
@@ -509,11 +509,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>To get office-level totals, aggregate first and then merge.</p>
-<div id="e0640ac5" class="cell" data-execution_count="15">
+<div id="15ce610f" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>total_spending <span class="op">=</span> joined_df.groupby(<span class="st">'BIOGUIDE_ID'</span>).agg({<span class="st">'AMOUNT'</span>: <span class="st">'sum'</span>})</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>total_spending.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="d567606f" class="cell" data-execution_count="16">
+<div id="df572aff" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>spending_joined <span class="op">=</span> pd.merge(</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    left<span class="op">=</span>total_spending.reset_index(),</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    right<span class="op">=</span>members_df,</span>
@@ -525,7 +525,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>spending_joined.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now the bar plot represents total quarterly spending per legislator.</p>
-<div id="e9338637" class="cell" data-execution_count="17">
+<div id="6c9b046e" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sb.catplot(</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>spending_joined,</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'caucus'</span>,</span>
@@ -539,7 +539,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="box-plots" class="level2" data-number="7.5">
 <h2 data-number="7.5" class="anchored" data-anchor-id="box-plots"><span class="header-section-number">7.5</span> Box Plots</h2>
 <p>Box plots show the full distribution rather than just the mean. The box spans the interquartile range (25th to 75th percentile), the line inside is the median, and the whiskers extend to 1.5 times the interquartile range. Points beyond the whiskers are outliers.</p>
-<div id="1f14ff44" class="cell" data-execution_count="18">
+<div id="b913d335" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sb.catplot(</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>spending_joined,</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'AMOUNT'</span>,</span>
@@ -554,7 +554,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="violin-plots" class="level2" data-number="7.6">
 <h2 data-number="7.6" class="anchored" data-anchor-id="violin-plots"><span class="header-section-number">7.6</span> Violin Plots</h2>
 <p>Violin plots combine a box plot with a kernel density estimate, showing the full shape of the distribution. They are especially useful when distributions are multimodal (have multiple peaks).</p>
-<div id="494a5cf5" class="cell" data-execution_count="19">
+<div id="5bba103d" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>sb.catplot(</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>spending_joined,</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'caucus'</span>,</span>
@@ -568,7 +568,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="adding-a-second-category-with-hue" class="level2" data-number="7.7">
 <h2 data-number="7.7" class="anchored" data-anchor-id="adding-a-second-category-with-hue"><span class="header-section-number">7.7</span> Adding a Second Category with <code>hue</code></h2>
 <p>The <code>hue</code> parameter subdivides each category by a second variable. Here we compare spending by party <em>and</em> by office building.</p>
-<div id="0af631e0" class="cell" data-execution_count="20">
+<div id="1b1703d1" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sb.catplot(</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>spending_joined,</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'office-building'</span>,</span>
@@ -587,20 +587,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Visualizations show patterns, but they do not tell you whether the patterns are <em>statistically significant</em>. The independent samples t-test (<code>ttest_ind</code> from <code>scipy.stats</code>) tests whether two groups have the same mean.</p>
 <section id="transaction-level-test" class="level3" data-number="7.8.1">
 <h3 data-number="7.8.1" class="anchored" data-anchor-id="transaction-level-test"><span class="header-section-number">7.8.1</span> Transaction-level test</h3>
-<div id="adecca3d" class="cell" data-execution_count="21">
+<div id="e774272d" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dem_transactions <span class="op">=</span> joined_df.loc[joined_df[<span class="st">'caucus'</span>] <span class="op">==</span> <span class="st">'D'</span>, <span class="st">'AMOUNT'</span>]</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>rep_transactions <span class="op">=</span> joined_df.loc[joined_df[<span class="st">'caucus'</span>] <span class="op">==</span> <span class="st">'R'</span>, <span class="st">'AMOUNT'</span>]</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Democratic transactions: </span><span class="sc">{</span><span class="bu">len</span>(dem_transactions)<span class="sc">:,}</span><span class="ss">"</span>)</span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Republican transactions: </span><span class="sc">{</span><span class="bu">len</span>(rep_transactions)<span class="sc">:,}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="d03c56c1" class="cell" data-execution_count="22">
+<div id="b6e2c81d" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>ttest_ind(dem_transactions, rep_transactions)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="legislator-level-test" class="level3" data-number="7.8.2">
 <h3 data-number="7.8.2" class="anchored" data-anchor-id="legislator-level-test"><span class="header-section-number">7.8.2</span> Legislator-level test</h3>
-<div id="0d5265db" class="cell" data-execution_count="23">
+<div id="37edbae9" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>dem_office <span class="op">=</span> spending_joined.loc[spending_joined[<span class="st">'caucus'</span>] <span class="op">==</span> <span class="st">'D'</span>, <span class="st">'AMOUNT'</span>]</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>rep_office <span class="op">=</span> spending_joined.loc[spending_joined[<span class="st">'caucus'</span>] <span class="op">==</span> <span class="st">'R'</span>, <span class="st">'AMOUNT'</span>]</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -624,7 +624,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="exploring-other-categories" class="level2" data-number="7.9">
 <h2 data-number="7.9" class="anchored" data-anchor-id="exploring-other-categories"><span class="header-section-number">7.9</span> Exploring Other Categories</h2>
 <p>The spending data contains many categorical variables beyond party.</p>
-<div id="5d83b354" class="cell" data-execution_count="24">
+<div id="7445a9ea" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>sb.catplot(</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>spending_joined,</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'prior-congress'</span>,</span>
@@ -640,7 +640,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="country-military-data" class="level2" data-number="7.10">
 <h2 data-number="7.10" class="anchored" data-anchor-id="country-military-data"><span class="header-section-number">7.10</span> Country Military Data</h2>
 <p>Let’s apply catplots to a different dataset: the World Bank’s <a href="https://databank.worldbank.org/source/world-development-indicators#">World Development Indicators</a>, which has data on military expenditures, armed forces size, and arms imports and exports for 266 countries. The <code>..</code> values represent missing data.</p>
-<div id="dec70f34" class="cell" data-execution_count="25">
+<div id="da300a19" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>military_df <span class="op">=</span> pd.read_csv(<span class="st">'country_military.csv'</span>, na_values<span class="op">=</span><span class="st">'..'</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>military_df.columns <span class="op">=</span> [<span class="st">'Country Name'</span>, <span class="st">'Country Code'</span>, <span class="st">'Series Name'</span>,</span>
@@ -651,12 +651,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="adding-regional-categories" class="level3" data-number="7.10.1">
 <h3 data-number="7.10.1" class="anchored" data-anchor-id="adding-regional-categories"><span class="header-section-number">7.10.1</span> Adding regional categories</h3>
 <p>To make catplots of military data, we need a categorical variable. The United Nations and World Bank publish regional classifications of countries.</p>
-<div id="b9e53f9f" class="cell" data-execution_count="26">
+<div id="29e85370" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>regions_df <span class="op">=</span> pd.read_csv(<span class="st">'regional_classifications.csv'</span>)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>regions_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>After reshaping and joining (exercises left below), we can make catplots like this one comparing arms imports by UN region.</p>
-<div id="c6c74e07" class="cell" data-execution_count="27">
+<div id="344f6a8d" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This code assumes you have prepared a cat_military_df by pivoting</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the military data and joining with regions_df</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># f, ax = plt.subplots(figsize=(10, 5))</span></span>
@@ -681,7 +681,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Use seaborn’s <code>catplot</code> to create a strip plot (<code>kind='strip'</code>) and a swarm plot (<code>kind='swarm'</code>) of total spending by party. How do these plots compare to bar and box plots? When might each be preferable?</p>
 <p><strong>Solution:</strong></p>
-<div id="655458d5" class="cell" data-execution_count="28">
+<div id="1381bd3a" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>sb.catplot(</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>spending_joined,</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'caucus'</span>,</span>
@@ -710,7 +710,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Create a Boolean column “incumbent” that is <code>True</code> when the “prior-congress” column is not 0. Then make a catplot comparing spending between incumbents and non-incumbents, subdivided by party using <code>hue</code>. Are incumbents bigger spenders?</p>
 <p><strong>Solution:</strong></p>
-<div id="88066c89" class="cell" data-execution_count="29">
+<div id="064f39a2" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>spending_joined[<span class="st">'incumbent'</span>] <span class="op">=</span> spending_joined[<span class="st">'prior-congress'</span>] <span class="op">!=</span> <span class="dv">0</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>sb.catplot(</span>
@@ -740,7 +740,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Which spending categories (<code>CATEGORY</code> column in the disbursement data) account for the most total spending? Create a horizontal bar plot of the top 10 categories.</p>
 <p><strong>Solution:</strong></p>
-<div id="363d0dbe" class="cell" data-execution_count="30">
+<div id="2eccf3af" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>cat_spending <span class="op">=</span> joined_df.groupby(<span class="st">'CATEGORY'</span>).agg({<span class="st">'AMOUNT'</span>: <span class="st">'sum'</span>})</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>top_cats <span class="op">=</span> cat_spending.sort_values(<span class="st">'AMOUNT'</span>, ascending<span class="op">=</span><span class="va">True</span>).tail(<span class="dv">10</span>)</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -766,7 +766,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Filter the joined data to the “TRAVEL” category. Which member’s office spent the most on travel? Research why that might be (hint: consider the member’s district location).</p>
 <p><strong>Solution:</strong></p>
-<div id="652f624e" class="cell" data-execution_count="31">
+<div id="cfe39420" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>travel <span class="op">=</span> joined_df[joined_df[<span class="st">'CATEGORY'</span>] <span class="op">==</span> <span class="st">'TRAVEL'</span>]</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>travel_by_member <span class="op">=</span> travel.groupby([<span class="st">'BIOGUIDE_ID'</span>, <span class="st">'state-fullname'</span>]).agg({<span class="st">'AMOUNT'</span>: <span class="st">'sum'</span>})</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>travel_by_member.sort_values(<span class="st">'AMOUNT'</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -789,7 +789,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Clean the <code>military_df</code> so the columns and series names are more interpretable. Drop the “Series Code” column. Pivot and melt the data so that the “Series Name” values become columns and “Country Name” and “Year” are ID variables. Then make a histogram of GDP values using log-scaled bins.</p>
 <p><strong>Solution:</strong></p>
-<div id="1d58eee8" class="cell" data-execution_count="32">
+<div id="7d4bd481" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop Series Code</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>mil_clean <span class="op">=</span> military_df.drop(columns<span class="op">=</span>[<span class="st">'Series Code'</span>])</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -827,7 +827,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Using the military data joined with regional classifications, test whether GDP for countries in the “Europe &amp; Central Asia” region is significantly different from GDP in the “East Asia &amp; Pacific” region using <code>ttest_ind</code>.</p>
 <p><strong>Solution:</strong></p>
-<div id="96f4a83f" class="cell" data-execution_count="33">
+<div id="88765140" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming cat_military_df has been prepared with a 'GDP' column and 'UN Regions'</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="co"># europe = cat_military_df.loc[cat_military_df['UN Regions'] == 'Europe &amp; Central Asia', 'GDP'].dropna()</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># asia = cat_military_df.loc[cat_military_df['UN Regions'] == 'East Asia &amp; Pacific', 'GDP'].dropna()</span></span>

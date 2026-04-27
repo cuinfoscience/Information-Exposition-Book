@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-710deee90218c0747833ed862e9a1c0d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-d1385d2e7dd819d8e2833b0cdae6eae6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -368,7 +368,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This chapter explores audience analysis: the practice of understanding your reader before you write. Knowing your audience changes every aspect of your data communication, from the chart type you choose to the vocabulary you use to the narrative structure you follow. We will use the DIA passenger and House expenditure data from earlier chapters to illustrate how the same underlying analysis produces very different outputs depending on the intended audience.</p>
 <section id="setup" class="level2" data-number="8.1">
 <h2 data-number="8.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">8.1</span> Setup</h2>
-<div id="b0c69bd1" class="cell" data-execution_count="1">
+<div id="b42094b1" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -412,7 +412,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="tailoring-a-visualization" class="level2" data-number="8.4">
 <h2 data-number="8.4" class="anchored" data-anchor-id="tailoring-a-visualization"><span class="header-section-number">8.4</span> Tailoring a Visualization</h2>
 <p>Let’s demonstrate with the DIA passenger data.</p>
-<div id="db586c0f" class="cell" data-execution_count="2">
+<div id="d2fafd08" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>passenger_df <span class="op">=</span> pd.read_csv(<span class="st">'passengers.csv'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Month'</span>] <span class="op">=</span> pd.to_datetime(passenger_df[<span class="st">'Month'</span>])</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>passenger_df.set_index(<span class="st">'Month'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
@@ -421,7 +421,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="for-a-technical-audience" class="level3" data-number="8.4.1">
 <h3 data-number="8.4.1" class="anchored" data-anchor-id="for-a-technical-audience"><span class="header-section-number">8.4.1</span> For a technical audience</h3>
 <p>A data science team reviewing your analysis wants to see the full data, clear methodology, and reproducible code. You might produce a detailed time series with multiple airlines, consistent axis scales, and statistical annotations.</p>
-<div id="6e58a5b9" class="cell" data-execution_count="3">
+<div id="f7dc3bf1" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> airline <span class="kw">in</span> [<span class="st">'United'</span>, <span class="st">'Southwest'</span>, <span class="st">'Frontier'</span>]:</span>
@@ -438,7 +438,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="for-a-general-audience" class="level3" data-number="8.4.2">
 <h3 data-number="8.4.2" class="anchored" data-anchor-id="for-a-general-audience"><span class="header-section-number">8.4.2</span> For a general audience</h3>
 <p>A blog post reader wants a clear takeaway, minimal jargon, and a chart that communicates the point at a glance. Simplify to a single line (total passengers) with prominent annotations and a descriptive title.</p>
-<div id="0b272fab" class="cell" data-execution_count="4">
+<div id="1cb37846" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Grand'</span>].plot(ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
@@ -462,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="for-a-decision-maker" class="level3" data-number="8.4.3">
 <h3 data-number="8.4.3" class="anchored" data-anchor-id="for-a-decision-maker"><span class="header-section-number">8.4.3</span> For a decision-maker</h3>
 <p>An airport executive needs to decide whether passenger traffic has recovered enough to justify expansion. The most useful chart is a comparison of current levels against a pre-pandemic baseline.</p>
-<div id="7a722eff" class="cell" data-execution_count="5">
+<div id="f329f4bc" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute a pre-pandemic baseline: average monthly traffic 2015-2019</span></span>
@@ -609,7 +609,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Take the DIA passenger chart and encode the same information in at least two visual channels (e.g., both color and a text annotation, or both line thickness and a legend label). How does the redundancy affect readability?</p>
 <p><strong>Solution:</strong></p>
-<div id="09dd3423" class="cell" data-execution_count="6">
+<div id="32219e8c" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Grand'</span>].plot(ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>

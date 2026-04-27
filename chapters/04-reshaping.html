@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-710deee90218c0747833ed862e9a1c0d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-d1385d2e7dd819d8e2833b0cdae6eae6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -362,7 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We will use monthly passenger traffic data from Denver International Airport (DIA) to illustrate these operations. The COVID-19 pandemic caused dramatic disruptions to air travel, making this dataset both analytically interesting and motivating.</p>
 <section id="setup" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">4.1</span> Setup</h2>
-<div id="a5b155c9" class="cell" data-execution_count="1">
+<div id="5aec01fd" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -379,18 +379,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="read-in-data" class="level3" data-number="4.2.2">
 <h3 data-number="4.2.2" class="anchored" data-anchor-id="read-in-data"><span class="header-section-number">4.2.2</span> Read in data</h3>
-<div id="908e1061" class="cell" data-execution_count="2">
+<div id="9e0f8cc4" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>passenger_df <span class="op">=</span> pd.read_csv(<span class="st">'passengers.csv'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>passenger_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="58232a62" class="cell" data-execution_count="3">
+<div id="f82209a5" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>passenger_df.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="check-the-packaging" class="level3" data-number="4.2.3">
 <h3 data-number="4.2.3" class="anchored" data-anchor-id="check-the-packaging"><span class="header-section-number">4.2.3</span> Check the packaging</h3>
 <p>The data should span from 1995 (when DIA opened) through late 2021. A simple but fragile way to check this is to sort the “Month” column — but string sorting on dates gives wrong results (e.g., “April” comes before “January” alphabetically). Instead, convert to proper <code>Timestamp</code> objects using <code>pd.to_datetime</code>.</p>
-<div id="bd17075f" class="cell" data-execution_count="4">
+<div id="94a6af18" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Month'</span>] <span class="op">=</span> pd.to_datetime(passenger_df[<span class="st">'Month'</span>])</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Month'</span>].<span class="bu">min</span>(), passenger_df[<span class="st">'Month'</span>].<span class="bu">max</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -399,20 +399,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="clean-up-the-data" class="level3" data-number="4.2.4">
 <h3 data-number="4.2.4" class="anchored" data-anchor-id="clean-up-the-data"><span class="header-section-number">4.2.4</span> Clean up the data</h3>
 <p>Make the “Month” column the index and drop the “Cargo” column, which is not relevant to our passenger analysis.</p>
-<div id="308bae1b" class="cell" data-execution_count="5">
+<div id="f53fe289" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>passenger_df.set_index(<span class="st">'Month'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="6d9cd949" class="cell" data-execution_count="6">
+<div id="b8b212ac" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>passenger_df.drop(columns<span class="op">=</span>[<span class="st">'Cargo'</span>], inplace<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="69b8f1c5" class="cell" data-execution_count="7">
+<div id="ffb7a6b5" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>passenger_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="validate-against-an-external-source" class="level3" data-number="4.2.5">
 <h3 data-number="4.2.5" class="anchored" data-anchor-id="validate-against-an-external-source"><span class="header-section-number">4.2.5</span> Validate against an external source</h3>
 <p>These statistics are collected by the DIA authority. The U.S. Department of Transportation’s <a href="https://www.bts.gov/">Bureau of Transportation Statistics</a> also publishes <a href="https://www.transtats.bts.gov/Data_Elements.aspx?Data=1">historical passenger statistics by airport</a>. Let’s compare.</p>
-<div id="dc40113a" class="cell" data-execution_count="8">
+<div id="563919fb" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>transstats_df <span class="op">=</span> pd.read_excel(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'transtats_passengers.xlsx'</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    sheet_name<span class="op">=</span><span class="dv">0</span>,</span>
@@ -426,7 +426,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>transstats_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Combine the Year and Month columns into a proper datetime. This is a common data-cleaning task when dates are split across columns.</p>
-<div id="7c7f4e05" class="cell" data-execution_count="9">
+<div id="1ee199b0" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>string_dates <span class="op">=</span> transstats_df[[<span class="st">'Year'</span>, <span class="st">'Month'</span>]].<span class="bu">apply</span>(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> x: <span class="st">'</span><span class="sc">{Year}</span><span class="st">-</span><span class="sc">{Month:02d}</span><span class="st">'</span>.<span class="bu">format</span>(<span class="op">**</span>x), axis<span class="op">=</span><span class="dv">1</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -437,7 +437,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>transstats_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Join them together for comparison (practice from <a href="03-combining.html" class="quarto-xref"><span>Chapter 3</span></a>).</p>
-<div id="b68876c6" class="cell" data-execution_count="10">
+<div id="f28d9ca6" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dia_bts_merge_df <span class="op">=</span> pd.merge(</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    left<span class="op">=</span>passenger_df,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    right<span class="op">=</span>transstats_df,</span>
@@ -449,14 +449,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>dia_bts_merge_df.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Calculate the correlation between the monthly totals from each dataset. Not perfect, but more than high enough to trust.</p>
-<div id="d479604d" class="cell" data-execution_count="11">
+<div id="d6b34359" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dia_bts_merge_df[[<span class="st">'Grand'</span>, <span class="st">'TOTAL'</span>]].corr()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="make-a-plot" class="level3" data-number="4.2.6">
 <h3 data-number="4.2.6" class="anchored" data-anchor-id="make-a-plot"><span class="header-section-number">4.2.6</span> Make a plot</h3>
 <p>Visualize the monthly total passenger data. We will go into visualization in much more detail in <a href="06-histograms.html" class="quarto-xref"><span>Chapter 6</span></a> and beyond.</p>
-<div id="54397308" class="cell" data-execution_count="12">
+<div id="49263e0e" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -469,7 +469,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="try-an-easy-solution" class="level3" data-number="4.2.7">
 <h3 data-number="4.2.7" class="anchored" data-anchor-id="try-an-easy-solution"><span class="header-section-number">4.2.7</span> Try an easy solution</h3>
 <p>How much did passenger traffic decrease in March 2020 compared to March 2019?</p>
-<div id="ee028618" class="cell" data-execution_count="13">
+<div id="16b65814" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>total_march_2019 <span class="op">=</span> passenger_df.loc[<span class="st">'2019-03-01'</span>, <span class="st">'Grand'</span>]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>total_march_2020 <span class="op">=</span> passenger_df.loc[<span class="st">'2020-03-01'</span>, <span class="st">'Grand'</span>]</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -481,22 +481,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="4.3" class="anchored" data-anchor-id="stacking-wide-to-long"><span class="header-section-number">4.3</span> Stacking: Wide to Long</h2>
 <p>If you have a DataFrame and want to convert its columns into index levels, use pandas’s <code>.stack()</code> (<a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.stack.html">docs</a>, <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/reshaping.html#reshaping-by-stacking-and-unstacking">user guide</a>).</p>
 <p>Our <code>passenger_df</code> is currently in <strong>wide</strong> format: each airline is a column, each row is a month, and the values are passenger counts.</p>
-<div id="07866cf2" class="cell" data-execution_count="14">
+<div id="b5c849ad" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>passenger_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Stacking converts this into a <strong>long</strong> format — a MultiIndexed Series with Month at the first level and airline at the second level.</p>
-<div id="3b0735f2" class="cell" data-execution_count="15">
+<div id="f4594d75" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>passenger_stack_df <span class="op">=</span> passenger_df.stack()</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>passenger_stack_df.head(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Turn this MultiIndexed Series into a flat DataFrame with <code>.reset_index()</code>, then rename the columns for clarity.</p>
-<div id="540b2e55" class="cell" data-execution_count="16">
+<div id="100f77b4" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>passenger_stack_df <span class="op">=</span> passenger_stack_df.reset_index()</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>passenger_stack_df.head(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="b131179c" class="cell" data-execution_count="17">
+<div id="16f62bcf" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>passenger_stack_df.rename(</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>{</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">'level_1'</span>: <span class="st">'Airline'</span>,</span>
@@ -525,27 +525,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="unstacking-long-to-wide" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="unstacking-long-to-wide"><span class="header-section-number">4.4</span> Unstacking: Long to Wide</h2>
 <p>Now we want to reverse the process — take our long DataFrame and return it to wide format. Set the columns you want as index levels using <code>.set_index()</code>, then call <code>.unstack()</code> to pivot one level into columns.</p>
-<div id="45d885fe" class="cell" data-execution_count="18">
+<div id="9a6a2960" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>passenger_unstack_df <span class="op">=</span> passenger_stack_df.set_index([<span class="st">'Month'</span>, <span class="st">'Airline'</span>])</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>passenger_unstack_df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="e981b641" class="cell" data-execution_count="19">
+<div id="7aa9ebce" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>passenger_unstack_df <span class="op">=</span> passenger_unstack_df.unstack(<span class="st">'Airline'</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>passenger_unstack_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This output is a little annoying because it created a MultiIndex on the columns — see the “Passengers” above the airline names? Accessing United requires passing <code>passenger_unstack_df[('Passengers', 'United')]</code>. You can remove this extra level with <code>.droplevel()</code>.</p>
-<div id="5ac3cff4" class="cell" data-execution_count="20">
+<div id="7d2c1edc" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>passenger_unstack_df.droplevel(<span class="dv">0</span>, axis<span class="op">=</span><span class="st">'columns'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The cleaner alternative is to unstack a <em>Series</em> rather than a DataFrame. Access the single value column as a Series first, then unstack.</p>
-<div id="16ccbcc4" class="cell" data-execution_count="21">
+<div id="a972b0ee" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>passenger_stack_s <span class="op">=</span> passenger_stack_df.set_index([<span class="st">'Month'</span>, <span class="st">'Airline'</span>]).loc[:, <span class="st">'Passengers'</span>]</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>passenger_stack_s</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="2703d7a5" class="cell" data-execution_count="22">
+<div id="ae4d3913" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>passenger_stack_s.unstack(<span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This produces a clean, simple wide DataFrame without the MultiIndex on columns.</p>
@@ -554,16 +554,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="4.5" class="anchored" data-anchor-id="melting-another-path-from-wide-to-long"><span class="header-section-number">4.5</span> Melting: Another Path from Wide to Long</h2>
 <p>The <code>pd.melt</code> function offers a more explicit interface for going from wide to long. You specify which columns remain as identifiers (<code>id_vars</code>) and which get “melted” into value rows.</p>
 <p>First, reset the index to get “Month” as a column.</p>
-<div id="fbae6832" class="cell" data-execution_count="23">
+<div id="f9e1755e" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>passenger_df_reset <span class="op">=</span> passenger_df.reset_index()</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(passenger_df_reset.shape)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>passenger_df_reset.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note the shape: 321 rows × 9 columns. After melting, 8 of those 9 columns (the airlines) should become rows. So we should get approximately 321 × 8 = 2,568 rows.</p>
-<div id="96f5544e" class="cell" data-execution_count="24">
+<div id="fbf6dd34" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="dv">321</span> <span class="op">*</span> <span class="dv">8</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="ec924e95" class="cell" data-execution_count="25">
+<div id="56793cd9" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>passengers_melt_df <span class="op">=</span> pd.melt(</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    frame<span class="op">=</span>passenger_df_reset,</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    id_vars<span class="op">=</span>[<span class="st">'Month'</span>],</span>
@@ -575,7 +575,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>passengers_melt_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You can also pass explicit <code>value_vars</code> to melt only specific columns.</p>
-<div id="5668ec9b" class="cell" data-execution_count="26">
+<div id="70f7047d" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>passengers_melt_df <span class="op">=</span> pd.melt(</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    frame<span class="op">=</span>passenger_df_reset,</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    id_vars<span class="op">=</span>[<span class="st">'Month'</span>],</span>
@@ -605,11 +605,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="unmelting-with-pivot" class="level2" data-number="4.6">
 <h2 data-number="4.6" class="anchored" data-anchor-id="unmelting-with-pivot"><span class="header-section-number">4.6</span> Unmelting with Pivot</h2>
 <p>A melted DataFrame can be “unmelted” with the <code>.pivot()</code> method. Pass the column names you want for the index, columns, and values.</p>
-<div id="503ea832" class="cell" data-execution_count="27">
+<div id="a8ea1bde" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>passengers_melt_df.pivot(index<span class="op">=</span><span class="st">'Month'</span>, columns<span class="op">=</span><span class="st">'Airline'</span>, values<span class="op">=</span><span class="st">'Count'</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You can also pivot the other way — airlines as rows, months as columns.</p>
-<div id="8575f203" class="cell" data-execution_count="28">
+<div id="460b6411" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>passengers_melt_df.pivot(index<span class="op">=</span><span class="st">'Airline'</span>, columns<span class="op">=</span><span class="st">'Month'</span>, values<span class="op">=</span><span class="st">'Count'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -638,7 +638,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Filter the <code>passengers_melt_df</code> data down to only “United.” Identify the months with the most and fewest passengers.</p>
 <p><strong>Solution:</strong></p>
-<div id="f55d0709" class="cell" data-execution_count="29">
+<div id="1c84cf30" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>united <span class="op">=</span> passengers_melt_df[passengers_melt_df[<span class="st">'Airline'</span>] <span class="op">==</span> <span class="st">'United'</span>]</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Most passengers:"</span>)</span>
@@ -664,7 +664,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Do a groupby-aggregation or pivot table on <code>passengers_melt_df</code> to compute total passengers by airline since 1994. Which airline has carried the most passengers through DIA?</p>
 <p><strong>Solution:</strong></p>
-<div id="fe5c67af" class="cell" data-execution_count="30">
+<div id="5f29af73" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>passengers_melt_df[passengers_melt_df[<span class="st">'Airline'</span>] <span class="op">!=</span> <span class="st">'Grand'</span>].groupby(<span class="st">'Airline'</span>).agg(</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    {<span class="st">'Count'</span>: <span class="st">'sum'</span>}</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>).sort_values(<span class="st">'Count'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -686,7 +686,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Turn the tidy data in <code>passengers_melt_df</code> back into wide format using either a <code>.pivot()</code> or an <code>.unstack()</code> approach. Try making the months into columns too.</p>
 <p><strong>Solution:</strong></p>
-<div id="5acf6927" class="cell" data-execution_count="31">
+<div id="6cff8ab3" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using pivot</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>wide <span class="op">=</span> passengers_melt_df.pivot(index<span class="op">=</span><span class="st">'Month'</span>, columns<span class="op">=</span><span class="st">'Airline'</span>, values<span class="op">=</span><span class="st">'Count'</span>)</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>wide.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -708,7 +708,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Load the CDC deaths data from <a href="02-aggregating.html" class="quarto-xref"><span>Chapter 2</span></a>. Identify which columns should be <code>id_vars</code> (identifiers like State, Year, Week) and which should be <code>value_vars</code> (the disease columns). Use <code>pd.melt</code> or <code>.stack()</code> to reshape it into tidy format. How many rows does the result have? Does that match your prediction?</p>
 <p><strong>Solution:</strong></p>
-<div id="396076c2" class="cell" data-execution_count="32">
+<div id="3978f47f" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>deaths_df <span class="op">=</span> pd.read_csv(<span class="st">'CDC_deaths.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'Week date'</span>])</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>id_cols <span class="op">=</span> [<span class="st">'State'</span>, <span class="st">'Year'</span>, <span class="st">'Week'</span>, <span class="st">'Week date'</span>]</span>
@@ -743,7 +743,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Take the tidy CDC data from Exercise 4 and pivot it back into wide format. Verify that the result has the same shape as the original DataFrame.</p>
 <p><strong>Solution:</strong></p>
-<div id="052f12fa" class="cell" data-execution_count="33">
+<div id="37fcec68" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>deaths_wide <span class="op">=</span> deaths_tidy.pivot_table(</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>id_cols,</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span><span class="st">'Cause'</span>,</span>

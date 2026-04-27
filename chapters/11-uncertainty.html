@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-710deee90218c0747833ed862e9a1c0d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-d1385d2e7dd819d8e2833b0cdae6eae6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -363,7 +363,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This chapter covers the sources of uncertainty in data analysis, visual techniques for representing it, and strategies for communicating it to audiences who would prefer neat, definitive answers. These themes draw on research by Wilke (<em>Fundamentals of Data Visualization</em>), Padilla and colleagues on hazard uncertainty visualization, Gustafson and Rice on uncertainty in science communication, and Spiegelhalter on risk communication.</p>
 <section id="setup" class="level2" data-number="11.1">
 <h2 data-number="11.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">11.1</span> Setup</h2>
-<div id="4f24b1fd" class="cell" data-execution_count="1">
+<div id="3e5f535e" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -387,7 +387,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="error-bars" class="level3" data-number="11.3.1">
 <h3 data-number="11.3.1" class="anchored" data-anchor-id="error-bars"><span class="header-section-number">11.3.1</span> Error bars</h3>
 <p>The simplest way to represent uncertainty is with error bars. Seaborn’s bar and point plots include 95% confidence intervals by default — those black lines you saw at the top of the bars in <a href="07-catplots.html" class="quarto-xref"><span>Chapter 7</span></a>.</p>
-<div id="a64cd9cd" class="cell" data-execution_count="2">
+<div id="87c488e7" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>deaths_df <span class="op">=</span> pd.read_csv(<span class="st">'CDC_deaths.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'Week date'</span>])</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
@@ -407,7 +407,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="confidence-bands-on-time-series" class="level3" data-number="11.3.2">
 <h3 data-number="11.3.2" class="anchored" data-anchor-id="confidence-bands-on-time-series"><span class="header-section-number">11.3.2</span> Confidence bands on time series</h3>
 <p>For time series and regression lines, uncertainty is typically shown as a shaded band around the central estimate. You can construct this from the mean and standard deviation of aggregated data.</p>
-<div id="7ac3121f" class="cell" data-execution_count="3">
+<div id="6b8ba52d" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>temp_df <span class="op">=</span> pd.read_csv(<span class="st">'avg_temp_1880_2024.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'Date'</span>])</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>temp_df.set_index(<span class="st">'Date'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -435,7 +435,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="hypothetical-outcome-plots" class="level3" data-number="11.3.4">
 <h3 data-number="11.3.4" class="anchored" data-anchor-id="hypothetical-outcome-plots"><span class="header-section-number">11.3.4</span> Hypothetical outcome plots</h3>
 <p>A more advanced technique involves showing multiple plausible outcomes rather than a single summary. Instead of one regression line with a confidence band, you can draw multiple regression lines sampled from the distribution of possible models. This “ensemble” approach, sometimes called a hypothetical outcome plot, helps audiences develop an intuitive sense of model uncertainty.</p>
-<div id="df3861e8" class="cell" data-execution_count="4">
+<div id="6b6c3560" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">50</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>true_slope, true_intercept <span class="op">=</span> <span class="fl">2.5</span>, <span class="fl">1.0</span></span>
@@ -534,7 +534,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Using the CDC mortality data, compute the mean and 95% confidence interval for weekly cancer deaths in 2019 and 2020. Print both. Write a sentence interpreting whether the difference is meaningful.</p>
 <p><strong>Solution:</strong></p>
-<div id="f8e3425d" class="cell" data-execution_count="5">
+<div id="00ea8379" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>deaths_df <span class="op">=</span> pd.read_csv(<span class="st">'CDC_deaths.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'Week date'</span>])</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year <span class="kw">in</span> [<span class="dv">2019</span>, <span class="dv">2020</span>]:</span>
@@ -585,7 +585,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Using the Berkeley Earth temperature data, compute 90-day, 365-day, and 3650-day rolling averages. Plot all three on the same axes. Write a paragraph explaining how the choice of window size affects the interpretation of the warming trend. Is one window size “correct”?</p>
 <p><strong>Solution:</strong></p>
-<div id="e999666f" class="cell" data-execution_count="6">
+<div id="48b265ec" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>temp_df <span class="op">=</span> pd.read_csv(<span class="st">'avg_temp_1880_2024.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'Date'</span>])</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>temp_df.set_index(<span class="st">'Date'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -615,7 +615,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Compute the mean and standard deviation of monthly DIA passenger traffic for each month of the year (January through December) using pre-pandemic data (2015–2019). Plot the monthly mean as a line with a ±1 standard deviation shaded band. Overlay the 2020 and 2021 actual values. Write two sentences interpreting the result.</p>
 <p><strong>Solution:</strong></p>
-<div id="c9ad04d5" class="cell" data-execution_count="7">
+<div id="9fcf0b0a" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>passengers_df <span class="op">=</span> pd.read_csv(<span class="st">'passengers.csv'</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>passengers_df[<span class="st">'Month'</span>] <span class="op">=</span> pd.to_datetime(passengers_df[<span class="st">'Month'</span>])</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>passengers_df.set_index(<span class="st">'Month'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>

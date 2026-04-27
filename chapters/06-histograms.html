@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-710deee90218c0747833ed862e9a1c0d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-d1385d2e7dd819d8e2833b0cdae6eae6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -372,7 +372,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This chapter also serves as your deep engagement with matplotlib’s <strong>object-oriented</strong> interface. Rather than calling convenience functions, you will create Figure and Axes objects explicitly and manipulate them. Every visual element in a matplotlib chart is an object with methods you can call, and understanding this architecture gives you fine-grained control over every pixel of your visualization.</p>
 <section id="setup" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">6.1</span> Setup</h2>
-<div id="995acc60" class="cell" data-execution_count="1">
+<div id="0a1547d6" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>np.set_printoptions(suppress<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -382,11 +382,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>pd.options.display.max_columns <span class="op">=</span> <span class="dv">100</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Load the Boulder and Broomfield weather data. Note the pipe (<code>|</code>) delimiter — not all “CSV” files use commas.</p>
-<div id="89008e1a" class="cell" data-execution_count="2">
+<div id="7e934550" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>boulder_df <span class="op">=</span> pd.read_csv(<span class="st">'boulder_weather.csv'</span>, sep<span class="op">=</span><span class="st">'|'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>boulder_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="21a6d5e0" class="cell" data-execution_count="3">
+<div id="e19415ac" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>broomfield_df <span class="op">=</span> pd.read_csv(<span class="st">'broomfield_weather.csv'</span>, sep<span class="op">=</span><span class="st">'|'</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>broomfield_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -395,7 +395,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="6.2" class="anchored" data-anchor-id="setting-up-matplotlib"><span class="header-section-number">6.2</span> Setting Up Matplotlib</h2>
 <p>When we use matplotlib within a Jupyter Notebook, we need to run a special command called a “cell magic” so that the images it generates are included directly in the notebook. Without <code>%matplotlib inline</code>, you would need to call <code>plt.show()</code> or <code>plt.savefig()</code> to see your visualizations.</p>
 <p>We construct and manage plots through matplotlib’s <code>pyplot</code> (<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.html">docs</a>) interface.</p>
-<div id="281c161a" class="cell" data-execution_count="4">
+<div id="eda88e62" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -404,36 +404,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="creating-and-customizing-figures-and-subplots" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="creating-and-customizing-figures-and-subplots"><span class="header-section-number">6.3</span> Creating and Customizing Figures and Subplots</h2>
 <p>This is our first stop on the object-oriented coding style. Before we plot any data, let’s understand what a figure <em>is</em> by creating an empty one.</p>
-<div id="781eaca8" class="cell" data-execution_count="5">
+<div id="94cef6fd" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <code>f</code> object is the <strong>Figure</strong> — the entire canvas. The <code>ax</code> object is the <strong>Axes</strong> — a single subplot within the figure. Calling <code>f</code> returns the (now-empty) visualization.</p>
-<div id="4dc9ada7" class="cell" data-execution_count="6">
+<div id="4085ca3b" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The Figure contains an enormous number of methods and attributes. The <code>.get_axes()</code> method retrieves the subplot objects within the figure. There is only one subplot here, so it is a list of one item.</p>
-<div id="753cf15c" class="cell" data-execution_count="7">
+<div id="658b4fdc" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>f.get_axes()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <code>ax</code> object has its own methods and attributes. The <code>.get_children()</code> method shows all the components of this “empty” plot: <code>spines</code> for the four borders (top, bottom, right, left), the <code>XAxis</code> and <code>YAxis</code> with tick labels 0.0 to 1.0, empty <code>Text</code> objects for the xlabel, ylabel, and title, and a <code>Rectangle</code> patch object.</p>
-<div id="2a438293" class="cell" data-execution_count="8">
+<div id="68618729" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ax.get_children()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="mutating-objects" class="level3" data-number="6.3.1">
 <h3 data-number="6.3.1" class="anchored" data-anchor-id="mutating-objects"><span class="header-section-number">6.3.1</span> Mutating objects</h3>
 <p>Every visual element is an object you can modify. The Rectangle has a height, width, and origin.</p>
-<div id="4539f312" class="cell" data-execution_count="9">
+<div id="fced44ff" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>rect <span class="op">=</span> ax.get_children()[<span class="op">-</span><span class="dv">1</span>]</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>rect.get_height(), rect.get_width(), rect.get_xy()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can mutate this Rectangle — color it red and shrink it.</p>
-<div id="1014250c" class="cell" data-execution_count="10">
+<div id="9acd719f" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>rect.set_facecolor(<span class="st">'red'</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>rect.set_height(<span class="fl">.5</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>rect.set_width(<span class="fl">.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Check the figure again. The rectangle is now red and half-sized.</p>
-<div id="eb24eeda" class="cell" data-execution_count="11">
+<div id="a51ac42c" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>f</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -450,7 +450,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Mutate the <code>rect</code> object (<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.patches.Rectangle.html">docs</a>) so that it has an <code>edgecolor</code> of green and a <code>linewidth</code> of 10. Display the result.</p>
 <p><strong>Solution:</strong></p>
-<div id="e80afd75" class="cell" data-execution_count="12">
+<div id="add74fd4" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>rect.set_edgecolor(<span class="st">'green'</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>rect.set_linewidth(<span class="dv">10</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -465,24 +465,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="one-dimensional-histogram" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="one-dimensional-histogram"><span class="header-section-number">6.4</span> One-Dimensional Histogram</h2>
 <p>Now let’s make a real histogram. First, retrieve the temperature values from the Boulder weather data as a numpy array using the <code>.values</code> attribute.</p>
-<div id="145bc877" class="cell" data-execution_count="13">
+<div id="e038ba68" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>boulder_temps <span class="op">=</span> boulder_df[<span class="st">'TEMP'</span>].values</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>boulder_temps</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Create an empty figure and subplot.</p>
-<div id="d9a737a6" class="cell" data-execution_count="14">
+<div id="a518fb10" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Plot a histogram of <code>boulder_temps</code> in the <code>ax</code> object. The <code>.hist</code> method returns three values: the count of values in each bin, the boundaries of each bin, and the <code>BarContainer</code> object that populates the axes.</p>
-<div id="9c5b63ac" class="cell" data-execution_count="15">
+<div id="67db5e61" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ax.hist(boulder_temps)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>But where is the plot? It was drawn into <code>ax</code>, which lives inside <code>f</code>. Check <code>f</code>.</p>
-<div id="1e9ff7ea" class="cell" data-execution_count="16">
+<div id="7f99d77f" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>f</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If you create the figure, subplot, and histogram in the same cell (which we will do from now on), the figure appears automatically. You can silence the extra output from <code>.hist()</code> by adding a semicolon at the end of the line.</p>
-<div id="2e3d0232" class="cell" data-execution_count="17">
+<div id="48138f71" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ax.hist(boulder_temps)<span class="op">;</span>  <span class="co"># Semicolon silences the bin counts and boundaries</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -490,12 +490,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="6.4.1" class="anchored" data-anchor-id="choosing-the-number-of-bins"><span class="header-section-number">6.4.1</span> Choosing the number of bins</h3>
 <p>The <code>bins</code> parameter controls how many bars the histogram displays. Too few bins obscure the shape of the distribution; too many create noise. Experiment with different values.</p>
 <p><strong>Few bins (5):</strong> The shape is barely visible.</p>
-<div id="1641ad54" class="cell" data-execution_count="18">
+<div id="e29e7587" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ax.hist(boulder_temps, bins<span class="op">=</span><span class="dv">5</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Moderate bins (25):</strong> We start to see a bimodal distribution — two peaks corresponding to winter and summer temperatures. This is exactly the kind of insight histograms are designed to reveal.</p>
-<div id="d7b69c66" class="cell" data-execution_count="19">
+<div id="9ad54056" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ax.hist(boulder_temps, bins<span class="op">=</span><span class="dv">25</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -504,7 +504,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="labeling-axes" class="level3" data-number="6.4.2">
 <h3 data-number="6.4.2" class="anchored" data-anchor-id="labeling-axes"><span class="header-section-number">6.4.2</span> Labeling axes</h3>
 <p>One of the most essential visualization practices is to label your axes. A histogram without labels forces the reader to guess what they are looking at.</p>
-<div id="8b8d17be" class="cell" data-execution_count="20">
+<div id="d03c4644" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>ax.hist(boulder_temps, bins<span class="op">=</span><span class="dv">25</span>, facecolor<span class="op">=</span><span class="st">'#CFB87C'</span>)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -527,7 +527,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Create an empty figure and subplot, extract the “TEMP” values from <code>broomfield_df</code>, make a histogram with 25 bins, and label your axes.</p>
 <p><strong>Solution:</strong></p>
-<div id="7a49590e" class="cell" data-execution_count="21">
+<div id="76eb0900" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>broomfield_temps <span class="op">=</span> broomfield_df[<span class="st">'TEMP'</span>].values</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span>
@@ -546,15 +546,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="6.5" class="anchored" data-anchor-id="skewed-data"><span class="header-section-number">6.5</span> Skewed Data</h2>
 <p>The weather data has nice statistical properties — it is approximately normally distributed (or bimodal, reflecting seasons). Many real-world datasets do not share this property. Income, population, case counts, and web traffic often show a strong <strong>right skew</strong>: many small values and a few extremely large ones.</p>
 <p>Load the Colorado county-level COVID data.</p>
-<div id="17760eb3" class="cell" data-execution_count="22">
+<div id="b9bffdbf" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>co_covid_df <span class="op">=</span> pd.read_csv(<span class="st">'co_county_covid.csv'</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>co_covid_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="24f64885" class="cell" data-execution_count="23">
+<div id="53f764ab" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>co_covid_df[<span class="st">'Cases'</span>].describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Make a histogram. There is an enormous number of county-months with zero or few cases and a handful with thousands. The first bar dominates the chart, making it uninformative.</p>
-<div id="505be1b1" class="cell" data-execution_count="24">
+<div id="66cad860" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>covid_cases <span class="op">=</span> co_covid_df[<span class="st">'Cases'</span>].values</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span>
@@ -569,14 +569,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="6.5.1" class="anchored" data-anchor-id="log-transformations"><span class="header-section-number">6.5.1</span> Log transformations</h3>
 <p>A common approach to handling skewed data is to use <strong>logarithmic bins and axes</strong>. Rather than bin boundaries being linearly spaced (0, 1000, 2000, …), they are geometrically spaced (1, 10, 100, 1000, …).</p>
 <p>Numpy provides two functions for generating evenly-spaced sequences. <code>linspace</code> creates linearly-spaced values and <code>geomspace</code> creates geometrically-spaced values.</p>
-<div id="0c365fc2" class="cell" data-execution_count="25">
+<div id="ba331647" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>np.linspace(<span class="dv">0</span>, <span class="dv">10000</span>, <span class="dv">11</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f049011a" class="cell" data-execution_count="26">
+<div id="0f7ac1ec" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>np.geomspace(<span class="dv">1</span>, <span class="dv">10000</span>, <span class="dv">11</span>)  <span class="co"># Start at 10^0 = 1, end at 10^4 = 10000</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Pass geometric bin boundaries to the <code>bins</code> parameter, then set logarithmic scales on the axes.</p>
-<div id="90874baf" class="cell" data-execution_count="27">
+<div id="177a369d" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>ax.hist(covid_cases, bins<span class="op">=</span>np.geomspace(<span class="dv">1</span>, <span class="dv">10000</span>, <span class="dv">11</span>))</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -587,7 +587,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>ax.set_xscale(<span class="st">'log'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Adding a log scale to the y-axis as well creates a <strong>log-log plot</strong>, which reveals the underlying distributional shape.</p>
-<div id="c5744c9b" class="cell" data-execution_count="28">
+<div id="657bb925" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>ax.hist(covid_cases, bins<span class="op">=</span>np.geomspace(<span class="dv">1</span>, <span class="dv">10000</span>, <span class="dv">11</span>))</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -615,7 +615,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="why-log-binned-data-matters" class="level3" data-number="6.5.2">
 <h3 data-number="6.5.2" class="anchored" data-anchor-id="why-log-binned-data-matters"><span class="header-section-number">6.5.2</span> Why log-binned data matters</h3>
 <p>Different probability distributions look similar on linear scales but have very different shapes on log scales. This is important because the distributional shape determines which statistical tools are appropriate. Here is a demonstration with four simulated distributions.</p>
-<div id="0a191175" class="cell" data-execution_count="29">
+<div id="a08a7220" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> minmax_scale</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>_size <span class="op">=</span> <span class="dv">1000</span></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -625,7 +625,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>random_power <span class="op">=</span> minmax_scale(np.random.power(a<span class="op">=</span><span class="dv">5</span>, size<span class="op">=</span>_size), feature_range<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>On linear axes, these distributions look quite similar.</p>
-<div id="f96f2546" class="cell" data-execution_count="30">
+<div id="40564c2b" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>f, (ax0, ax1, ax2, ax3) <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">4</span>))</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>ax0.hist(random_exponential, bins<span class="op">=</span><span class="dv">25</span>)</span>
@@ -642,7 +642,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>f.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>On log axes with geometric bins, they look very different — each has a distinctive signature shape.</p>
-<div id="41e94ac9" class="cell" data-execution_count="31">
+<div id="bca6c32c" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>f, (ax0, ax1, ax2, ax3) <span class="op">=</span> plt.subplots(</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">4</span>),</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    subplot_kw<span class="op">=</span>{<span class="st">'xscale'</span>: <span class="st">'log'</span>}</span>
@@ -675,7 +675,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Extract the “Deaths” values from <code>co_covid_df</code>. Make a histogram with geometrically-spaced bins, log-scaled axes, and labeled axes.</p>
 <p><strong>Solution:</strong></p>
-<div id="a4eca47c" class="cell" data-execution_count="32">
+<div id="4404de6b" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>covid_deaths <span class="op">=</span> co_covid_df[<span class="st">'Deaths'</span>].values</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span>
@@ -696,10 +696,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="visualizing-multiple-histograms" class="level2" data-number="6.6">
 <h2 data-number="6.6" class="anchored" data-anchor-id="visualizing-multiple-histograms"><span class="header-section-number">6.6</span> Visualizing Multiple Histograms</h2>
 <p>We often want to compare distributions across groups. Let’s compare temperatures in Boulder and Broomfield. Because the datasets cover slightly different date ranges and have different sizes, we first inner-join them on the date column so we are comparing the same days.</p>
-<div id="4fda9b7c" class="cell" data-execution_count="33">
+<div id="c00d0eae" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>boulder_df.shape, broomfield_df.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="369955eb" class="cell" data-execution_count="34">
+<div id="8d3c37c0" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>both_df <span class="op">=</span> pd.merge(</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    left<span class="op">=</span>boulder_df,</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    right<span class="op">=</span>broomfield_df,</span>
@@ -711,14 +711,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>both_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="5ac3f665" class="cell" data-execution_count="35">
+<div id="7a98798e" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>boulder_temps <span class="op">=</span> both_df[<span class="st">'TEMP_BOULDER'</span>].values</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>broomfield_temps <span class="op">=</span> both_df[<span class="st">'TEMP_BROOMFIELD'</span>].values</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="option-1-side-by-side-subplots" class="level3" data-number="6.6.1">
 <h3 data-number="6.6.1" class="anchored" data-anchor-id="option-1-side-by-side-subplots"><span class="header-section-number">6.6.1</span> Option 1: Side-by-side subplots</h3>
 <p>Use <code>ncols=2</code> to create two subplots side by side. The <code>sharey=True</code> parameter ensures they use the same y-axis scale for fair comparison.</p>
-<div id="c6e0b438" class="cell" data-execution_count="36">
+<div id="58096c90" class="cell" data-execution_count="36">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>f, (ax0, ax1) <span class="op">=</span> plt.subplots(</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">2</span>,</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>),</span>
@@ -741,11 +741,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="option-2-grouped-bars-on-a-single-plot" class="level3" data-number="6.6.2">
 <h3 data-number="6.6.2" class="anchored" data-anchor-id="option-2-grouped-bars-on-a-single-plot"><span class="header-section-number">6.6.2</span> Option 2: Grouped bars on a single plot</h3>
 <p>Stack the two numpy arrays together and pass them to <code>.hist()</code> with color and label parameters.</p>
-<div id="29f52367" class="cell" data-execution_count="37">
+<div id="91fe8d25" class="cell" data-execution_count="37">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>stacked_arrays <span class="op">=</span> np.stack([boulder_temps, broomfield_temps], axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>boulder_temps.shape, broomfield_temps.shape, stacked_arrays.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f880b1a1" class="cell" data-execution_count="38">
+<div id="5a2a638e" class="cell" data-execution_count="38">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>ax.hist(</span>
@@ -765,7 +765,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="option-3-stacked-bars" class="level3" data-number="6.6.3">
 <h3 data-number="6.6.3" class="anchored" data-anchor-id="option-3-stacked-bars"><span class="header-section-number">6.6.3</span> Option 3: Stacked bars</h3>
 <p>Setting <code>stacked=True</code> layers one distribution on top of the other. This is perceptually harder to compare but shows the combined total.</p>
-<div id="2736a793" class="cell" data-execution_count="39">
+<div id="ac6ca0f9" class="cell" data-execution_count="39">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>ax.hist(</span>
@@ -786,7 +786,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="option-4-cumulative-histogram" class="level3" data-number="6.6.4">
 <h3 data-number="6.6.4" class="anchored" data-anchor-id="option-4-cumulative-histogram"><span class="header-section-number">6.6.4</span> Option 4: Cumulative histogram</h3>
 <p>A cumulative histogram shows the running total. This is useful for answering questions like “on what fraction of days was the temperature below 50°F?”</p>
-<div id="a198759c" class="cell" data-execution_count="40">
+<div id="1e498d31" class="cell" data-execution_count="40">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>ax.hist(</span>
@@ -807,7 +807,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="small-multiples-with-pandas" class="level3" data-number="6.6.5">
 <h3 data-number="6.6.5" class="anchored" data-anchor-id="small-multiples-with-pandas"><span class="header-section-number">6.6.5</span> Small multiples with pandas</h3>
 <p>You can use pandas to generate a grid of histograms grouped by a categorical variable — one histogram per county, for example.</p>
-<div id="64ef96c0" class="cell" data-execution_count="41">
+<div id="0d9f7f12" class="cell" data-execution_count="41">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>f, axs <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">13</span>, ncols<span class="op">=</span><span class="dv">5</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">20</span>))</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>co_covid_df.plot.hist(</span>
@@ -825,22 +825,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="6.7" class="anchored" data-anchor-id="pandas-histogram-methods"><span class="header-section-number">6.7</span> Pandas Histogram Methods</h2>
 <p>Everything above involved extracting numpy arrays from pandas. You can also create histograms directly from pandas objects.</p>
 <p>The <code>.hist()</code> method on a Series produces a quick histogram.</p>
-<div id="f32b02c7" class="cell" data-execution_count="42">
+<div id="d9e16ff2" class="cell" data-execution_count="42">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>both_df[<span class="st">'TEMP_BOULDER'</span>].hist(grid<span class="op">=</span><span class="va">False</span>, bins<span class="op">=</span><span class="dv">25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Calling <code>.hist()</code> on a DataFrame makes one histogram per column.</p>
-<div id="74834c99" class="cell" data-execution_count="43">
+<div id="d2278a12" class="cell" data-execution_count="43">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>both_df[[<span class="st">'TEMP_BOULDER'</span>, <span class="st">'TEMP_BROOMFIELD'</span>]].hist()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <code>.plot.hist()</code> method offers additional options like stacking and horizontal orientation.</p>
-<div id="416b7928" class="cell" data-execution_count="44">
+<div id="36b773dd" class="cell" data-execution_count="44">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>both_df[[<span class="st">'TEMP_BOULDER'</span>, <span class="st">'TEMP_BROOMFIELD'</span>]].plot.hist(stacked<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f5c83ebd" class="cell" data-execution_count="45">
+<div id="7e8b62f1" class="cell" data-execution_count="45">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>both_df[[<span class="st">'TEMP_BOULDER'</span>, <span class="st">'TEMP_BROOMFIELD'</span>]].plot.hist(orientation<span class="op">=</span><span class="st">'horizontal'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You can also combine pandas plotting with your own figure setup by passing <code>ax</code> as a parameter.</p>
-<div id="ad698830" class="cell" data-execution_count="46">
+<div id="7c61f05d" class="cell" data-execution_count="46">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>f, (ax0, ax1) <span class="op">=</span> plt.subplots(ncols<span class="op">=</span><span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>both_df[[<span class="st">'TEMP_BOULDER'</span>, <span class="st">'TEMP_BROOMFIELD'</span>]].plot.hist(stacked<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax0, legend<span class="op">=</span><span class="va">False</span>)</span>
@@ -850,7 +850,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="two-dimensional-histograms" class="level2" data-number="6.8">
 <h2 data-number="6.8" class="anchored" data-anchor-id="two-dimensional-histograms"><span class="header-section-number">6.8</span> Two-Dimensional Histograms</h2>
 <p>You can visualize the joint distribution of two variables with a 2D histogram. This works like a terrain map: darker colors represent lower counts and brighter colors represent higher counts.</p>
-<div id="47a84e32" class="cell" data-execution_count="47">
+<div id="be342645" class="cell" data-execution_count="47">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">6</span>))</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>counts, xedges, yedges, im <span class="op">=</span> ax.hist2d(</span>
@@ -881,7 +881,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Make a figure with two side-by-side subplots. The left subplot should show a histogram of COVID cases and the right subplot should show COVID deaths. Use appropriate bins and consider whether log scaling is needed.</p>
 <p><strong>Solution:</strong></p>
-<div id="6a2aa123" class="cell" data-execution_count="48">
+<div id="87c18244" class="cell" data-execution_count="48">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>f, (ax0, ax1) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>ax0.hist(co_covid_df[<span class="st">'Cases'</span>].values, bins<span class="op">=</span>np.geomspace(<span class="dv">1</span>, <span class="dv">10000</span>, <span class="dv">20</span>))</span>
@@ -916,7 +916,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Compute the mean, median, and standard deviation of Boulder’s temperature data. Add vertical lines to your histogram at the mean and median. Do they fall in the same place? What does the difference (or similarity) tell you about the symmetry of the distribution?</p>
 <p><strong>Solution:</strong></p>
-<div id="fc658601" class="cell" data-execution_count="49">
+<div id="d54210ed" class="cell" data-execution_count="49">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>mean_temp <span class="op">=</span> np.mean(boulder_temps)</span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>median_temp <span class="op">=</span> np.median(boulder_temps)</span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -947,7 +947,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Create a figure with four subplots (2 rows, 2 columns) showing histograms of four different weather variables from the Boulder data (e.g., TEMP, PRCP, WDSP, MAX). Label each subplot appropriately.</p>
 <p><strong>Solution:</strong></p>
-<div id="2d07c598" class="cell" data-execution_count="50">
+<div id="5cbd4a92" class="cell" data-execution_count="50">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>f, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>vars_and_labels <span class="op">=</span> [</span>

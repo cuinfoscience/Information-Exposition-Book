@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-710deee90218c0747833ed862e9a1c0d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-d1385d2e7dd819d8e2833b0cdae6eae6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -375,7 +375,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This chapter introduces techniques for revealing these patterns: resampling, rolling averages, boxplot summaries, temporal pattern decomposition across frequencies, and formal time series decomposition.</p>
 <section id="setup" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">10.1</span> Setup</h2>
-<div id="83cb0a19" class="cell" data-execution_count="1">
+<div id="3a261ae4" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>np.set_printoptions(suppress<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -389,7 +389,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sb</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="1be925c0" class="cell" data-execution_count="2">
+<div id="1e253c72" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a weekday order — otherwise many libraries will list them alphabetically</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>weekday_order <span class="op">=</span> [<span class="st">'Monday'</span>, <span class="st">'Tuesday'</span>, <span class="st">'Wednesday'</span>, <span class="st">'Thursday'</span>, <span class="st">'Friday'</span>, <span class="st">'Saturday'</span>, <span class="st">'Sunday'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -430,7 +430,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="nyc-taxi-pickups" class="level3" data-number="10.2.1">
 <h3 data-number="10.2.1" class="anchored" data-anchor-id="nyc-taxi-pickups"><span class="header-section-number">10.2.1</span> NYC taxi pickups</h3>
 <p>New York City’s Taxi and Limousine Commission publishes <a href="https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page">high-resolution anonymized data</a> about every trip starting or ending in the city.</p>
-<div id="99d926d8" class="cell" data-execution_count="3">
+<div id="894b9ca7" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>nyc_df <span class="op">=</span> pd.read_csv(<span class="st">'nyc_pickups.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'timestamp'</span>])</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>nyc_df.set_index(<span class="st">'timestamp'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -444,7 +444,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sp-500" class="level3" data-number="10.2.2">
 <h3 data-number="10.2.2" class="anchored" data-anchor-id="sp-500"><span class="header-section-number">10.2.2</span> S&amp;P 500</h3>
-<div id="63afff73" class="cell" data-execution_count="4">
+<div id="6869831f" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sp500_df <span class="op">=</span> pd.read_csv(<span class="st">'sp500.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'Date'</span>])</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sp500_df.set_index(<span class="st">'Date'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -458,7 +458,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="berkeley-earth-surface-temperature" class="level3" data-number="10.2.3">
 <h3 data-number="10.2.3" class="anchored" data-anchor-id="berkeley-earth-surface-temperature"><span class="header-section-number">10.2.3</span> Berkeley Earth Surface Temperature</h3>
 <p>Daily land surface temperature estimates from 1880 to the present, from <a href="http://berkeleyearth.org/data/">Berkeley Earth</a>.</p>
-<div id="5781a2e8" class="cell" data-execution_count="5">
+<div id="68b8e920" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>temp_df <span class="op">=</span> pd.read_csv(<span class="st">'avg_temp_1880_2024.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'Date'</span>])</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>temp_df.set_index(<span class="st">'Date'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -472,7 +472,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="dia-passenger-traffic" class="level3" data-number="10.2.4">
 <h3 data-number="10.2.4" class="anchored" data-anchor-id="dia-passenger-traffic"><span class="header-section-number">10.2.4</span> DIA passenger traffic</h3>
-<div id="40484d47" class="cell" data-execution_count="6">
+<div id="a6d30c0b" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>passengers_df <span class="op">=</span> pd.read_csv(<span class="st">'passengers.csv'</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>passengers_df[<span class="st">'Month'</span>] <span class="op">=</span> pd.to_datetime(passengers_df[<span class="st">'Month'</span>])</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>passengers_df.set_index(<span class="st">'Month'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
@@ -487,7 +487,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="visualizing-raw-time-series" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="visualizing-raw-time-series"><span class="header-section-number">10.3</span> Visualizing Raw Time Series</h2>
 <p>Start by plotting the raw temperature data. With over 50,000 daily observations spanning 140+ years, the result is dense and hard to interpret.</p>
-<div id="b0bafb68" class="cell" data-execution_count="7">
+<div id="0cd0b416" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">6</span>))</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>temp_df[<span class="st">'AvgTemp'</span>].plot(ax<span class="op">=</span>ax)</span>
@@ -503,7 +503,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="sampling-specific-dates" class="level3" data-number="10.4.1">
 <h3 data-number="10.4.1" class="anchored" data-anchor-id="sampling-specific-dates"><span class="header-section-number">10.4.1</span> Sampling specific dates</h3>
 <p>Try resampling to just July 1 of each year. The temperature on a single day is not a reliable indicator of a warming pattern.</p>
-<div id="bef0d199" class="cell" data-execution_count="8">
+<div id="94bbd2e1" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>july_firsts <span class="op">=</span> pd.date_range(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    start<span class="op">=</span><span class="st">'1880-07-01'</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    end<span class="op">=</span><span class="st">'2022-07-01'</span>,</span>
@@ -523,7 +523,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="monthly-averages" class="level3" data-number="10.4.2">
 <h3 data-number="10.4.2" class="anchored" data-anchor-id="monthly-averages"><span class="header-section-number">10.4.2</span> Monthly averages</h3>
 <p>Averaging all days in each month is more robust than sampling a single day.</p>
-<div id="5ddcde86" class="cell" data-execution_count="9">
+<div id="87a51ae1" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>monthly_avg_temps <span class="op">=</span> temp_df.groupby(pd.Grouper(freq<span class="op">=</span><span class="st">'MS'</span>)).agg({<span class="st">'AvgTemp'</span>: <span class="st">'mean'</span>})</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">6</span>))</span>
@@ -537,7 +537,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="annual-averages" class="level3" data-number="10.4.3">
 <h3 data-number="10.4.3" class="anchored" data-anchor-id="annual-averages"><span class="header-section-number">10.4.3</span> Annual averages</h3>
 <p>Aggregating to annual averages removes the seasonal cycle entirely and reveals the long-term trend.</p>
-<div id="25f62316" class="cell" data-execution_count="10">
+<div id="ae4b8bed" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>annual_avg_temps <span class="op">=</span> temp_df.groupby(pd.Grouper(freq<span class="op">=</span><span class="st">'YS'</span>)).agg({<span class="st">'AvgTemp'</span>: <span class="st">'mean'</span>})</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">6</span>))</span>
@@ -553,12 +553,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="rolling-averages" class="level2" data-number="10.5">
 <h2 data-number="10.5" class="anchored" data-anchor-id="rolling-averages"><span class="header-section-number">10.5</span> Rolling Averages</h2>
 <p>Unlike resampling, which bins data into discrete periods, rolling averages produce a value for every data point, making them useful for overlaying on the original data.</p>
-<div id="c60e7ef5" class="cell" data-execution_count="11">
+<div id="0f0462b6" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>quarterly_rollmean <span class="op">=</span> temp_df[<span class="st">'AvgTemp'</span>].rolling(<span class="dv">90</span>).mean()</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>annual_rollmean <span class="op">=</span> temp_df[<span class="st">'AvgTemp'</span>].rolling(<span class="dv">365</span>).mean()</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>decadal_rollmean <span class="op">=</span> temp_df[<span class="st">'AvgTemp'</span>].rolling(<span class="dv">3650</span>).mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="c98ada55" class="cell" data-execution_count="12">
+<div id="0cc128d9" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">6</span>))</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>quarterly_rollmean.plot(ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">'tab:blue'</span>, label<span class="op">=</span><span class="st">'Quarterly'</span>)</span>
@@ -585,10 +585,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Use <code>nyc_df</code> to visualize the “yellowcab” and “rideshare” columns. Try hourly aggregation, daily aggregation, and overlaying both series.</p>
 <p><strong>Solution:</strong></p>
-<div id="272dd55e" class="cell" data-execution_count="13">
+<div id="1dbbaf07" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>nyc_df.groupby(pd.Grouper(freq<span class="op">=</span><span class="st">'h'</span>)).agg({<span class="st">'yellowcab'</span>: <span class="st">'sum'</span>}).plot()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="c6d6b50d" class="cell" data-execution_count="14">
+<div id="4a4f3ce4" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>nyc_df[[<span class="st">'yellowcab'</span>, <span class="st">'rideshare'</span>]].plot(alpha<span class="op">=</span><span class="fl">.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
@@ -599,7 +599,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="10.6" class="anchored" data-anchor-id="box-plots-for-temporal-distributions"><span class="header-section-number">10.6</span> Box Plots for Temporal Distributions</h2>
 <p>Box plots, introduced in <a href="07-catplots.html" class="quarto-xref"><span>Chapter 7</span></a>, are excellent for summarizing the distribution of values within each time period. We can create one box per year to show both central tendency and variability.</p>
 <p>First, a histogram for a single year (1984):</p>
-<div id="174d20d8" class="cell" data-execution_count="15">
+<div id="9f074dcd" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>temps_1984 <span class="op">=</span> temp_df.loc[<span class="st">'1984'</span>, <span class="st">'AvgTemp'</span>]</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
@@ -611,14 +611,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>ax.axvline(temps_1984.median(), color<span class="op">=</span><span class="st">'tab:orange'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The same data as a box plot:</p>
-<div id="257462d7" class="cell" data-execution_count="16">
+<div id="04c640cd" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">6</span>))</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>sb.boxplot(y<span class="op">=</span>temps_1984, ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">'tab:blue'</span>, whis<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Temperature (°C)'</span>)</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>ax.set_ylim((<span class="dv">5</span>, <span class="dv">12</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now a box plot for every year since 1970. The gradual upward shift of the boxes makes the warming trend visible while preserving information about annual variability.</p>
-<div id="0b113fd7" class="cell" data-execution_count="17">
+<div id="903eca37" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>temps_since_1970 <span class="op">=</span> temp_df.loc[<span class="st">'1970'</span>:, :]</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sb.catplot(</span>
@@ -647,7 +647,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Use <code>passengers_df</code> and seaborn to make a boxplot of the distribution of monthly passenger totals (y-axis) by year (x-axis).</p>
 <p><strong>Solution:</strong></p>
-<div id="cbfb66fc" class="cell" data-execution_count="18">
+<div id="c5787fa8" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>passengers_df[<span class="st">'Year'</span>] <span class="op">=</span> passengers_df.index.year</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sb.catplot(</span>
@@ -671,7 +671,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="hourly-patterns-circadian-rhythms" class="level3" data-number="10.7.1">
 <h3 data-number="10.7.1" class="anchored" data-anchor-id="hourly-patterns-circadian-rhythms"><span class="header-section-number">10.7.1</span> Hourly patterns: Circadian rhythms</h3>
 <p>Most people in a given location sleep at roughly the same time. When people are asleep, activity drops, and this should be visible in the data.</p>
-<div id="4857794d" class="cell" data-execution_count="19">
+<div id="45681e95" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>sb.catplot(</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'hour'</span>,</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'yellowcab'</span>,</span>
@@ -685,7 +685,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="weekly-patterns-workdays-vs.-weekends" class="level3" data-number="10.7.2">
 <h3 data-number="10.7.2" class="anchored" data-anchor-id="weekly-patterns-workdays-vs.-weekends"><span class="header-section-number">10.7.2</span> Weekly patterns: Workdays vs.&nbsp;weekends</h3>
 <p>We can make a heatmap to show the interaction between hour of day and day of week.</p>
-<div id="de4c8abd" class="cell" data-execution_count="20">
+<div id="7126b3c7" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>rideshare_pivot <span class="op">=</span> pd.pivot_table(</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    nyc_df,</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="st">'hour'</span>,</span>
@@ -701,11 +701,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>f.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The heatmap reveals that weekday patterns (morning and evening peaks) differ from weekend patterns (later starts, more nightlife activity). Different datasets show different weekly patterns.</p>
-<div id="e30a7c6a" class="cell" data-execution_count="21">
+<div id="bc984f60" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>sb.pointplot(x<span class="op">=</span><span class="st">'weekday'</span>, y<span class="op">=</span><span class="st">'Volume'</span>, data<span class="op">=</span>sp500_df, order<span class="op">=</span>weekday_order)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f82bf324" class="cell" data-execution_count="22">
+<div id="1f9265ce" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>sb.pointplot(x<span class="op">=</span><span class="st">'weekday'</span>, y<span class="op">=</span><span class="st">'AvgTemp'</span>, data<span class="op">=</span>temp_df, order<span class="op">=</span>weekday_order)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -725,7 +725,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="day-of-month-patterns" class="level3" data-number="10.7.3">
 <h3 data-number="10.7.3" class="anchored" data-anchor-id="day-of-month-patterns"><span class="header-section-number">10.7.3</span> Day-of-month patterns</h3>
-<div id="12d01d39" class="cell" data-execution_count="23">
+<div id="a88834d8" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>sb.pointplot(x<span class="op">=</span><span class="st">'day'</span>, y<span class="op">=</span><span class="st">'Volume'</span>, data<span class="op">=</span>sp500_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -733,11 +733,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="annual-patterns-seasonality" class="level3" data-number="10.7.4">
 <h3 data-number="10.7.4" class="anchored" data-anchor-id="annual-patterns-seasonality"><span class="header-section-number">10.7.4</span> Annual patterns: Seasonality</h3>
 <p>Seasonality is one of the most common temporal patterns. Temperature has an obvious annual cycle, but many human activities do as well.</p>
-<div id="cbfec382" class="cell" data-execution_count="24">
+<div id="c042f8d0" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>sb.pointplot(x<span class="op">=</span><span class="st">'month'</span>, y<span class="op">=</span><span class="st">'AvgTemp'</span>, data<span class="op">=</span>temp_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="feaab4e9" class="cell" data-execution_count="25">
+<div id="fba2a901" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>sb.pointplot(x<span class="op">=</span><span class="st">'month'</span>, y<span class="op">=</span><span class="st">'Total'</span>, data<span class="op">=</span>passengers_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -747,17 +747,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="decomposing-time-series" class="level2" data-number="10.8">
 <h2 data-number="10.8" class="anchored" data-anchor-id="decomposing-time-series"><span class="header-section-number">10.8</span> Decomposing Time Series</h2>
 <p>A more formal approach to separating trend, seasonal, and residual components uses statistical decomposition. The <code>statsmodels</code> library provides <code>seasonal_decompose</code>, which breaks a time series into three additive (or multiplicative) components: trend, seasonal pattern, and residual noise.</p>
-<div id="c81f0aeb" class="cell" data-execution_count="26">
+<div id="d7acf7a9" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="afeb42dd" class="cell" data-execution_count="27">
+<div id="974a70a6" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>passengers_df[<span class="st">'Total'</span>].plot(ax<span class="op">=</span>ax)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Total passengers'</span>)</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Monthly passenger traffic through DIA'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A 12-month rolling average removes the seasonal signal to reveal the trend.</p>
-<div id="ed8fff97" class="cell" data-execution_count="28">
+<div id="fa55a204" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>passengers_df[<span class="st">'Total'</span>].plot(ax<span class="op">=</span>ax)</span>
@@ -769,7 +769,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="formal-decomposition" class="level3" data-number="10.8.1">
 <h3 data-number="10.8.1" class="anchored" data-anchor-id="formal-decomposition"><span class="header-section-number">10.8.1</span> Formal decomposition</h3>
 <p>The <code>seasonal_decompose</code> function produces four panels: the observed data, the estimated trend, the seasonal component, and the residual.</p>
-<div id="e74c7557" class="cell" data-execution_count="29">
+<div id="2b41b065" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>decomposition <span class="op">=</span> sm.tsa.seasonal_decompose(passengers_df[<span class="st">'Total'</span>], model<span class="op">=</span><span class="st">'additive'</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.figsize"</span>] <span class="op">=</span> (<span class="dv">8</span>, <span class="dv">8</span>)</span>
@@ -784,7 +784,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="linear-modeling-of-trend" class="level3" data-number="10.8.2">
 <h3 data-number="10.8.2" class="anchored" data-anchor-id="linear-modeling-of-trend"><span class="header-section-number">10.8.2</span> Linear modeling of trend</h3>
 <p>You can also model the long-term trend with a linear regression, as introduced in <a href="13-linear-models.html" class="quarto-xref"><span>Chapter 13</span></a>. First, create a numeric feature for months since the airport opened.</p>
-<div id="197d831c" class="cell" data-execution_count="30">
+<div id="4eb04f12" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>passengers_df[<span class="st">'months_since_opening'</span>] <span class="op">=</span> (</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    passengers_df.index <span class="op">-</span> pd.Timestamp(<span class="st">'1995-01-01'</span>)</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>) <span class="op">/</span> pd.Timedelta(<span class="dv">30</span>, <span class="st">'D'</span>)</span>
@@ -800,7 +800,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The raw data has enormous variance because of seasonality. Smoothing first with a 12-month rolling average and then fitting a linear model produces a much cleaner trend estimate.</p>
-<div id="c4afe87d" class="cell" data-execution_count="31">
+<div id="ee34517a" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>passengers_df[<span class="st">'Total_smoothed'</span>] <span class="op">=</span> passengers_df[<span class="st">'Total'</span>].rolling(<span class="dv">12</span>).mean()</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sb.lmplot(</span>
@@ -827,7 +827,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Compute 7-day and 30-day rolling averages of daily yellow cab pickups. Plot them together. Which window size better reveals the weekly cycle? Which better reveals the monthly trend?</p>
 <p><strong>Solution:</strong></p>
-<div id="22d16a7d" class="cell" data-execution_count="32">
+<div id="41e36ac9" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>daily_cabs <span class="op">=</span> nyc_df.groupby(pd.Grouper(freq<span class="op">=</span><span class="st">'D'</span>)).agg({<span class="st">'yellowcab'</span>: <span class="st">'sum'</span>})</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">5</span>))</span>
@@ -855,7 +855,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Compute the annual sum of DIA passengers. Then compute the year-over-year percentage change. Which year had the biggest decline? The biggest recovery?</p>
 <p><strong>Solution:</strong></p>
-<div id="5b6d95ff" class="cell" data-execution_count="33">
+<div id="fa7b225d" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>annual <span class="op">=</span> passengers_df.groupby(passengers_df.index.year).agg({<span class="st">'Total'</span>: <span class="st">'sum'</span>})</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>annual[<span class="st">'pct_change'</span>] <span class="op">=</span> annual[<span class="st">'Total'</span>].pct_change() <span class="op">*</span> <span class="dv">100</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>annual</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -878,7 +878,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Create a line plot with monthly total passengers for each year overlaid on the same axes (one line per year). Do you see a consistent seasonal pattern?</p>
 <p><strong>Solution:</strong></p>
-<div id="5f06efec" class="cell" data-execution_count="34">
+<div id="839a0bae" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>passengers_df[<span class="st">'Year'</span>] <span class="op">=</span> passengers_df.index.year</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>passengers_df[<span class="st">'MonthNum'</span>] <span class="op">=</span> passengers_df.index.month</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>

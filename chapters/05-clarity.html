@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-710deee90218c0747833ed862e9a1c0d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-d1385d2e7dd819d8e2833b0cdae6eae6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -356,7 +356,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This chapter covers the principles of effective data visualization, introduces matplotlib’s core plotting interface, and addresses the fundamentals of writing clearly about data. You will learn to create basic plots, label them properly, annotate them with context, and begin developing the critical eye that distinguishes a helpful chart from a harmful one.</p>
 <section id="setup" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">5.1</span> Setup</h2>
-<div id="7ad35ffb" class="cell" data-execution_count="1">
+<div id="155e2c63" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -400,14 +400,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="making-your-first-plot" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="making-your-first-plot"><span class="header-section-number">5.4</span> Making Your First Plot</h2>
 <p>Let’s build a visualization using the DIA passenger data from <a href="04-reshaping.html" class="quarto-xref"><span>Chapter 4</span></a>.</p>
-<div id="e7e0e33a" class="cell" data-execution_count="2">
+<div id="f86ffd8b" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>passenger_df <span class="op">=</span> pd.read_csv(<span class="st">'passengers.csv'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Month'</span>] <span class="op">=</span> pd.to_datetime(passenger_df[<span class="st">'Month'</span>])</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>passenger_df.set_index(<span class="st">'Month'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>passenger_df.drop(columns<span class="op">=</span>[<span class="st">'Cargo'</span>], inplace<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A minimal line plot requires only one call.</p>
-<div id="89a8d7f2" class="cell" data-execution_count="3">
+<div id="b0b2dc16" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Grand'</span>].plot(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This default plot communicates the general trend, but it has several problems. There are no axis labels, no title, no indication of what the y-axis units are, and no context for the dramatic drop that is visible around 2020. Let’s improve it systematically.</p>
@@ -415,7 +415,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="matplotlibs-object-oriented-interface" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="matplotlibs-object-oriented-interface"><span class="header-section-number">5.5</span> Matplotlib’s Object-Oriented Interface</h2>
 <p>We will use matplotlib’s <strong>object-oriented</strong> coding style, which gives you explicit control over every element of your visualization. The key idea: you create a <strong>Figure</strong> (the canvas) and one or more <strong>Axes</strong> (the individual plots) using <code>plt.subplots()</code>, then call methods on those objects to customize them.</p>
-<div id="192978ed" class="cell" data-execution_count="4">
+<div id="8b7eb61d" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Grand'</span>].plot(ax<span class="op">=</span>ax)</span>
@@ -442,7 +442,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="adding-context-with-annotations" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="adding-context-with-annotations"><span class="header-section-number">5.6</span> Adding Context with Annotations</h2>
 <p>Data does not exist in a vacuum. Major events — policy changes, natural disasters, pandemics — shape the patterns in your data. Annotations help the reader connect the visual pattern to the real-world cause.</p>
-<div id="1cc85f5b" class="cell" data-execution_count="5">
+<div id="1dda988b" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Grand'</span>].plot(ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>)</span>
@@ -471,7 +471,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="multiple-subplots" class="level2" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="multiple-subplots"><span class="header-section-number">5.7</span> Multiple Subplots</h2>
 <p>You can create figures with multiple subplots by adjusting the <code>nrows</code> and <code>ncols</code> parameters of <code>plt.subplots()</code>.</p>
-<div id="0ec238dc" class="cell" data-execution_count="6">
+<div id="535a0c04" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f, (ax0, ax1) <span class="op">=</span> plt.subplots(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    nrows<span class="op">=</span><span class="dv">1</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    ncols<span class="op">=</span><span class="dv">2</span>,</span>
@@ -550,13 +550,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Load any dataset from the book’s repository. Create a default plot using <code>.plot()</code>. Then create a second version with at least five improvements: axis labels, a title, annotations, color choices, and a <code>figsize</code> adjustment. Compare the two.</p>
 <p><strong>Solution:</strong></p>
-<div id="ea2c0dbd" class="cell" data-execution_count="7">
+<div id="53b4dde8" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>deaths_df <span class="op">=</span> pd.read_csv(<span class="st">'CDC_deaths.csv'</span>, parse_dates<span class="op">=</span>[<span class="st">'Week date'</span>])</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Default</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>deaths_df.groupby(<span class="st">'Year'</span>).agg({<span class="st">'Diseases of heart'</span>: <span class="st">'sum'</span>}).plot(kind<span class="op">=</span><span class="st">'bar'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="0bd60ec8" class="cell" data-execution_count="8">
+<div id="faa795f2" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Improved</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>totals <span class="op">=</span> deaths_df.groupby(<span class="st">'Year'</span>).agg({<span class="st">'Diseases of heart'</span>: <span class="st">'sum'</span>})</span>

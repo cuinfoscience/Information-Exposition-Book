@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-710deee90218c0747833ed862e9a1c0d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-d1385d2e7dd819d8e2833b0cdae6eae6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -366,7 +366,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This chapter introduces <strong>groupby-aggregation</strong>, an extremely common and very powerful mechanism for summarizing data. The idea is deceptively simple: <strong>split</strong> your data into groups that share some common value, <strong>apply</strong> a summary function to each group, and <strong>combine</strong> the results back into a single table. Mastering this pattern will serve you in virtually every data analysis you undertake.</p>
 <section id="setup" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">2.1</span> Setup</h2>
-<div id="9caa1d6b" class="cell" data-execution_count="1">
+<div id="b8789dee" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -378,7 +378,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-data" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="the-data"><span class="header-section-number">2.2</span> The Data</h2>
 <p>We will work with weekly mortality data from the Centers for Disease Control and Prevention (CDC), which records deaths by cause for each U.S. state and week from 2014 through 2023. See <a href="../appendices/datasets.html" class="quarto-xref"><span>Chapter 15</span></a> for details.</p>
-<div id="1be6861f" class="cell" data-execution_count="2">
+<div id="ca6e7e80" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>deaths_df <span class="op">=</span> pd.read_csv(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'CDC_deaths.csv'</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    parse_dates<span class="op">=</span>[<span class="st">'Week date'</span>]</span>
@@ -391,20 +391,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="understanding-repeated-values" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="understanding-repeated-values"><span class="header-section-number">2.3</span> Understanding Repeated Values</h2>
 <p>Before summarizing, you need to understand the structure of your data. The <code>.value_counts()</code> method counts how many times each unique value appears in a column.</p>
-<div id="4381cf24" class="cell" data-execution_count="3">
+<div id="b9767a01" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>deaths_df[<span class="st">'State'</span>].value_counts()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>There are 52 “states” in this data: the 50 states plus the District of Columbia and Puerto Rico. Each state has observations for each week of each year.</p>
-<div id="20ba9f64" class="cell" data-execution_count="4">
+<div id="46d72bab" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>deaths_df[<span class="st">'Year'</span>].value_counts()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Some years have more observations than others. Why? The <code>.sort_index()</code> method, chained after <code>.value_counts()</code>, sorts the results by the index (in this case, the year) rather than by count.</p>
-<div id="a2fa9ed6" class="cell" data-execution_count="5">
+<div id="22ca67a2" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>deaths_df[<span class="st">'Week'</span>].value_counts().sort_index()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>There are 104 observations of a 53rd week. Since we have 52 states and this happens in two years, that is 52 × 2 = 104. Let’s verify: which years and dates have a 53rd week?</p>
 <p>Here we use the <code>.loc</code> selector to do <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#boolean-indexing">Boolean indexing</a> — selecting rows that match a condition — while simultaneously selecting specific columns.</p>
-<div id="bff1e789" class="cell" data-execution_count="6">
+<div id="a69ee507" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>deaths_df.loc[</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    deaths_df[<span class="st">'Week'</span>] <span class="op">==</span> <span class="dv">53</span>,  <span class="co"># Select the rows that are 53rd weeks</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'Week date'</span>, <span class="st">'Year'</span>]     <span class="co"># Select these columns</span></span>
@@ -428,7 +428,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="building-intuition-the-manual-way" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="building-intuition-the-manual-way"><span class="header-section-number">2.4</span> Building Intuition: The Manual Way</h2>
 <p>What were the total cancer deaths in the United States in 2014? You could answer this manually by filtering to 2014 and selecting the “Malignant neoplasms” column.</p>
-<div id="4d9dea56" class="cell" data-execution_count="7">
+<div id="7aabcb82" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a "baby DataFrame" for the year 2014 and the column "Malignant neoplasms"</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>cancer_2014 <span class="op">=</span> deaths_df.loc[</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    deaths_df[<span class="st">'Year'</span>] <span class="op">==</span> <span class="dv">2014</span>,  <span class="co"># Rows</span></span>
@@ -439,15 +439,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>cancer_2014</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>There are 2,756 rows of data. Let’s verify: 2014 is one of the years with 53 weeks and there are 52 states, so 52 × 53 = 2,756. Good — the numbers match our expectations.</p>
-<div id="dbc8124d" class="cell" data-execution_count="8">
+<div id="77b3756c" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dv">53</span> <span class="op">*</span> <span class="dv">52</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now apply a function. We want the total, so we <code>.sum()</code> the Series.</p>
-<div id="1506ad4d" class="cell" data-execution_count="9">
+<div id="6dac8540" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cancer_2014.<span class="bu">sum</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>To get totals for every year, you would need to repeat this process — a tedious and error-prone loop.</p>
-<div id="d3a3a567" class="cell" data-execution_count="10">
+<div id="a741a267" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make an empty container to store results</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>total_deaths_d <span class="op">=</span> {}</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -466,33 +466,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="groupby-aggregation" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="groupby-aggregation"><span class="header-section-number">2.5</span> Groupby-Aggregation</h2>
 <p>The brilliance of groupby-aggregation is that you can accomplish the same thing in a single line, which both saves time and reduces the chances of errors.</p>
-<div id="968b8bf8" class="cell" data-execution_count="11">
+<div id="a46611b4" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>deaths_df.groupby([<span class="st">'Year'</span>]).agg({<span class="st">'Malignant neoplasms'</span>: <span class="st">'sum'</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You will almost always use groupby in combination with <code>.agg()</code>. Let’s break the operation into its three conceptual steps.</p>
 <section id="splitting-with-.groupby" class="level3" data-number="2.5.1">
 <h3 data-number="2.5.1" class="anchored" data-anchor-id="splitting-with-.groupby"><span class="header-section-number">2.5.1</span> Splitting with <code>.groupby()</code></h3>
 <p>The <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html"><code>.groupby()</code></a> operation splits the data into groups. The most important concept you need to internalize is that when you do a <code>groupby</code>, you are making a “baby DataFrame” where the rows all share something in common — whatever value you grouped on.</p>
-<div id="b147340b" class="cell" data-execution_count="12">
+<div id="32ab1284" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>deaths_gb_year <span class="op">=</span> deaths_df.groupby([<span class="st">'Year'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>What is this groupby object? Not a whole lot to look at on its own.</p>
-<div id="f1aeca50" class="cell" data-execution_count="13">
+<div id="3bcd6fed" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>deaths_gb_year</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>But you can peek inside it with <code>.get_group()</code> to retrieve the baby DataFrame for a specific year.</p>
-<div id="85309353" class="cell" data-execution_count="14">
+<div id="807f2308" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>deaths_gb_year.get_group(<span class="dv">2023</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="applying-a-function" class="level3" data-number="2.5.2">
 <h3 data-number="2.5.2" class="anchored" data-anchor-id="applying-a-function"><span class="header-section-number">2.5.2</span> Applying a Function</h3>
 <p>Now that we have baby DataFrames for each year, we want to apply some function that reduces all the data down to a single summary value. In our cancer example, we are adding up 2,756 rows of state-week numbers into a single total.</p>
-<div id="344b9091" class="cell" data-execution_count="15">
+<div id="198d64a7" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>deaths_gb_year.get_group(<span class="dv">2014</span>)[<span class="st">'Malignant neoplasms'</span>].<span class="bu">sum</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We could do this for each year.</p>
-<div id="2f7ee0cc" class="cell" data-execution_count="16">
+<div id="73933dd8" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2014</span>, <span class="dv">2024</span>):</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(year, deaths_gb_year.get_group(year)[<span class="st">'Malignant neoplasms'</span>].<span class="bu">sum</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -504,7 +504,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>min</code> and <code>max</code> — Minimum and maximum values</li>
 <li><code>count</code> — Count of non-null values</li>
 </ul>
-<div id="87770edc" class="cell" data-execution_count="17">
+<div id="79f42b86" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>deaths_gb_year[<span class="st">'Malignant neoplasms'</span>].<span class="bu">apply</span>(np.mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -512,11 +512,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="2.5.3" class="anchored" data-anchor-id="combining-with-.agg"><span class="header-section-number">2.5.3</span> Combining with <code>.agg()</code></h3>
 <p>The <a href="https://pandas.pydata.org/pandas-docs/version/0.23/generated/pandas.DataFrame.agg.html"><code>.agg()</code></a> function serves to both apply and combine the results on a GroupBy object. There are several strategies for using <code>.agg()</code>.</p>
 <p><strong>Single column, single function:</strong> Pass an aggregation dictionary where the key is the column name and the value is the function.</p>
-<div id="6d5d4e17" class="cell" data-execution_count="18">
+<div id="70c242db" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>deaths_df.groupby([<span class="st">'Year'</span>]).agg({<span class="st">'Diabetes mellitus'</span>: <span class="st">'sum'</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You can chain a <code>.plot()</code> call directly onto this result for a quick visualization. We will cover visualization in depth starting in <a href="06-histograms.html" class="quarto-xref"><span>Chapter 6</span></a>.</p>
-<div id="f2f52ba2" class="cell" data-execution_count="19">
+<div id="fc83f34f" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>deaths_gb_year[<span class="st">'Diabetes mellitus'</span>].agg(<span class="st">'sum'</span>).plot(kind<span class="op">=</span><span class="st">'bar'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -524,17 +524,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="multiple-aggregation-functions" class="level2" data-number="2.6">
 <h2 data-number="2.6" class="anchored" data-anchor-id="multiple-aggregation-functions"><span class="header-section-number">2.6</span> Multiple Aggregation Functions</h2>
 <p>You can pass a list of aggregation functions to apply multiple summaries to the same column at once.</p>
-<div id="835986fa" class="cell" data-execution_count="20">
+<div id="25918819" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>deaths_gb_year[<span class="st">'Diabetes mellitus'</span>].agg([<span class="st">'mean'</span>, <span class="st">'min'</span>, <span class="st">'max'</span>, <span class="st">'count'</span>, <span class="st">'sum'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You can also pass a list of numpy functions, which is more explicit. Note how the function name becomes the column name.</p>
-<div id="5578e0de" class="cell" data-execution_count="21">
+<div id="5454ad44" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>deaths_gb_year[<span class="st">'Diabetes mellitus'</span>].agg([np.mean, np.<span class="bu">min</span>, np.<span class="bu">max</span>, <span class="bu">len</span>, np.<span class="bu">sum</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="aggregation-dictionaries" class="level3" data-number="2.6.1">
 <h3 data-number="2.6.1" class="anchored" data-anchor-id="aggregation-dictionaries"><span class="header-section-number">2.6.1</span> Aggregation Dictionaries</h3>
 <p>The real power comes when you want to apply different functions to different columns. An <strong>aggregation dictionary</strong> maps column names to functions (or lists of functions).</p>
-<div id="00fd6c21" class="cell" data-execution_count="22">
+<div id="4c9104f9" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>agg_d <span class="op">=</span> {</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Diabetes mellitus'</span>: [np.mean, np.<span class="bu">min</span>, np.<span class="bu">max</span>, <span class="bu">len</span>, np.<span class="bu">sum</span>],</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Diseases of heart'</span>: [<span class="st">'sum'</span>, <span class="st">'mean'</span>]</span>
@@ -543,7 +543,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>deaths_gb_year.agg(agg_d)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This returns a DataFrame with a <strong>MultiIndex</strong> on the columns — the first level is the column name and the second level is the function name.</p>
-<div id="f7ffe4df" class="cell" data-execution_count="23">
+<div id="c0001129" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>agg_d <span class="op">=</span> {</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Diabetes mellitus'</span>: [np.mean, <span class="bu">min</span>, <span class="bu">max</span>, <span class="bu">len</span>, np.<span class="bu">sum</span>],</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Septicemia'</span>: [np.mean, np.median, <span class="bu">min</span>, <span class="bu">max</span>, np.<span class="bu">sum</span>]</span>
@@ -553,17 +553,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>deaths_agg_year</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You can access a specific value from the MultiIndexed columns by passing a tuple.</p>
-<div id="4850d53f" class="cell" data-execution_count="24">
+<div id="a14d341c" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>deaths_agg_year.loc[<span class="dv">2014</span>, (<span class="st">'Diabetes mellitus'</span>, <span class="st">'sum'</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="b3a461fc" class="cell" data-execution_count="25">
+<div id="8131c3b7" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>deaths_agg_year[(<span class="st">'Septicemia'</span>, <span class="st">'sum'</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="simplifying-multiindex-columns" class="level3" data-number="2.6.2">
 <h3 data-number="2.6.2" class="anchored" data-anchor-id="simplifying-multiindex-columns"><span class="header-section-number">2.6.2</span> Simplifying MultiIndex columns</h3>
 <p>You can drop the top level of the MultiIndex and relabel the columns for clarity.</p>
-<div id="6fb87111" class="cell" data-execution_count="26">
+<div id="2f12db38" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>deaths_agg_year.columns <span class="op">=</span> deaths_agg_year.columns.droplevel(<span class="dv">0</span>)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>deaths_agg_year.columns <span class="op">=</span> [</span>
@@ -580,38 +580,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="grouping-by-multiple-values" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="grouping-by-multiple-values"><span class="header-section-number">2.7</span> Grouping by Multiple Values</h2>
 <p>You can group on more than one column by passing a list to <code>.groupby()</code>.</p>
-<div id="ffe4ebb3" class="cell" data-execution_count="27">
+<div id="cc55b737" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>disease_cols <span class="op">=</span> deaths_df.columns[<span class="dv">6</span>:]</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>disease_cols</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="748e0ea5" class="cell" data-execution_count="28">
+<div id="3521039a" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>deaths_gb_year_state <span class="op">=</span> deaths_df.groupby([<span class="st">'Year'</span>, <span class="st">'State'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Create an aggregation dictionary that sums each disease column.</p>
-<div id="2c06bfb6" class="cell" data-execution_count="29">
+<div id="f9d2e137" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>disease_agg_d <span class="op">=</span> {col: <span class="st">'sum'</span> <span class="cf">for</span> col <span class="kw">in</span> disease_cols}</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>deaths_gb_year_state_agg <span class="op">=</span> deaths_gb_year_state.agg(disease_agg_d)</span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>deaths_gb_year_state_agg</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The index is now a MultiIndex comprised of tuples of <code>(Year, State)</code>. You can access any row by passing the tuple to <code>.loc</code>.</p>
-<div id="59f0a586" class="cell" data-execution_count="30">
+<div id="dc579823" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>deaths_gb_year_state_agg.loc[(<span class="dv">2020</span>, <span class="st">'Colorado'</span>)].sort_values()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This shows deaths in Colorado in 2020, sorted by cause. COVID-19 was a leading cause, exceeding both cancer and heart disease in some calculations.</p>
 <section id="accessing-levels-of-a-multiindex" class="level3" data-number="2.7.1">
 <h3 data-number="2.7.1" class="anchored" data-anchor-id="accessing-levels-of-a-multiindex"><span class="header-section-number">2.7.1</span> Accessing levels of a MultiIndex</h3>
 <p>You can access one level of a MultiIndex using slicing. All state-level deaths in 2014:</p>
-<div id="e5cd4e5b" class="cell" data-execution_count="31">
+<div id="96e154b4" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>deaths_gb_year_state_agg.loc[<span class="dv">2014</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>To access the <em>other</em> level — all years for a single state — you need the <code>IndexSlice</code> helper.</p>
-<div id="868be7c0" class="cell" data-execution_count="32">
+<div id="973a9a02" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> pd.IndexSlice</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>deaths_gb_year_state_agg.loc[idx[:, <span class="st">'California'</span>], <span class="st">'Alzheimer disease'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cd1f352c" class="cell" data-execution_count="33">
+<div id="9c036e51" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>deaths_gb_year_state_agg.loc[idx[:, <span class="st">'California'</span>], [<span class="st">'Cerebrovascular diseases'</span>]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This is an extremely powerful pattern for slicing MultiIndexed data.</p>
@@ -620,7 +620,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="pivot-tables" class="level2" data-number="2.8">
 <h2 data-number="2.8" class="anchored" data-anchor-id="pivot-tables"><span class="header-section-number">2.8</span> Pivot Tables</h2>
 <p>You may have encountered pivot tables in spreadsheet applications. Pandas has a similar function that reshapes data while simultaneously aggregating it.</p>
-<div id="10c3e159" class="cell" data-execution_count="34">
+<div id="cc386113" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>allcause_pivot <span class="op">=</span> pd.pivot_table(</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>deaths_df,</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="st">"State"</span>,</span>
@@ -632,7 +632,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>allcause_pivot.T.plot(legend<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You can also make MultiIndexed pivot tables by passing lists of columns.</p>
-<div id="e6de0b81" class="cell" data-execution_count="35">
+<div id="9bb4043d" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>lower_respiratory_pivot <span class="op">=</span> pd.pivot_table(</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>deaths_df,</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>[<span class="st">"State"</span>, <span class="st">"Year"</span>],</span>
@@ -660,11 +660,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Perform a groupby-aggregation to compute the total “All Cause” deaths by year. How much higher were deaths in 2020 than 2019?</p>
 <p><strong>Solution:</strong></p>
-<div id="3d2e077e" class="cell" data-execution_count="36">
+<div id="6274203a" class="cell" data-execution_count="36">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>all_cause <span class="op">=</span> deaths_df.groupby(<span class="st">'Year'</span>).agg({<span class="st">'All Cause'</span>: <span class="st">'sum'</span>})</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>all_cause</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="0e82fcc9" class="cell" data-execution_count="37">
+<div id="3821479c" class="cell" data-execution_count="37">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> all_cause.loc[<span class="dv">2020</span>, <span class="st">'All Cause'</span>] <span class="op">-</span> all_cause.loc[<span class="dv">2019</span>, <span class="st">'All Cause'</span>]</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>pct <span class="op">=</span> diff <span class="op">/</span> all_cause.loc[<span class="dv">2019</span>, <span class="st">'All Cause'</span>] <span class="op">*</span> <span class="dv">100</span></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Difference: </span><span class="sc">{</span>diff<span class="sc">:,.0f}</span><span class="ss"> deaths (</span><span class="sc">{</span>pct<span class="sc">:.1f}</span><span class="ss">% increase)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -686,7 +686,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Make a pivot table with the Week as an index, Year as columns, and the total “Influenza and pneumonia” deaths as values. What is the deadliest week of the year on average for flu and pneumonia?</p>
 <p><strong>Solution:</strong></p>
-<div id="a6dde57f" class="cell" data-execution_count="38">
+<div id="180b56f2" class="cell" data-execution_count="38">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>flu_pivot <span class="op">=</span> pd.pivot_table(</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>deaths_df,</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="st">'Week'</span>,</span>
@@ -716,7 +716,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Perform a groupby-aggregation to compute the total number of “Diseases of heart” deaths by state across all years. What state had the most heart disease deaths from 2014 through 2023?</p>
 <p><strong>Solution:</strong></p>
-<div id="883056de" class="cell" data-execution_count="39">
+<div id="5092702a" class="cell" data-execution_count="39">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>heart_by_state <span class="op">=</span> deaths_df.groupby(<span class="st">'State'</span>).agg({<span class="st">'Diseases of heart'</span>: <span class="st">'sum'</span>})</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>heart_by_state.sort_values(<span class="st">'Diseases of heart'</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -738,7 +738,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>What is the total number of heart disease deaths in Colorado from 2014 to the present?</p>
 <p><strong>Solution:</strong></p>
-<div id="253ed95a" class="cell" data-execution_count="40">
+<div id="bee013ca" class="cell" data-execution_count="40">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>co_hearts <span class="op">=</span> deaths_df.loc[</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    deaths_df[<span class="st">'State'</span>] <span class="op">==</span> <span class="st">'Colorado'</span></span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>].groupby(<span class="st">'Year'</span>).agg({<span class="st">'Diseases of heart'</span>: <span class="st">'sum'</span>})</span>
@@ -762,7 +762,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Perform a groupby-aggregation on Year and State and compute the total “Diabetes mellitus” deaths. Use slicing to compare diabetes deaths in 2019 and 2020 for Utah and Colorado.</p>
 <p><strong>Solution:</strong></p>
-<div id="efd64290" class="cell" data-execution_count="41">
+<div id="c298f8ff" class="cell" data-execution_count="41">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>diabetes_agg <span class="op">=</span> deaths_df.groupby([<span class="st">'Year'</span>, <span class="st">'State'</span>]).agg({<span class="st">'Diabetes mellitus'</span>: <span class="st">'sum'</span>})</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> state <span class="kw">in</span> [<span class="st">'Colorado'</span>, <span class="st">'Utah'</span>]:</span>

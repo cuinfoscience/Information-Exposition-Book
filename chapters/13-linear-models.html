@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-710deee90218c0747833ed862e9a1c0d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-d1385d2e7dd819d8e2833b0cdae6eae6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -396,7 +396,7 @@ window.Quarto = {
 <p>We will estimate regression models using three different Python libraries — <code>scipy</code>, <code>scikit-learn</code>, and <code>statsmodels</code> — each of which offers different strengths. We will also use seaborn’s <code>regplot</code> and <code>lmplot</code> functions to combine regression estimation with visualization, examine residuals to diagnose model quality, and introduce multiple regression.</p>
 <section id="setup" class="level2" data-number="13.1">
 <h2 data-number="13.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">13.1</span> Setup</h2>
-<div id="c562f3a6" class="cell" data-execution_count="1">
+<div id="9be6971e" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -410,7 +410,7 @@ window.Quarto = {
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sb</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="8398fffb" class="cell" data-execution_count="2">
+<div id="be2da382" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -418,7 +418,7 @@ window.Quarto = {
 <section id="the-data" class="level2" data-number="13.2">
 <h2 data-number="13.2" class="anchored" data-anchor-id="the-data"><span class="header-section-number">13.2</span> The Data</h2>
 <p>We continue using the county-level dataset from <a href="12-scatterplots.html" class="quarto-xref"><span>Chapter 12</span></a>.</p>
-<div id="c00abaef" class="cell" data-execution_count="3">
+<div id="e1fd1e8a" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>counties_df <span class="op">=</span> pd.read_csv(<span class="st">'us_counties.csv'</span>, dtype<span class="op">=</span>{<span class="dv">0</span>: <span class="bu">str</span>}, na_values<span class="op">=</span>[<span class="st">'-'</span>])</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>counties_df.rename(columns<span class="op">=</span>{<span class="st">'Unnamed: 0'</span>: <span class="st">'FIPS'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>counties_df.set_index(<span class="st">'county_fips'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
@@ -435,7 +435,7 @@ window.Quarto = {
 <section id="estimation-with-scipy.stats.linregress" class="level2" data-number="13.4">
 <h2 data-number="13.4" class="anchored" data-anchor-id="estimation-with-scipy.stats.linregress"><span class="header-section-number">13.4</span> Estimation with <code>scipy.stats.linregress</code></h2>
 <p>The simplest interface is <code>scipy.stats.linregress</code>, which takes two arrays and returns the slope, intercept, correlation coefficient (<span class="math inline">\(r\)</span>), p-value, and standard error.</p>
-<div id="967ea9cd" class="cell" data-execution_count="4">
+<div id="662b8a73" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sb.regplot(</span>
@@ -448,7 +448,7 @@ window.Quarto = {
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>ax.set_xlim((<span class="dv">0</span>, <span class="dv">100</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="e79bf631" class="cell" data-execution_count="5">
+<div id="1d56c1c5" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> stats.linregress(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>counties_df[<span class="st">'Pct_Born_Same_State'</span>].fillna(counties_df[<span class="st">'Pct_Born_Same_State'</span>].mean()),</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>counties_df[<span class="st">'Pct_HS_Grad'</span>].fillna(counties_df[<span class="st">'Pct_HS_Grad'</span>].mean())</span>
@@ -462,7 +462,7 @@ window.Quarto = {
 <p>The <strong>slope</strong> of approximately 0.37 means that each additional percentage point of a county’s population born in the same state is associated with a 0.37 percentage point increase in high school graduation rates.</p>
 <p>The <strong>intercept</strong> of approximately 58 means that the model predicts a high school graduation rate of 58% for a hypothetical county where 0% of the population was born in the same state.</p>
 <p>The <strong>r-value</strong> can be squared to get <span class="math inline">\(R^2\)</span>, the <a href="https://en.wikipedia.org/wiki/Coefficient_of_determination">coefficient of determination</a> — the proportion of variance in <span class="math inline">\(y\)</span> explained by <span class="math inline">\(x\)</span>.</p>
-<div id="1af04827" class="cell" data-execution_count="6">
+<div id="1d93a481" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model.rvalue <span class="op">**</span> <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <strong>p-value</strong> tests the null hypothesis that the slope is zero (no relationship). A very small p-value indicates strong evidence against this null.</p>
@@ -483,7 +483,7 @@ window.Quarto = {
 <section id="visualizing-the-model" class="level3" data-number="13.4.2">
 <h3 data-number="13.4.2" class="anchored" data-anchor-id="visualizing-the-model"><span class="header-section-number">13.4.2</span> Visualizing the model</h3>
 <p>Plot the data with the estimated regression line overlaid.</p>
-<div id="4cf3979c" class="cell" data-execution_count="7">
+<div id="9c6df5dd" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>counties_df.plot.scatter(x<span class="op">=</span><span class="st">'Pct_Born_Same_State'</span>, y<span class="op">=</span><span class="st">'Pct_HS_Grad'</span>, ax<span class="op">=</span>ax, s<span class="op">=</span><span class="dv">25</span>)</span>
@@ -499,7 +499,7 @@ window.Quarto = {
 <section id="estimation-with-scikit-learn" class="level2" data-number="13.5">
 <h2 data-number="13.5" class="anchored" data-anchor-id="estimation-with-scikit-learn"><span class="header-section-number">13.5</span> Estimation with <code>scikit-learn</code></h2>
 <p>For more complex models, <code>scikit-learn</code>’s <code>LinearRegression</code> uses the fit/predict pattern familiar throughout the machine learning ecosystem.</p>
-<div id="a56d3ef7" class="cell" data-execution_count="8">
+<div id="bcd47741" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> counties_df[<span class="st">'Pct_Born_Same_State'</span>].fillna(</span>
@@ -513,13 +513,13 @@ window.Quarto = {
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>sk_reg <span class="op">=</span> LinearRegression().fit(X, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The model statistics are stored as attributes.</p>
-<div id="f0e604cc" class="cell" data-execution_count="9">
+<div id="972a4520" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sk_reg.coef_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="466a068e" class="cell" data-execution_count="10">
+<div id="42c2f167" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sk_reg.intercept_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="58090fd1" class="cell" data-execution_count="11">
+<div id="87b81046" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sk_reg.score(X, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note that scikit-learn requires the predictor to be a 2D array (hence <code>.reshape(-1, 1)</code>), even for simple linear regression, because the library is designed for models with multiple predictors.</p>
@@ -527,7 +527,7 @@ window.Quarto = {
 <section id="estimation-with-statsmodels" class="level2" data-number="13.6">
 <h2 data-number="13.6" class="anchored" data-anchor-id="estimation-with-statsmodels"><span class="header-section-number">13.6</span> Estimation with <code>statsmodels</code></h2>
 <p>The <code>statsmodels</code> library provides the most detailed statistical output, including confidence intervals, diagnostic tests, and a familiar summary table.</p>
-<div id="8ff17494" class="cell" data-execution_count="12">
+<div id="26366e92" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>_cleaned_df <span class="op">=</span> counties_df.copy()</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>_cleaned_df[<span class="st">'Pct_HS_Grad'</span>] <span class="op">=</span> _cleaned_df[<span class="st">'Pct_HS_Grad'</span>].fillna(_cleaned_df[<span class="st">'Pct_HS_Grad'</span>].mean())</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>_cleaned_df[<span class="st">'Pct_Born_Same_State'</span>] <span class="op">=</span> _cleaned_df[<span class="st">'Pct_Born_Same_State'</span>].fillna(</span>
@@ -543,7 +543,7 @@ window.Quarto = {
 <section id="visualizing-regressions-with-seaborn" class="level2" data-number="13.7">
 <h2 data-number="13.7" class="anchored" data-anchor-id="visualizing-regressions-with-seaborn"><span class="header-section-number">13.7</span> Visualizing Regressions with Seaborn</h2>
 <p>Seaborn’s <code>regplot</code> and <code>lmplot</code> combine scatterplots with fitted regression lines and confidence bands in a single call. The shaded band around the regression line represents the 95% confidence interval for the predicted mean — connecting back to the uncertainty principles from <a href="11-uncertainty.html" class="quarto-xref"><span>Chapter 11</span></a>.</p>
-<div id="c711c606" class="cell" data-execution_count="13">
+<div id="af87e71a" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>sb.regplot(</span>
@@ -560,7 +560,7 @@ window.Quarto = {
 </div>
 <section id="positive-relationship" class="level3" data-number="13.7.1">
 <h3 data-number="13.7.1" class="anchored" data-anchor-id="positive-relationship"><span class="header-section-number">13.7.1</span> Positive relationship</h3>
-<div id="8926be25" class="cell" data-execution_count="14">
+<div id="6a8c04af" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sb.lmplot(</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>counties_df, x<span class="op">=</span><span class="st">'Pct_Born_Same_State'</span>, y<span class="op">=</span><span class="st">'Pct_HS_Grad'</span>,</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    aspect<span class="op">=</span><span class="dv">2</span>, scatter_kws<span class="op">=</span>{<span class="st">'alpha'</span>: <span class="fl">.5</span>}, line_kws<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'tab:red'</span>}</span>
@@ -569,14 +569,14 @@ window.Quarto = {
 </section>
 <section id="negative-relationship" class="level3" data-number="13.7.2">
 <h3 data-number="13.7.2" class="anchored" data-anchor-id="negative-relationship"><span class="header-section-number">13.7.2</span> Negative relationship</h3>
-<div id="11153abf" class="cell" data-execution_count="15">
+<div id="51918075" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>neg_model <span class="op">=</span> stats.linregress(</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>counties_df[<span class="st">'Pct_Assistance'</span>].fillna(<span class="dv">0</span>),</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>counties_df[<span class="st">'Pct_Broadband'</span>].fillna(<span class="dv">0</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"slope=</span><span class="sc">{</span>neg_model<span class="sc">.</span>slope<span class="sc">:.3f}</span><span class="ss">, R²=</span><span class="sc">{</span>neg_model<span class="sc">.</span>rvalue<span class="op">**</span><span class="dv">2</span><span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f1f83fa4" class="cell" data-execution_count="16">
+<div id="0ccb73f2" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sb.lmplot(</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>counties_df, x<span class="op">=</span><span class="st">'Pct_Assistance'</span>, y<span class="op">=</span><span class="st">'Pct_Broadband'</span>,</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    aspect<span class="op">=</span><span class="dv">2</span>, scatter_kws<span class="op">=</span>{<span class="st">'alpha'</span>: <span class="fl">.5</span>}, line_kws<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'tab:red'</span>}</span>
@@ -585,7 +585,7 @@ window.Quarto = {
 </section>
 <section id="no-relationship" class="level3" data-number="13.7.3">
 <h3 data-number="13.7.3" class="anchored" data-anchor-id="no-relationship"><span class="header-section-number">13.7.3</span> No relationship</h3>
-<div id="722e63b3" class="cell" data-execution_count="17">
+<div id="c227d151" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sb.lmplot(</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>counties_df[[<span class="st">'Pct_Female'</span>, <span class="st">'Pct_Hispanic'</span>]].fillna(<span class="dv">0</span>),</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Pct_Female'</span>, y<span class="op">=</span><span class="st">'Pct_Hispanic'</span>,</span>
@@ -596,14 +596,14 @@ window.Quarto = {
 <section id="non-linear-relationship" class="level3" data-number="13.7.4">
 <h3 data-number="13.7.4" class="anchored" data-anchor-id="non-linear-relationship"><span class="header-section-number">13.7.4</span> Non-linear relationship</h3>
 <p>Income and poverty follow a curve. A log transformation can linearize the relationship.</p>
-<div id="7456a2c8" class="cell" data-execution_count="18">
+<div id="974c47ec" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sb.lmplot(</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>counties_df[[<span class="st">'Median_Income'</span>, <span class="st">'Pct_Family_Poverty'</span>]].fillna(<span class="dv">0</span>),</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Median_Income'</span>, y<span class="op">=</span><span class="st">'Pct_Family_Poverty'</span>,</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    aspect<span class="op">=</span><span class="dv">2</span>, scatter_kws<span class="op">=</span>{<span class="st">'alpha'</span>: <span class="fl">.5</span>}, line_kws<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'tab:red'</span>}</span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="42591c35" class="cell" data-execution_count="19">
+<div id="ef4a5c17" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>counties_df[<span class="st">'Pct_Family_Poverty_log'</span>] <span class="op">=</span> counties_df[<span class="st">'Pct_Family_Poverty'</span>].<span class="bu">apply</span>(np.log).fillna(<span class="dv">0</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>counties_df[<span class="st">'Pct_Family_Poverty_log'</span>].replace({<span class="op">-</span>np.inf: <span class="dv">0</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -612,7 +612,7 @@ window.Quarto = {
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    aspect<span class="op">=</span><span class="dv">2</span>, scatter_kws<span class="op">=</span>{<span class="st">'alpha'</span>: <span class="fl">.5</span>}, line_kws<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'tab:red'</span>}</span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="a7175f79" class="cell" data-execution_count="20">
+<div id="2b740f24" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>stats.linregress(</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>counties_df[<span class="st">'Median_Income'</span>].fillna(<span class="dv">0</span>),</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>counties_df[<span class="st">'Pct_Family_Poverty_log'</span>].fillna(<span class="dv">0</span>)</span>
@@ -623,7 +623,7 @@ window.Quarto = {
 <section id="residuals" class="level2" data-number="13.8">
 <h2 data-number="13.8" class="anchored" data-anchor-id="residuals"><span class="header-section-number">13.8</span> Residuals</h2>
 <p>Unless you have a very simple mechanistic relationship, there is residual variance — the difference between the model’s prediction and the actual observation. Well-performing models have small residuals; poor models have large ones.</p>
-<div id="8c8a9f86" class="cell" data-execution_count="21">
+<div id="acf0be72" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> stats.linregress(</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>counties_df[<span class="st">'Pct_Family_Poverty'</span>].fillna(counties_df[<span class="st">'Pct_Family_Poverty'</span>].mean()),</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>counties_df[<span class="st">'Pct_Unemployed'</span>].fillna(counties_df[<span class="st">'Pct_Unemployed'</span>].mean())</span>
@@ -640,7 +640,7 @@ window.Quarto = {
 <h3 data-number="13.8.1" class="anchored" data-anchor-id="diagnosing-model-quality"><span class="header-section-number">13.8.1</span> Diagnosing model quality</h3>
 <p>A well-specified regression model should have residuals that are independent, have constant variance, are normally distributed, and have a mean of zero.</p>
 <p>Residuals vs.&nbsp;predicted values — look for patterns. A random scatter is good; a funnel or curve is bad.</p>
-<div id="13439317" class="cell" data-execution_count="22">
+<div id="9e8b3825" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>sb.regplot(x<span class="op">=</span>_y_pred, y<span class="op">=</span>counties_df[<span class="st">'residuals'</span>],</span>
@@ -650,7 +650,7 @@ window.Quarto = {
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Residuals'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Histogram of residuals — should be approximately normal and centered on zero.</p>
-<div id="a4e45d54" class="cell" data-execution_count="23">
+<div id="2f2d4184" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>counties_df[<span class="st">'residuals'</span>].hist(bins<span class="op">=</span><span class="dv">25</span>, ax<span class="op">=</span>ax)</span>
@@ -665,11 +665,11 @@ window.Quarto = {
 <section id="multiple-regression" class="level2" data-number="13.9">
 <h2 data-number="13.9" class="anchored" data-anchor-id="multiple-regression"><span class="header-section-number">13.9</span> Multiple Regression</h2>
 <p>Often you want to estimate an outcome as a function of more than one input variable. <code>statsmodels</code> provides the most intuitive interface for multiple regression via the formula syntax.</p>
-<div id="acc4c2fd" class="cell" data-execution_count="24">
+<div id="3bab804b" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>one_X_fit <span class="op">=</span> smf.ols(<span class="st">'Pct_HS_Grad ~ Median_Income'</span>, data<span class="op">=</span>counties_df.fillna(<span class="dv">0</span>)).fit()</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(one_X_fit.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f551325b" class="cell" data-execution_count="25">
+<div id="b9c72c43" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>two_X_fit <span class="op">=</span> smf.ols(<span class="st">'Pct_HS_Grad ~ Pct_Born_Same_State + Median_Income'</span>,</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                      data<span class="op">=</span>counties_df.fillna(<span class="dv">0</span>)).fit()</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(two_X_fit.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -702,7 +702,7 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>Model a relationship between two variables using any of the three libraries. Report the slope, intercept, and <span class="math inline">\(R^2\)</span>. Interpret the slope in plain language including units.</p>
 <p><strong>Solution:</strong></p>
-<div id="3d929df8" class="cell" data-execution_count="26">
+<div id="5c90fef3" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> stats.linregress(</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>counties_df[<span class="st">'Pct_Unemployed'</span>].fillna(<span class="dv">0</span>),</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>counties_df[<span class="st">'Pct_Family_Poverty'</span>].fillna(<span class="dv">0</span>)</span>
@@ -730,7 +730,7 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>Use <code>lmplot</code> or <code>regplot</code> to estimate and visualize a relationship between two variables. Customize the scatter transparency and line color.</p>
 <p><strong>Solution:</strong></p>
-<div id="2635cca6" class="cell" data-execution_count="27">
+<div id="c4a83b80" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sb.lmplot(</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>counties_df,</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Pct_Unemployed'</span>,</span>
@@ -757,7 +757,7 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>Estimate a model, compute the residuals, and produce a residuals-vs-predictions plot and a histogram of residuals. Are the residuals independent, constant variance, normally distributed, and zero-centered?</p>
 <p><strong>Solution:</strong></p>
-<div id="8ce7cacd" class="cell" data-execution_count="28">
+<div id="86c53c06" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>_model <span class="op">=</span> stats.linregress(</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>counties_df[<span class="st">'Pct_College_Grad'</span>].fillna(<span class="dv">0</span>),</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>counties_df[<span class="st">'Median_Income'</span>].fillna(<span class="dv">0</span>)</span>
@@ -794,7 +794,7 @@ window.Quarto = {
 <div class="callout-body-container callout-body">
 <p>Estimate a model predicting <code>Pct_HS_Grad</code> from both <code>Pct_Born_Same_State</code> and <code>Median_Income</code> using <code>statsmodels</code>. Compare the coefficients to the simple regressions. How does the <span class="math inline">\(R^2\)</span> change?</p>
 <p><strong>Solution:</strong></p>
-<div id="d6e099a2" class="cell" data-execution_count="29">
+<div id="decf3b4e" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>simple <span class="op">=</span> smf.ols(<span class="st">'Pct_HS_Grad ~ Pct_Born_Same_State'</span>, data<span class="op">=</span>counties_df.fillna(<span class="dv">0</span>)).fit()</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>multiple <span class="op">=</span> smf.ols(<span class="st">'Pct_HS_Grad ~ Pct_Born_Same_State + Median_Income'</span>,</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                    data<span class="op">=</span>counties_df.fillna(<span class="dv">0</span>)).fit()</span>

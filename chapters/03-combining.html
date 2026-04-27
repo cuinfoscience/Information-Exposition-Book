@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-710deee90218c0747833ed862e9a1c0d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-d1385d2e7dd819d8e2833b0cdae6eae6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -365,7 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <a href="http://www.retrosheet.org/gamelogs/index.html">Retrosheet game logs</a> and <a href="http://seanlahman.com/">Lahman Database</a> are the two most famous baseball datasets. Much of the data you see on sites like <a href="http://www.baseball-reference.com">Baseball-Reference</a> is <a href="https://www.baseball-reference.com/about/coverage.shtml">derived from</a> these sources.</p>
 <section id="setup" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">3.1</span> Setup</h2>
-<div id="eea259da" class="cell" data-execution_count="1">
+<div id="83ab4564" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -378,13 +378,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="3.2" class="anchored" data-anchor-id="setting-and-resetting-the-index"><span class="header-section-number">3.2</span> Setting and Resetting the Index</h2>
 <p>Before combining data, you need to understand how pandas uses the index. The index is the row label — by default an integer starting at 0, but it can be set to any column.</p>
 <p><code>.reset_index()</code> (<a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.reset_index.html">docs</a>) turns an index back into a regular column. <code>.set_index()</code> (<a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.set_index.html">docs</a>) turns a column into the index.</p>
-<div id="e3092287" class="cell" data-execution_count="2">
+<div id="7da6391f" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>batting_df <span class="op">=</span> pd.read_csv(<span class="st">'Lahman/Batting.csv'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>batting_df.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Make a pivot table of annual runs by team (review from <a href="02-aggregating.html" class="quarto-xref"><span>Chapter 2</span></a>).</p>
-<div id="f358aaab" class="cell" data-execution_count="3">
+<div id="f0d79077" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>team_annual_hrs <span class="op">=</span> pd.pivot_table(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>batting_df,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="st">'yearID'</span>,</span>
@@ -395,20 +395,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>team_annual_hrs.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="80c5c22f" class="cell" data-execution_count="4">
+<div id="ec17f495" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>team_annual_hrs.loc[<span class="dv">1998</span>:].dropna(axis<span class="op">=</span><span class="st">'columns'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Reset the index to turn “yearID” back into a column.</p>
-<div id="c1975329" class="cell" data-execution_count="5">
+<div id="cf54dee1" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>reset <span class="op">=</span> team_annual_hrs.reset_index()</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>reset</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Set it back.</p>
-<div id="b82a894b" class="cell" data-execution_count="6">
+<div id="07398672" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>reset.set_index(<span class="st">'yearID'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>reset</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="7064bccc" class="cell" data-execution_count="7">
+<div id="d72cc115" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>reset.loc[<span class="dv">2021</span>].dropna().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -431,48 +431,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="checking-the-data-first" class="level3" data-number="3.3.1">
 <h3 data-number="3.3.1" class="anchored" data-anchor-id="checking-the-data-first"><span class="header-section-number">3.3.1</span> Checking the data first</h3>
 <p>Let’s start by loading a single season of game log data.</p>
-<div id="90795230" class="cell" data-execution_count="8">
+<div id="059e27f8" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>gamelog_1921 <span class="op">=</span> pd.read_csv(<span class="st">'Retrosheet/GL1921.TXT'</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>gamelog_1921.head(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The data does not have column names — pandas assumes the first row contains headers. We need to tell <code>read_csv</code> there is no header row.</p>
-<div id="52e236f2" class="cell" data-execution_count="9">
+<div id="e45a26c7" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>gamelog_1921 <span class="op">=</span> pd.read_csv(<span class="st">'Retrosheet/GL1921.TXT'</span>, header<span class="op">=</span><span class="va">None</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>gamelog_1921.head(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now the columns are numbered 0 to 160, but the <a href="https://www.retrosheet.org/gamelogs/glfields.txt">Retrosheet documentation</a> indexes columns starting from 1. To avoid future confusion, let’s fix this now.</p>
-<div id="921fac82" class="cell" data-execution_count="10">
+<div id="3ea7a7f3" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>gamelog_1921.columns <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">162</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gamelog_1921.head(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>What is the “shape” of this data? The <code>.shape</code> attribute returns the number of rows and columns as a tuple.</p>
-<div id="756ca180" class="cell" data-execution_count="11">
+<div id="d2ac0af8" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>gamelog_1921.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The 1921 data has 1,229 rows (games) and 161 columns. Compare to 2021 — almost twice as many games because of league expansion, but still 161 columns.</p>
-<div id="a746e361" class="cell" data-execution_count="12">
+<div id="b9fe7af7" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>gamelog_2021 <span class="op">=</span> pd.read_csv(<span class="st">'Retrosheet/GL2021.TXT'</span>, header<span class="op">=</span><span class="va">None</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>gamelog_2021.columns <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">162</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>gamelog_2021.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The 2020 season was shortened by the COVID-19 pandemic.</p>
-<div id="89813c72" class="cell" data-execution_count="13">
+<div id="eb76e86b" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>gamelog_2020 <span class="op">=</span> pd.read_csv(<span class="st">'Retrosheet/GL2020.TXT'</span>, header<span class="op">=</span><span class="va">None</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>gamelog_2020.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A quick concatenation of two seasons:</p>
-<div id="995fb79a" class="cell" data-execution_count="14">
+<div id="9fb586e5" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pd.concat([gamelog_1921, gamelog_2021]).shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="looping-through-files" class="level3" data-number="3.3.2">
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="looping-through-files"><span class="header-section-number">3.3.2</span> Looping through files</h3>
 <p>With 151 season files, loading them one by one is impractical. The <code>os.listdir</code> function takes a directory path and returns a list of filenames. We will use it on the “Retrosheet” folder.</p>
-<div id="cebd01a7" class="cell" data-execution_count="15">
+<div id="b8a0cf6b" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">sorted</span>(os.listdir(<span class="st">'Retrosheet/'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>First, verify that all files have the same number of columns — a critical check before concatenating.</p>
-<div id="340d39bd" class="cell" data-execution_count="16">
+<div id="5f8311a2" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> os.listdir(<span class="st">'Retrosheet/'</span>):</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">'gl'</span> <span class="kw">in</span> <span class="bu">file</span>.lower():</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        _df <span class="op">=</span> pd.read_csv(<span class="st">'Retrosheet/'</span> <span class="op">+</span> <span class="bu">file</span>, header<span class="op">=</span><span class="va">None</span>)</span>
@@ -480,7 +480,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"WARNING: </span><span class="sc">{</span><span class="bu">file</span><span class="sc">}</span><span class="ss"> has </span><span class="sc">{</span>_df<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> columns"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If nothing prints, all 151 files have exactly 161 columns. Now load them all into a list.</p>
-<div id="44a810d8" class="cell" data-execution_count="17">
+<div id="c4f6aea2" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>gamelog_list <span class="op">=</span> []</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> <span class="bu">sorted</span>(os.listdir(<span class="st">'Retrosheet/'</span>)):</span>
@@ -490,7 +490,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        gamelog_list.append(_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Develop a practice of <em>constantly</em> verifying that your operations match your expectations. We had 151 files, so our list should have 151 objects.</p>
-<div id="34a37761" class="cell" data-execution_count="18">
+<div id="3727b660" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(gamelog_list)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -510,7 +510,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="using-pd.concat" class="level3" data-number="3.3.3">
 <h3 data-number="3.3.3" class="anchored" data-anchor-id="using-pd.concat"><span class="header-section-number">3.3.3</span> Using <code>pd.concat</code></h3>
 <p>Concatenate all seasons into a single DataFrame.</p>
-<div id="16661304" class="cell" data-execution_count="19">
+<div id="0c91562d" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>gamelogs_df <span class="op">=</span> pd.concat(objs<span class="op">=</span>gamelog_list)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>gamelogs_df.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -519,18 +519,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="managing-indices-after-concatenation" class="level3" data-number="3.3.4">
 <h3 data-number="3.3.4" class="anchored" data-anchor-id="managing-indices-after-concatenation"><span class="header-section-number">3.3.4</span> Managing indices after concatenation</h3>
 <p>One interesting (and frustrating) consequence of concatenation is that the indices from each parent DataFrame are preserved. This means index values like 0, 1, 2, … repeat for every season.</p>
-<div id="af69c497" class="cell" data-execution_count="20">
+<div id="ff7343c6" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>gamelogs_df.loc[<span class="dv">13</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>There are 151 rows named 13 — one from each season. This is usually a problem. You have two options.</p>
 <p><strong>Option 1:</strong> Use <code>.reset_index(drop=True)</code> after concatenating. The <code>drop=True</code> parameter discards the old index rather than turning it into a column.</p>
-<div id="6fd0b68c" class="cell" data-execution_count="21">
+<div id="3d31886c" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>gamelogs_df_reset <span class="op">=</span> gamelogs_df.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>gamelogs_df_reset.loc[<span class="dv">2000</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Option 2:</strong> Use <code>ignore_index=True</code> inside <code>pd.concat</code>. This is the lazy (and preferred) option because it handles the problem at the point of concatenation.</p>
-<div id="1e58e07d" class="cell" data-execution_count="22">
+<div id="382fbebc" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>gamelogs_df_ignore <span class="op">=</span> pd.concat(</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    objs<span class="op">=</span>gamelog_list,</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    ignore_index<span class="op">=</span><span class="va">True</span></span>
@@ -542,10 +542,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="filtering-concatenated-data" class="level3" data-number="3.3.5">
 <h3 data-number="3.3.5" class="anchored" data-anchor-id="filtering-concatenated-data"><span class="header-section-number">3.3.5</span> Filtering concatenated data</h3>
 <p>With all 151 seasons in a single DataFrame, you can do interesting cross-historical analyses. Let’s extract the year from the date column and find all Boston Red Sox vs.&nbsp;New York Yankees games.</p>
-<div id="0427d3f4" class="cell" data-execution_count="23">
+<div id="989a078c" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>gamelogs_df_reset[<span class="st">'year'</span>] <span class="op">=</span> gamelogs_df_reset[<span class="dv">1</span>].astype(<span class="bu">str</span>).<span class="bu">str</span>.<span class="bu">slice</span>(<span class="dv">0</span>, <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="09169918" class="cell" data-execution_count="24">
+<div id="5cee0cd3" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Boston vs. Yankees games</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>away_condition <span class="op">=</span> gamelogs_df_reset[<span class="dv">4</span>].isin([<span class="st">'BOS'</span>, <span class="st">'NYA'</span>])</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>home_condition <span class="op">=</span> gamelogs_df_reset[<span class="dv">7</span>].isin([<span class="st">'BOS'</span>, <span class="st">'NYA'</span>])</span>
@@ -553,7 +553,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>sox_yankees_df <span class="op">=</span> gamelogs_df_reset[home_condition <span class="op">&amp;</span> away_condition]</span>
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>sox_yankees_df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="0e57d33d" class="cell" data-execution_count="25">
+<div id="61ce2b60" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>pd.pivot_table(</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>sox_yankees_df,</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="dv">4</span>,</span>
@@ -570,12 +570,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="preparing-for-a-merge" class="level3" data-number="3.4.1">
 <h3 data-number="3.4.1" class="anchored" data-anchor-id="preparing-for-a-merge"><span class="header-section-number">3.4.1</span> Preparing for a merge</h3>
 <p>Load the People and Batting tables from the Lahman database.</p>
-<div id="d3fe794c" class="cell" data-execution_count="26">
+<div id="3a534248" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>people_df <span class="op">=</span> pd.read_csv(<span class="st">'Lahman/People.csv'</span>)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(people_df.shape)</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>people_df.head(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="52c5d816" class="cell" data-execution_count="27">
+<div id="ac772db3" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>batting_df <span class="op">=</span> pd.read_csv(<span class="st">'Lahman/Batting.csv'</span>).sort_values([<span class="st">'playerID'</span>, <span class="st">'yearID'</span>])</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(batting_df.shape)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>batting_df.head(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -584,11 +584,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="identifying-join-keys" class="level3" data-number="3.4.2">
 <h3 data-number="3.4.2" class="anchored" data-anchor-id="identifying-join-keys"><span class="header-section-number">3.4.2</span> Identifying join keys</h3>
 <p>What columns do these two DataFrames have in common? Set operations on the column names reveal the shared keys.</p>
-<div id="6d39723a" class="cell" data-execution_count="28">
+<div id="62bcda68" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span>(batting_df.columns) <span class="op">&amp;</span> <span class="bu">set</span>(people_df.columns)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <code>playerID</code> column is present in both. But do they cover the same set of players?</p>
-<div id="7473a428" class="cell" data-execution_count="29">
+<div id="ffe3855e" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Unique players in batting: </span><span class="sc">{</span><span class="bu">len</span>(<span class="bu">set</span>(batting_df[<span class="st">'playerID'</span>]))<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Unique players in people: </span><span class="sc">{</span><span class="bu">len</span>(<span class="bu">set</span>(people_df[<span class="st">'playerID'</span>]))<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Players in both: </span><span class="sc">{</span><span class="bu">len</span>(<span class="bu">set</span>(batting_df[<span class="st">'playerID'</span>]) <span class="op">&amp;</span> <span class="bu">set</span>(people_df[<span class="st">'playerID'</span>]))<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -598,11 +598,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="checking-for-duplicates" class="level3" data-number="3.4.3">
 <h3 data-number="3.4.3" class="anchored" data-anchor-id="checking-for-duplicates"><span class="header-section-number">3.4.3</span> Checking for duplicates</h3>
 <p>Are there repeated player IDs in either table? Understanding this is critical for predicting the shape of your merged result.</p>
-<div id="ecbb2b54" class="cell" data-execution_count="30">
+<div id="301508b3" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>people_df[<span class="st">'playerID'</span>].value_counts()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Each player appears exactly once in People — it is a lookup table. But in Batting:</p>
-<div id="f395ed2a" class="cell" data-execution_count="31">
+<div id="d66ac375" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>batting_df[<span class="st">'playerID'</span>].value_counts()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Players appear multiple times because the Batting table has one row per player-season (and even per player-team within a season for traded players). This means our merge will be a <strong>one-to-many</strong> join: each person row will match multiple batting rows.</p>
@@ -613,7 +613,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="left-join" class="level4" data-number="3.4.4.1">
 <h4 data-number="3.4.4.1" class="anchored" data-anchor-id="left-join"><span class="header-section-number">3.4.4.1</span> Left join</h4>
 <p>A left join preserves all rows in the left DataFrame. Rows from the right that do not match get <code>NaN</code>.</p>
-<div id="88921d49" class="cell" data-execution_count="32">
+<div id="ec7809c7" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>people_batting_left <span class="op">=</span> pd.merge(</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    left<span class="op">=</span>people_df,</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    right<span class="op">=</span>batting_df,</span>
@@ -629,7 +629,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="right-join" class="level4" data-number="3.4.4.2">
 <h4 data-number="3.4.4.2" class="anchored" data-anchor-id="right-join"><span class="header-section-number">3.4.4.2</span> Right join</h4>
 <p>A right join preserves all rows in the right DataFrame. Rows from the left that do not match get <code>NaN</code>.</p>
-<div id="780ce0e9" class="cell" data-execution_count="33">
+<div id="34af38e1" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>people_batting_right <span class="op">=</span> pd.merge(</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    left<span class="op">=</span>people_df,</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    right<span class="op">=</span>batting_df,</span>
@@ -645,7 +645,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="outer-join" class="level4" data-number="3.4.4.3">
 <h4 data-number="3.4.4.3" class="anchored" data-anchor-id="outer-join"><span class="header-section-number">3.4.4.3</span> Outer join</h4>
 <p>An outer join preserves all rows from both DataFrames. Non-matching rows get <code>NaN</code> on the side that did not match.</p>
-<div id="7396cef6" class="cell" data-execution_count="34">
+<div id="2db145ad" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>people_batting_outer <span class="op">=</span> pd.merge(</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    left<span class="op">=</span>people_df,</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    right<span class="op">=</span>batting_df,</span>
@@ -660,7 +660,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="inner-join" class="level4" data-number="3.4.4.4">
 <h4 data-number="3.4.4.4" class="anchored" data-anchor-id="inner-join"><span class="header-section-number">3.4.4.4</span> Inner join</h4>
 <p>An inner join preserves only rows where the key exists in <em>both</em> DataFrames. Everything else is dropped.</p>
-<div id="a6333363" class="cell" data-execution_count="35">
+<div id="33664be3" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>people_batting_inner <span class="op">=</span> pd.merge(</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    left<span class="op">=</span>people_df,</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    right<span class="op">=</span>batting_df,</span>
@@ -694,7 +694,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Concatenate all 151 seasons of gamelog data in <code>gamelog_list</code> together. Make sure the index is unique. What is the <code>.shape</code> of the combined DataFrame?</p>
 <p><strong>Solution:</strong></p>
-<div id="fd6491b3" class="cell" data-execution_count="36">
+<div id="9ff07ec2" class="cell" data-execution_count="36">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>gamelogs_all <span class="op">=</span> pd.concat(gamelog_list, ignore_index<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(gamelogs_all.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -716,7 +716,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <a href="https://www.retrosheet.org/gamelogs/glfields.txt">Retrosheet documentation</a> explains that column 10 is the visiting team score and column 11 is the home team score. Column 18 is the game attendance.</p>
 <p>What team scored the most runs ever in a single game? What was the highest-attended game?</p>
 <p><strong>Solution:</strong></p>
-<div id="b80af06f" class="cell" data-execution_count="37">
+<div id="24d267a6" class="cell" data-execution_count="37">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Highest visiting team score</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>max_visitor_idx <span class="op">=</span> gamelogs_df_reset[<span class="dv">10</span>].idxmax()</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Highest visiting score:"</span>)</span>
@@ -739,7 +739,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Column 3 is the day of the week. Column 13 is whether the game was a night or day game. Column 18 is attendance. Make a pivot table showing average attendance by day of the week and day/night status.</p>
 <p><strong>Solution:</strong></p>
-<div id="7f3cf969" class="cell" data-execution_count="38">
+<div id="61009b9f" class="cell" data-execution_count="38">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>pd.pivot_table(</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>gamelogs_df_reset,</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="dv">3</span>,</span>
@@ -765,7 +765,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Join the “HallOfFame” and “People” tables from the Lahman database. Filter to inducted players. Do an aggregation to count Hall of Famers by birth country.</p>
 <p><strong>Solution:</strong></p>
-<div id="45cf0bb1" class="cell" data-execution_count="39">
+<div id="897eb653" class="cell" data-execution_count="39">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>halloffame_df <span class="op">=</span> pd.read_csv(<span class="st">'Lahman/HallOfFame.csv'</span>)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to inducted players</span></span>
@@ -804,7 +804,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Which schools produce the highest-paid players? Load the “Salaries”, “Schools”, and “CollegePlaying” tables from the Lahman database. Develop a strategy for joining all three and answering the question.</p>
 <p><strong>Solution:</strong></p>
-<div id="9facbd61" class="cell" data-execution_count="40">
+<div id="44a56465" class="cell" data-execution_count="40">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>salaries_df <span class="op">=</span> pd.read_csv(<span class="st">'Lahman/Salaries.csv'</span>)</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>college_df <span class="op">=</span> pd.read_csv(<span class="st">'Lahman/CollegePlaying.csv'</span>)</span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>schools_df <span class="op">=</span> pd.read_csv(<span class="st">'Lahman/Schools.csv'</span>)</span>

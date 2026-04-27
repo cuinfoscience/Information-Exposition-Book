@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-710deee90218c0747833ed862e9a1c0d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-d1385d2e7dd819d8e2833b0cdae6eae6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -366,7 +366,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This chapter introduces types of research validity, counterfactual reasoning, and quasi-experimental designs. We will use a concrete example — whether cannabis legalization in Colorado reduced opioid overdose deaths — to illustrate how these concepts shape the way you analyze data and communicate findings. The analysis draws on data from the CDC’s WONDER database and the research design frameworks from Freese and Kevern’s <em>Handbook of Causal Analysis for Social Research</em> and Reichardt’s entry on internal validity in the <em>International Encyclopedia of the Social &amp; Behavioral Sciences</em>.</p>
 <section id="setup" class="level2" data-number="14.1">
 <h2 data-number="14.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">14.1</span> Setup</h2>
-<div id="079e14ae" class="cell" data-execution_count="1">
+<div id="94adb24c" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -384,7 +384,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-data" class="level2" data-number="14.2">
 <h2 data-number="14.2" class="anchored" data-anchor-id="the-data"><span class="header-section-number">14.2</span> The Data</h2>
 <p>We use mortality data from the CDC’s <a href="https://wonder.cdc.gov/">WONDER</a> database, which provides county-level death counts by cause from 1999 through 2020. We focus on drug/alcohol-induced causes using the “Unintentional” (X40–X44), “Suicide” (X60–X64), and “Undetermined” (Y10–Y14) ICD-10 codes to examine opioid overdose trends.</p>
-<div id="9fbea1c0" class="cell" data-execution_count="2">
+<div id="230d60d5" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cod_df <span class="op">=</span> pd.read_csv(<span class="st">'wonder_cod.txt'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>, dtype<span class="op">=</span>{<span class="st">'County Code'</span>: <span class="bu">str</span>})</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the state from the "County" field (e.g., "Denver County, CO")</span></span>
@@ -396,13 +396,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>cod_df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Not all counties are captured: the CDC suppresses small counts for privacy reasons, leaving only about 1,380 of the roughly 3,350 U.S. counties.</p>
-<div id="14653c60" class="cell" data-execution_count="3">
+<div id="f739a0c7" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(cod_df[<span class="st">'County Code'</span>].unique())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="state-level-rates" class="level3" data-number="14.2.1">
 <h3 data-number="14.2.1" class="anchored" data-anchor-id="state-level-rates"><span class="header-section-number">14.2.1</span> State-level rates</h3>
 <p>Pivot the data to compute annual state-level death rates per 100,000 residents.</p>
-<div id="8b8ae6f4" class="cell" data-execution_count="4">
+<div id="73afc8fb" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>deaths <span class="op">=</span> pd.pivot_table(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="st">'State'</span>, columns<span class="op">=</span><span class="st">'Year'</span>, values<span class="op">=</span><span class="st">'Deaths'</span>,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    aggfunc<span class="op">=</span><span class="st">'sum'</span>, data<span class="op">=</span>cod_df</span>
@@ -421,11 +421,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-question" class="level2" data-number="14.3">
 <h2 data-number="14.3" class="anchored" data-anchor-id="the-question"><span class="header-section-number">14.3</span> The Question</h2>
 <p>Colorado legalized recreational cannabis on January 1, 2014. Some researchers have hypothesized that cannabis legalization reduces opioid overdose deaths because patients substitute cannabis for opioids in pain management. Let’s see what the data says.</p>
-<div id="514b8f2f" class="cell" data-execution_count="5">
+<div id="e7d3032b" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>legal_states <span class="op">=</span> [<span class="st">'CO'</span>, <span class="st">'WA'</span>]</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>nonlegal_states <span class="op">=</span> [s <span class="cf">for</span> s <span class="kw">in</span> state_rate_pivot.index <span class="cf">if</span> s <span class="kw">not</span> <span class="kw">in</span> legal_states]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="d147ebb1" class="cell" data-execution_count="6">
+<div id="c8902c80" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f, (ax0, ax1) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ax0.set_ylabel(<span class="st">'Deaths per 100k'</span>)</span>
@@ -440,7 +440,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                                                    linewidth<span class="op">=</span><span class="dv">5</span>, zorder<span class="op">=</span><span class="dv">1</span>, label<span class="op">=</span><span class="st">'Non-legal avg'</span>)</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>ax1.legend()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="5f769f6e" class="cell" data-execution_count="7">
+<div id="7943d808" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>state_rate_pivot.loc[legal_states, :].T.plot(ax<span class="op">=</span>ax, zorder<span class="op">=</span><span class="dv">2</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
@@ -469,7 +469,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="single-group-prepost-design" class="level2" data-number="14.5">
 <h2 data-number="14.5" class="anchored" data-anchor-id="single-group-prepost-design"><span class="header-section-number">14.5</span> Single-Group Pre/Post Design</h2>
 <p>The simplest design compares Colorado’s rates before and after legalization.</p>
-<div id="bfe0d699" class="cell" data-execution_count="8">
+<div id="60632529" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>co_cod_df <span class="op">=</span> cod_df[(cod_df[<span class="st">'State'</span>] <span class="op">==</span> <span class="st">'CO'</span>) <span class="op">&amp;</span> (cod_df[<span class="st">'Year'</span>] <span class="op">&gt;=</span> <span class="dv">2008</span>)]</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
@@ -482,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>ax.set_ylim((<span class="dv">0</span>, <span class="dv">50</span>))</span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>ax.legend()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="3ad8a7d1" class="cell" data-execution_count="9">
+<div id="c1d39615" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>co_before <span class="op">=</span> co_cod_df.loc[co_cod_df[<span class="st">'Year'</span>].isin(<span class="bu">range</span>(<span class="dv">2008</span>, <span class="dv">2014</span>)), <span class="st">'Rate'</span>]</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>co_after <span class="op">=</span> co_cod_df.loc[co_cod_df[<span class="st">'Year'</span>].isin(<span class="bu">range</span>(<span class="dv">2015</span>, <span class="dv">2021</span>)), <span class="st">'Rate'</span>]</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -509,14 +509,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="multiple-group-comparison-design" class="level2" data-number="14.6">
 <h2 data-number="14.6" class="anchored" data-anchor-id="multiple-group-comparison-design"><span class="header-section-number">14.6</span> Multiple-Group Comparison Design</h2>
 <p>A stronger design compares Colorado to states that did not legalize cannabis but had similar pre-legalization death rates.</p>
-<div id="f9e3b4e2" class="cell" data-execution_count="10">
+<div id="d5b7e904" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>state_rate_pivot.loc[<span class="st">'CO'</span>, <span class="dv">2008</span>:<span class="dv">2013</span>].mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="3a0ef407" class="cell" data-execution_count="11">
+<div id="076e3a98" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>state_rate_pivot.loc[:, <span class="dv">2008</span>:<span class="dv">2013</span>].mean(<span class="dv">1</span>).sort_values()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We identify comparison states with similar pre-2014 rates and track all three trajectories.</p>
-<div id="8aa1f6aa" class="cell" data-execution_count="12">
+<div id="43108441" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>co_before_df <span class="op">=</span> cod_df.loc[</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    (cod_df[<span class="st">'State'</span>] <span class="op">==</span> <span class="st">'CO'</span>) <span class="op">&amp;</span> (cod_df[<span class="st">'Year'</span>] <span class="op">&gt;=</span> <span class="dv">2008</span>) <span class="op">&amp;</span> (cod_df[<span class="st">'Year'</span>] <span class="op">&lt;</span> <span class="dv">2014</span>), <span class="st">'Rate'</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>]</span>
@@ -538,7 +538,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    (cod_df[<span class="st">'State'</span>] <span class="op">==</span> <span class="st">'DE'</span>) <span class="op">&amp;</span> (cod_df[<span class="st">'Year'</span>] <span class="op">&gt;</span> <span class="dv">2014</span>), <span class="st">'Rate'</span></span>
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="39ab3c0f" class="cell" data-execution_count="13">
+<div id="1dea96dd" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>state_rate_pivot.loc[[<span class="st">'CO'</span>, <span class="st">'MT'</span>, <span class="st">'DE'</span>, <span class="st">'NM'</span>], :].T.plot(ax<span class="op">=</span>ax, zorder<span class="op">=</span><span class="dv">2</span>, lw<span class="op">=</span><span class="dv">3</span>)</span>
@@ -549,7 +549,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="visualize-the-distributions" class="level3" data-number="14.6.1">
 <h3 data-number="14.6.1" class="anchored" data-anchor-id="visualize-the-distributions"><span class="header-section-number">14.6.1</span> Visualize the distributions</h3>
-<div id="961b62be" class="cell" data-execution_count="14">
+<div id="feaf4619" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>f, axs <span class="op">=</span> plt.subplots(</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>),</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    subplot_kw<span class="op">=</span>{<span class="st">'xlim'</span>: (<span class="dv">0</span>, <span class="dv">100</span>), <span class="st">'ylim'</span>: (<span class="op">-</span><span class="fl">.005</span>, <span class="fl">.2</span>), <span class="st">'xlabel'</span>: <span class="st">'Opioid deaths per 100k'</span>},</span>
@@ -579,7 +579,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="compare-changes-across-states" class="level3" data-number="14.6.2">
 <h3 data-number="14.6.2" class="anchored" data-anchor-id="compare-changes-across-states"><span class="header-section-number">14.6.2</span> Compare changes across states</h3>
-<div id="ac6370e0" class="cell" data-execution_count="15">
+<div id="88bc9cde" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, before, after <span class="kw">in</span> [(<span class="st">'Colorado'</span>, co_before_df, co_after_df),</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                             (<span class="st">'Montana'</span>, mt_before_df, mt_after_df),</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                             (<span class="st">'Delaware'</span>, de_before_df, de_after_df)]:</span>
@@ -599,7 +599,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="difference-in-differences" class="level2" data-number="14.8">
 <h2 data-number="14.8" class="anchored" data-anchor-id="difference-in-differences"><span class="header-section-number">14.8</span> Difference-in-Differences</h2>
 <p>A common quasi-experimental approach is <strong>difference-in-differences</strong> (DiD): compute the before-to-after change in the treatment group and subtract the before-to-after change in the comparison group.</p>
-<div id="9c285d85" class="cell" data-execution_count="16">
+<div id="83dbe3d0" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>co_change <span class="op">=</span> co_after_df.mean() <span class="op">-</span> co_before_df.mean()</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>mt_change <span class="op">=</span> mt_after_df.mean() <span class="op">-</span> mt_before_df.mean()</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -653,7 +653,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Using the <code>state_rate_pivot</code> data, identify the three states whose pre-2014 death rates most closely match Colorado’s. Plot their trajectories alongside Colorado’s. Does the visual evidence support or undermine the legalization hypothesis?</p>
 <p><strong>Solution:</strong></p>
-<div id="ce632a45" class="cell" data-execution_count="17">
+<div id="8ef65c02" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>co_pre <span class="op">=</span> state_rate_pivot.loc[<span class="st">'CO'</span>, <span class="dv">2008</span>:<span class="dv">2013</span>].mean()</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>distances <span class="op">=</span> (state_rate_pivot.loc[:, <span class="dv">2008</span>:<span class="dv">2013</span>].mean(<span class="dv">1</span>) <span class="op">-</span> co_pre).<span class="bu">abs</span>()</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>best_matches <span class="op">=</span> distances.drop([<span class="st">'CO'</span>, <span class="st">'WA'</span>]).sort_values().head(<span class="dv">3</span>).index.tolist()</span>
@@ -684,7 +684,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <p>Using the comparison states you identified in Exercise 2, compute the difference-in-differences estimate for each pair (Colorado vs.&nbsp;each comparison state). Are the estimates consistent across comparisons?</p>
 <p><strong>Solution:</strong></p>
-<div id="99b97bc4" class="cell" data-execution_count="18">
+<div id="0bde5e40" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>co_change <span class="op">=</span> co_after_df.mean() <span class="op">-</span> co_before_df.mean()</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> state <span class="kw">in</span> best_matches:</span>
