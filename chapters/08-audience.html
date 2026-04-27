@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>8&nbsp; Writing for an Audience – Information Exposition</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/09-temporal-data.html" rel="next">
+<link href="../chapters/07-catplots.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-710deee90218c0747833ed862e9a1c0d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/06-histograms.html">Distributions</a></li><li class="breadcrumb-item"><a href="../chapters/08-audience.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Writing for an Audience</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Information Exposition</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/cuinfoscience/Information-Exposition-Book/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Shaping Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-loading.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Loading Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-aggregating.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Aggregating and Summarizing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-combining.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Combining Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-reshaping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reshaping and Tidying</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-clarity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Clarity in Data Communication</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Distributions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-histograms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Histograms</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-catplots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Categorical Plots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-audience.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Writing for an Audience</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Trends</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-temporal-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Working with Temporal Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-time-series.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Time Series Visualization and Patterns</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Communicating Uncertainty</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Relationships</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-scatterplots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Scatterplots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13-linear-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Linear Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14-validity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Validity and Causal Reasoning</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/datasets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Datasets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Python Environment Setup</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup"><span class="header-section-number">8.1</span> Setup</a></li>
+  <li><a href="#who-is-your-audience" id="toc-who-is-your-audience" class="nav-link" data-scroll-target="#who-is-your-audience"><span class="header-section-number">8.2</span> Who Is Your Audience?</a>
+  <ul class="collapse">
+  <li><a href="#what-does-the-audience-already-know" id="toc-what-does-the-audience-already-know" class="nav-link" data-scroll-target="#what-does-the-audience-already-know"><span class="header-section-number">8.2.1</span> What does the audience already know?</a></li>
+  <li><a href="#what-does-the-audience-need-to-decide" id="toc-what-does-the-audience-need-to-decide" class="nav-link" data-scroll-target="#what-does-the-audience-need-to-decide"><span class="header-section-number">8.2.2</span> What does the audience need to decide?</a></li>
+  <li><a href="#what-is-the-audiences-prior-belief" id="toc-what-is-the-audiences-prior-belief" class="nav-link" data-scroll-target="#what-is-the-audiences-prior-belief"><span class="header-section-number">8.2.3</span> What is the audience’s prior belief?</a></li>
+  </ul></li>
+  <li><a href="#getting-to-the-core" id="toc-getting-to-the-core" class="nav-link" data-scroll-target="#getting-to-the-core"><span class="header-section-number">8.3</span> Getting to the Core</a></li>
+  <li><a href="#tailoring-a-visualization" id="toc-tailoring-a-visualization" class="nav-link" data-scroll-target="#tailoring-a-visualization"><span class="header-section-number">8.4</span> Tailoring a Visualization</a>
+  <ul class="collapse">
+  <li><a href="#for-a-technical-audience" id="toc-for-a-technical-audience" class="nav-link" data-scroll-target="#for-a-technical-audience"><span class="header-section-number">8.4.1</span> For a technical audience</a></li>
+  <li><a href="#for-a-general-audience" id="toc-for-a-general-audience" class="nav-link" data-scroll-target="#for-a-general-audience"><span class="header-section-number">8.4.2</span> For a general audience</a></li>
+  <li><a href="#for-a-decision-maker" id="toc-for-a-decision-maker" class="nav-link" data-scroll-target="#for-a-decision-maker"><span class="header-section-number">8.4.3</span> For a decision-maker</a></li>
+  </ul></li>
+  <li><a href="#narrative-structure" id="toc-narrative-structure" class="nav-link" data-scroll-target="#narrative-structure"><span class="header-section-number">8.5</span> Narrative Structure</a>
+  <ul class="collapse">
+  <li><a href="#the-martini-glass" id="toc-the-martini-glass" class="nav-link" data-scroll-target="#the-martini-glass"><span class="header-section-number">8.5.1</span> The Martini Glass</a></li>
+  <li><a href="#the-interactive-slideshow" id="toc-the-interactive-slideshow" class="nav-link" data-scroll-target="#the-interactive-slideshow"><span class="header-section-number">8.5.2</span> The Interactive Slideshow</a></li>
+  <li><a href="#the-drill-down" id="toc-the-drill-down" class="nav-link" data-scroll-target="#the-drill-down"><span class="header-section-number">8.5.3</span> The Drill-Down</a></li>
+  </ul></li>
+  <li><a href="#communicating-data-to-an-audience" id="toc-communicating-data-to-an-audience" class="nav-link" data-scroll-target="#communicating-data-to-an-audience"><span class="header-section-number">8.6</span> Communicating Data to an Audience</a></li>
+  <li><a href="#writing-the-first-draft" id="toc-writing-the-first-draft" class="nav-link" data-scroll-target="#writing-the-first-draft"><span class="header-section-number">8.7</span> Writing the First Draft</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">8.8</span> Exercises</a></li>
+  <li><a href="#looking-ahead" id="toc-looking-ahead" class="nav-link" data-scroll-target="#looking-ahead"><span class="header-section-number">8.9</span> Looking Ahead</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/cuinfoscience/Information-Exposition-Book/edit/main/chapters/08-audience.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/Information-Exposition-Book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/06-histograms.html">Distributions</a></li><li class="breadcrumb-item"><a href="../chapters/08-audience.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Writing for an Audience</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span id="sec-audience" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Writing for an Audience</span></span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The previous chapters in this part taught you to visualize distributions with histograms and compare them across categories with catplots. But a chart does not speak for itself. Every visualization is created for someone, and the choices you make — what to include, what to exclude, how to frame the finding, how much detail to provide — should be driven by who that someone is.</p>
+<p>This chapter explores audience analysis: the practice of understanding your reader before you write. Knowing your audience changes every aspect of your data communication, from the chart type you choose to the vocabulary you use to the narrative structure you follow. We will use the DIA passenger and House expenditure data from earlier chapters to illustrate how the same underlying analysis produces very different outputs depending on the intended audience.</p>
+<section id="setup" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">8.1</span> Setup</h2>
+<div id="b0c69bd1" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sb</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>pd.options.display.max_columns <span class="op">=</span> <span class="dv">100</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="who-is-your-audience" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="who-is-your-audience"><span class="header-section-number">8.2</span> Who Is Your Audience?</h2>
+<p>Andrew Abela, in <em>Advanced Presentations by Design</em>, argues that every data presentation should begin with three questions about the audience.</p>
+<section id="what-does-the-audience-already-know" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="what-does-the-audience-already-know"><span class="header-section-number">8.2.1</span> What does the audience already know?</h3>
+<p>A data scientist reviewing your work understands what a p-value means and expects to see one. A city council member may not know what a p-value is and would be better served by a plain-language statement like “This difference is very unlikely to be due to chance.” A general reader of a blog post falls somewhere in between and might benefit from a brief definition.</p>
+<p>The level of existing knowledge determines your vocabulary, the amount of methodological detail you include, and how much context you need to provide for each chart.</p>
+</section>
+<section id="what-does-the-audience-need-to-decide" class="level3" data-number="8.2.2">
+<h3 data-number="8.2.2" class="anchored" data-anchor-id="what-does-the-audience-need-to-decide"><span class="header-section-number">8.2.2</span> What does the audience need to decide?</h3>
+<p>Data communication is rarely just informational — it almost always supports a decision. A DIA executive might need to decide whether to open a new terminal. A journalist might need to decide whether the passenger recovery trend is newsworthy. A congressional staffer might need to decide whether to recommend changes to an office’s spending practices.</p>
+<p>The decision shapes what data matters. The executive cares about long-term capacity projections. The journalist cares about the narrative arc of decline and recovery. The staffer cares about line-item comparisons to peer offices. The same underlying dataset serves all three, but the analysis and presentation differ substantially.</p>
+</section>
+<section id="what-is-the-audiences-prior-belief" class="level3" data-number="8.2.3">
+<h3 data-number="8.2.3" class="anchored" data-anchor-id="what-is-the-audiences-prior-belief"><span class="header-section-number">8.2.3</span> What is the audience’s prior belief?</h3>
+<p>If your audience already believes that COVID-19 devastated air travel, a chart confirming that belief is unremarkable. The more interesting and useful contribution might be how quickly traffic recovered, or which airlines recovered fastest, or how DIA compared to other airports.</p>
+<p>Understanding your audience’s priors helps you focus on what is genuinely new and useful rather than restating the obvious. Conversely, if your finding <em>contradicts</em> a widely held belief, you need to present stronger evidence and anticipate skepticism.</p>
+</section>
+</section>
+<section id="getting-to-the-core" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="getting-to-the-core"><span class="header-section-number">8.3</span> Getting to the Core</h2>
+<p>Sejal Vora, in <em>The Power of Data Storytelling</em>, argues that you should be able to state your core finding in a single sentence before you create any visualization. This sentence becomes the organizing principle for everything else.</p>
+<p>Consider the House expenditure data from <a href="07-catplots.html" class="quarto-xref"><span>Chapter 7</span></a>. Several possible core findings emerge from the same data, and each would lead to a different presentation.</p>
+<ul>
+<li>“Democratic and Republican offices spend similar amounts overall, but differ meaningfully in how they allocate across categories.”</li>
+<li>“Members representing distant districts spend significantly more on travel than those near Washington, D.C.”</li>
+<li>“Incumbent members spend 12% more than freshmen, regardless of party.”</li>
+</ul>
+<p>Each of these core findings would produce a different chart, a different headline, and a different narrative structure. Before opening matplotlib, decide which story you are telling.</p>
+</section>
+<section id="tailoring-a-visualization" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="tailoring-a-visualization"><span class="header-section-number">8.4</span> Tailoring a Visualization</h2>
+<p>Let’s demonstrate with the DIA passenger data.</p>
+<div id="db586c0f" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>passenger_df <span class="op">=</span> pd.read_csv(<span class="st">'passengers.csv'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Month'</span>] <span class="op">=</span> pd.to_datetime(passenger_df[<span class="st">'Month'</span>])</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>passenger_df.set_index(<span class="st">'Month'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>passenger_df.drop(columns<span class="op">=</span>[<span class="st">'Cargo'</span>], inplace<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="for-a-technical-audience" class="level3" data-number="8.4.1">
+<h3 data-number="8.4.1" class="anchored" data-anchor-id="for-a-technical-audience"><span class="header-section-number">8.4.1</span> For a technical audience</h3>
+<p>A data science team reviewing your analysis wants to see the full data, clear methodology, and reproducible code. You might produce a detailed time series with multiple airlines, consistent axis scales, and statistical annotations.</p>
+<div id="6e58a5b9" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> airline <span class="kw">in</span> [<span class="st">'United'</span>, <span class="st">'Southwest'</span>, <span class="st">'Frontier'</span>]:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    passenger_df[airline].plot(ax<span class="op">=</span>ax, label<span class="op">=</span>airline, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Monthly Passengers'</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Date'</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'DIA Monthly Passengers by Major Carrier, 1995–2021'</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>ax.axvline(pd.Timestamp(<span class="st">'2020-03-01'</span>), color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This chart is detailed and precise. It includes multiple series, uses consistent colors, and annotates the COVID-19 onset without editorial commentary. A technical audience would know to examine the relative recovery rates and the crossover between United and Southwest around 2010.</p>
+</section>
+<section id="for-a-general-audience" class="level3" data-number="8.4.2">
+<h3 data-number="8.4.2" class="anchored" data-anchor-id="for-a-general-audience"><span class="header-section-number">8.4.2</span> For a general audience</h3>
+<p>A blog post reader wants a clear takeaway, minimal jargon, and a chart that communicates the point at a glance. Simplify to a single line (total passengers) with prominent annotations and a descriptive title.</p>
+<div id="0b272fab" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Grand'</span>].plot(ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>ax.annotate(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'COVID-19</span><span class="ch">\n</span><span class="st">shutdowns'</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    xy<span class="op">=</span>(pd.Timestamp(<span class="st">'2020-04-01'</span>), <span class="dv">500_000</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">12</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    fontweight<span class="op">=</span><span class="st">'bold'</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'crimson'</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Monthly Passengers'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'How COVID-19 Crushed Denver Airport Traffic'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">''</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The title is a finding, not a description. The y-axis is labeled with a plain-English phrase. The top and right spines are removed to reduce clutter. There is one annotation pointing to the key moment. A general reader can absorb the message in three seconds.</p>
+</section>
+<section id="for-a-decision-maker" class="level3" data-number="8.4.3">
+<h3 data-number="8.4.3" class="anchored" data-anchor-id="for-a-decision-maker"><span class="header-section-number">8.4.3</span> For a decision-maker</h3>
+<p>An airport executive needs to decide whether passenger traffic has recovered enough to justify expansion. The most useful chart is a comparison of current levels against a pre-pandemic baseline.</p>
+<div id="7a722eff" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute a pre-pandemic baseline: average monthly traffic 2015-2019</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>baseline <span class="op">=</span> passenger_df.loc[<span class="st">'2015'</span>:<span class="st">'2019'</span>].groupby(passenger_df.loc[<span class="st">'2015'</span>:<span class="st">'2019'</span>].index.month).mean()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 2021 actual vs. baseline</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>actual_2021 <span class="op">=</span> passenger_df.loc[<span class="st">'2021'</span>, <span class="st">'Grand'</span>]</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">13</span>), baseline[<span class="st">'Grand'</span>].values, label<span class="op">=</span><span class="st">'2015–2019 Average'</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>ax.plot(actual_2021.index.month, actual_2021.values, label<span class="op">=</span><span class="st">'2021 Actual'</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">13</span>))</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels([<span class="st">'Jan'</span>, <span class="st">'Feb'</span>, <span class="st">'Mar'</span>, <span class="st">'Apr'</span>, <span class="st">'May'</span>, <span class="st">'Jun'</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Jul'</span>, <span class="st">'Aug'</span>, <span class="st">'Sep'</span>, <span class="st">'Oct'</span>, <span class="st">'Nov'</span>, <span class="st">'Dec'</span>])</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Monthly Passengers'</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'2021 Recovery vs. Pre-Pandemic Baseline'</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>ax.legend()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The same data, the same underlying truth, but three very different presentations optimized for three very different readers.</p>
+</section>
+</section>
+<section id="narrative-structure" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="narrative-structure"><span class="header-section-number">8.5</span> Narrative Structure</h2>
+<p>Data stories, like all stories, have a structure. Research by Segel and Heer, and later discussed by Bach, Stefaner, and others in <em>Data-Driven Storytelling</em>, identified common narrative patterns.</p>
+<section id="the-martini-glass" class="level3" data-number="8.5.1">
+<h3 data-number="8.5.1" class="anchored" data-anchor-id="the-martini-glass"><span class="header-section-number">8.5.1</span> The Martini Glass</h3>
+<p>This pattern begins with a narrow, author-driven narrative (“here is the finding”) and then opens up to let the reader explore the data on their own. A blog post that leads with a chart and headline, then provides an interactive dashboard, follows this pattern. It works well for general audiences who benefit from being told the conclusion before they examine the evidence.</p>
+</section>
+<section id="the-interactive-slideshow" class="level3" data-number="8.5.2">
+<h3 data-number="8.5.2" class="anchored" data-anchor-id="the-interactive-slideshow"><span class="header-section-number">8.5.2</span> The Interactive Slideshow</h3>
+<p>This pattern alternates between author-driven slides and reader-driven exploration at each step. A scrollytelling article where the reader advances through annotated charts is the classic example. It works well for audiences who want to understand the methodology step by step.</p>
+</section>
+<section id="the-drill-down" class="level3" data-number="8.5.3">
+<h3 data-number="8.5.3" class="anchored" data-anchor-id="the-drill-down"><span class="header-section-number">8.5.3</span> The Drill-Down</h3>
+<p>This pattern starts with an overview and progressively reveals more detail. You might begin with total DIA traffic, then break down by airline, then by route, then by day of week. It works well for analytical audiences who want to explore the data at multiple levels.</p>
+<p>Your choice of structure depends on the audience’s level of engagement and expertise. A general audience benefits from the Martini Glass (give them the conclusion first). A technical audience may prefer a drill-down (let them evaluate the methodology).</p>
+</section>
+</section>
+<section id="communicating-data-to-an-audience" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="communicating-data-to-an-audience"><span class="header-section-number">8.6</span> Communicating Data to an Audience</h2>
+<p>Drawing from Drucker, Huron, Kosara, Schwabish, and Diakopoulos in <em>Data-Driven Storytelling</em>, several principles guide effective data communication regardless of audience.</p>
+<p><strong>Annotation is argument.</strong> When you add an annotation to a chart — a label, an arrow, a highlighted region — you are making an argument about what the reader should pay attention to. Use annotations deliberately to guide the reader’s eye to the most important patterns.</p>
+<p><strong>Redundancy builds comprehension.</strong> Encoding the same information in multiple channels (color <em>and</em> label, position <em>and</em> size) makes the chart accessible to readers with different cognitive styles and to those with color vision deficiencies.</p>
+<p><strong>Simplicity is not dumbing down.</strong> Removing unnecessary gridlines, decimals, or chart elements does not make your analysis less rigorous. It makes it more communicable. Einstein reportedly said “Everything should be made as simple as possible, but not simpler.” The same applies to charts.</p>
+</section>
+<section id="writing-the-first-draft" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="writing-the-first-draft"><span class="header-section-number">8.7</span> Writing the First Draft</h2>
+<p>When you sit down to write about your data analysis, drawing from Nolan and Stoudt’s <em>Communicating with Data</em>:</p>
+<p><strong>Start with the finding.</strong> Your opening sentence should state the most important result. “DIA passenger traffic fell 93% between February and April 2020” is a finding. “We analyzed monthly passenger data from 1995 to 2021” is a methodology statement — useful, but secondary.</p>
+<p><strong>Use concrete numbers.</strong> Vague claims (“traffic dropped significantly”) are less compelling and less trustworthy than specific ones (“traffic dropped from 5.3 million to 380,000 passengers”).</p>
+<p><strong>Explain, don’t just show.</strong> A chart alone is not an argument. Tell the reader what the chart shows, why it matters, and what it means for the question at hand. Resist the temptation to let the chart “speak for itself.”</p>
+<p><strong>Anticipate objections.</strong> A sophisticated reader will wonder about seasonal effects, population growth, or airline mergers. Address these proactively — even briefly — to build credibility. If you don’t raise the obvious objections, the reader will assume you did not consider them.</p>
+</section>
+<section id="exercises" class="level2" data-number="8.8">
+<h2 data-number="8.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">8.8</span> Exercises</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Exercise 1: Two versions of one chart
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Choose a finding from the House expenditure data in <a href="07-catplots.html" class="quarto-xref"><span>Chapter 7</span></a>. Create two versions of a chart communicating that finding: one for a congressional staffer who works with this data daily, and one for a constituent reading a local newspaper. Write a one-paragraph caption for each.</p>
+<p><strong>Solution:</strong></p>
+<p>For the staffer, include party breakdown, confidence intervals, dollar amounts, and a note about the data source and quarter. The caption might read: “Average Q3 2021 office spending by party (N=218 D, 212 R). Error bars show 95% CI. Source: ProPublica disbursement data.”</p>
+<p>For the constituent, simplify to a single comparison with plain language. The caption might read: “Your representative’s office spent $387,000 last quarter, compared to the average of $340,000 across all congressional offices. Most of this spending went to staff salaries and office rent.”</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Exercise 2: Lead with the finding
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Take any analysis you have done so far in this book (loading Census data, aggregating CDC mortality data, visualizing weather distributions). Write a three-sentence summary that leads with the finding, provides one supporting number, and briefly notes a caveat.</p>
+<p><strong>Solution:</strong></p>
+<p>Example: “Heart disease deaths in the U.S. increased 5.4% from 2019 to 2020, the largest year-over-year jump in the past decade. Total deaths rose from approximately 657,000 to 692,000, a change that coincides with the onset of the COVID-19 pandemic. This increase likely reflects both direct cardiovascular effects of COVID-19 and disruptions to routine cardiac care, though the CDC data does not distinguish between these mechanisms.”</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Exercise 3: Audience analysis
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Identify three different audiences for the county-level COVID data you will encounter in <a href="12-scatterplots.html" class="quarto-xref"><span>Chapter 12</span></a> (e.g., a public health official, a journalist, a concerned citizen). For each, write one sentence describing what they already know, what they need to decide, and what chart type would serve them best.</p>
+<p><strong>Solution:</strong></p>
+<p>A <strong>public health official</strong> knows epidemiological terminology and needs to decide where to allocate resources. A choropleth map of per-capita case rates, colored by severity thresholds, would serve them best because it shows geographic hotspots at a glance.</p>
+<p>A <strong>journalist</strong> knows the broad pandemic narrative and needs to decide whether a local angle is newsworthy. A comparative bar chart showing the local county against state and national averages would work because it immediately establishes whether the local situation is typical or exceptional.</p>
+<p>A <strong>concerned citizen</strong> has limited statistical background and needs to decide whether to change personal behavior. A simple line chart of local weekly trends with a plain-language annotation (“cases rising” or “cases stable”) and no jargon would be most effective.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Exercise 4: Choose a narrative structure
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>You have been asked to create a data story about congressional spending for a class blog. Describe how the story would differ if you used the Martini Glass structure versus the Drill-Down structure. Which would you choose for your classmates? Why?</p>
+<p><strong>Solution:</strong></p>
+<p>The <strong>Martini Glass</strong> would begin with the headline finding (“Congressional offices spend an average of $340,000 per quarter, but the range is enormous”) and a single chart, then offer an interactive table or dashboard where readers can look up their own representative. This works well for classmates who may not read past the first paragraph.</p>
+<p>The <strong>Drill-Down</strong> would start with total spending, then break down by party, then by spending category, then highlight a few interesting outliers. This builds understanding progressively but requires the reader to stay engaged through multiple charts. For classmates in a data science course, the drill-down may be more appropriate because the audience is learning analytical techniques, not just consuming findings.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Exercise 5: Redundancy in visualization
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Take the DIA passenger chart and encode the same information in at least two visual channels (e.g., both color and a text annotation, or both line thickness and a legend label). How does the redundancy affect readability?</p>
+<p><strong>Solution:</strong></p>
+<div id="09dd3423" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Grand'</span>].plot(ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Redundancy: both a vertical line AND a text annotation for the same event</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>ax.axvline(pd.Timestamp(<span class="st">'2020-03-01'</span>), color<span class="op">=</span><span class="st">'crimson'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>           linewidth<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'COVID-19 Onset'</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">'COVID-19</span><span class="ch">\n</span><span class="st">Onset'</span>, xy<span class="op">=</span>(pd.Timestamp(<span class="st">'2020-03-01'</span>), <span class="dv">5_000_000</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">10</span>, color<span class="op">=</span><span class="st">'crimson'</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Monthly Passengers'</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'DIA Passenger Traffic'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The redundancy ensures that a reader who misses the vertical line will still see the annotation, and vice versa. This is especially helpful when charts are printed in black and white or viewed by readers with color vision deficiencies.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="looking-ahead" class="level2" data-number="8.9">
+<h2 data-number="8.9" class="anchored" data-anchor-id="looking-ahead"><span class="header-section-number">8.9</span> Looking Ahead</h2>
+<p>You now have a framework for thinking about audience that will inform every visualization and data narrative you produce. In <a href="09-temporal-data.html" class="quarto-xref"><span>Chapter 9</span></a>, we shift to a new data type — temporal data — and the unique challenges of working with dates, times, and timestamps in Python.</p>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/07-catplots.html" class="pagination-link" aria-label="Categorical Plots">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Categorical Plots</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/09-temporal-data.html" class="pagination-link" aria-label="Working with Temporal Data">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Working with Temporal Data</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Writing for an Audience {#sec-audience}</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>The previous chapters in this part taught you to visualize distributions with histograms and compare them across categories with catplots. But a chart does not speak for itself. Every visualization is created for someone, and the choices you make — what to include, what to exclude, how to frame the finding, how much detail to provide — should be driven by who that someone is.</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>This chapter explores audience analysis: the practice of understanding your reader before you write. Knowing your audience changes every aspect of your data communication, from the chart type you choose to the vocabulary you use to the narrative structure you follow. We will use the DIA passenger and House expenditure data from earlier chapters to illustrate how the same underlying analysis produces very different outputs depending on the intended audience.</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setup</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sb</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>pd.options.display.max_columns <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Who Is Your Audience?</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>Andrew Abela, in *Advanced Presentations by Design*, argues that every data presentation should begin with three questions about the audience.</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="fu">### What does the audience already know?</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>A data scientist reviewing your work understands what a p-value means and expects to see one. A city council member may not know what a p-value is and would be better served by a plain-language statement like "This difference is very unlikely to be due to chance." A general reader of a blog post falls somewhere in between and might benefit from a brief definition.</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>The level of existing knowledge determines your vocabulary, the amount of methodological detail you include, and how much context you need to provide for each chart.</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="fu">### What does the audience need to decide?</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>Data communication is rarely just informational — it almost always supports a decision. A DIA executive might need to decide whether to open a new terminal. A journalist might need to decide whether the passenger recovery trend is newsworthy. A congressional staffer might need to decide whether to recommend changes to an office's spending practices.</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>The decision shapes what data matters. The executive cares about long-term capacity projections. The journalist cares about the narrative arc of decline and recovery. The staffer cares about line-item comparisons to peer offices. The same underlying dataset serves all three, but the analysis and presentation differ substantially.</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="fu">### What is the audience's prior belief?</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>If your audience already believes that COVID-19 devastated air travel, a chart confirming that belief is unremarkable. The more interesting and useful contribution might be how quickly traffic recovered, or which airlines recovered fastest, or how DIA compared to other airports.</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>Understanding your audience's priors helps you focus on what is genuinely new and useful rather than restating the obvious. Conversely, if your finding *contradicts* a widely held belief, you need to present stronger evidence and anticipate skepticism.</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## Getting to the Core</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>Sejal Vora, in *The Power of Data Storytelling*, argues that you should be able to state your core finding in a single sentence before you create any visualization. This sentence becomes the organizing principle for everything else.</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>Consider the House expenditure data from @sec-catplots. Several possible core findings emerge from the same data, and each would lead to a different presentation.</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>"Democratic and Republican offices spend similar amounts overall, but differ meaningfully in how they allocate across categories."</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>"Members representing distant districts spend significantly more on travel than those near Washington, D.C."</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>"Incumbent members spend 12% more than freshmen, regardless of party."</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>Each of these core findings would produce a different chart, a different headline, and a different narrative structure. Before opening matplotlib, decide which story you are telling.</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tailoring a Visualization</span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>Let's demonstrate with the DIA passenger data.</span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>passenger_df <span class="op">=</span> pd.read_csv(<span class="st">'passengers.csv'</span>)</span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Month'</span>] <span class="op">=</span> pd.to_datetime(passenger_df[<span class="st">'Month'</span>])</span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>passenger_df.set_index(<span class="st">'Month'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>passenger_df.drop(columns<span class="op">=</span>[<span class="st">'Cargo'</span>], inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a><span class="fu">### For a technical audience</span></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>A data science team reviewing your analysis wants to see the full data, clear methodology, and reproducible code. You might produce a detailed time series with multiple airlines, consistent axis scales, and statistical annotations.</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> airline <span class="kw">in</span> [<span class="st">'United'</span>, <span class="st">'Southwest'</span>, <span class="st">'Frontier'</span>]:</span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>    passenger_df[airline].plot(ax<span class="op">=</span>ax, label<span class="op">=</span>airline, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Monthly Passengers'</span>)</span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Date'</span>)</span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'DIA Monthly Passengers by Major Carrier, 1995–2021'</span>)</span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>ax.axvline(pd.Timestamp(<span class="st">'2020-03-01'</span>), color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>This chart is detailed and precise. It includes multiple series, uses consistent colors, and annotates the COVID-19 onset without editorial commentary. A technical audience would know to examine the relative recovery rates and the crossover between United and Southwest around 2010.</span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a><span class="fu">### For a general audience</span></span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a>A blog post reader wants a clear takeaway, minimal jargon, and a chart that communicates the point at a glance. Simplify to a single line (total passengers) with prominent annotations and a descriptive title.</span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Grand'</span>].plot(ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>ax.annotate(</span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>    <span class="st">'COVID-19</span><span class="ch">\n</span><span class="st">shutdowns'</span>,</span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>    xy<span class="op">=</span>(pd.Timestamp(<span class="st">'2020-04-01'</span>), <span class="dv">500_000</span>),</span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">12</span>,</span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a>    fontweight<span class="op">=</span><span class="st">'bold'</span>,</span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'crimson'</span></span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Monthly Passengers'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'How COVID-19 Crushed Denver Airport Traffic'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">''</span>)</span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a>The title is a finding, not a description. The y-axis is labeled with a plain-English phrase. The top and right spines are removed to reduce clutter. There is one annotation pointing to the key moment. A general reader can absorb the message in three seconds.</span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a><span class="fu">### For a decision-maker</span></span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a>An airport executive needs to decide whether passenger traffic has recovered enough to justify expansion. The most useful chart is a comparison of current levels against a pre-pandemic baseline.</span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute a pre-pandemic baseline: average monthly traffic 2015-2019</span></span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a>baseline <span class="op">=</span> passenger_df.loc[<span class="st">'2015'</span>:<span class="st">'2019'</span>].groupby(passenger_df.loc[<span class="st">'2015'</span>:<span class="st">'2019'</span>].index.month).mean()</span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 2021 actual vs. baseline</span></span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a>actual_2021 <span class="op">=</span> passenger_df.loc[<span class="st">'2021'</span>, <span class="st">'Grand'</span>]</span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">13</span>), baseline[<span class="st">'Grand'</span>].values, label<span class="op">=</span><span class="st">'2015–2019 Average'</span>,</span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a>ax.plot(actual_2021.index.month, actual_2021.values, label<span class="op">=</span><span class="st">'2021 Actual'</span>,</span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">13</span>))</span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels([<span class="st">'Jan'</span>, <span class="st">'Feb'</span>, <span class="st">'Mar'</span>, <span class="st">'Apr'</span>, <span class="st">'May'</span>, <span class="st">'Jun'</span>,</span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'Jul'</span>, <span class="st">'Aug'</span>, <span class="st">'Sep'</span>, <span class="st">'Oct'</span>, <span class="st">'Nov'</span>, <span class="st">'Dec'</span>])</span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Monthly Passengers'</span>)</span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'2021 Recovery vs. Pre-Pandemic Baseline'</span>)</span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a>The same data, the same underlying truth, but three very different presentations optimized for three very different readers.</span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a><span class="fu">## Narrative Structure</span></span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a>Data stories, like all stories, have a structure. Research by Segel and Heer, and later discussed by Bach, Stefaner, and others in *Data-Driven Storytelling*, identified common narrative patterns.</span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a><span class="fu">### The Martini Glass</span></span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a>This pattern begins with a narrow, author-driven narrative ("here is the finding") and then opens up to let the reader explore the data on their own. A blog post that leads with a chart and headline, then provides an interactive dashboard, follows this pattern. It works well for general audiences who benefit from being told the conclusion before they examine the evidence.</span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a><span class="fu">### The Interactive Slideshow</span></span>
+<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a>This pattern alternates between author-driven slides and reader-driven exploration at each step. A scrollytelling article where the reader advances through annotated charts is the classic example. It works well for audiences who want to understand the methodology step by step.</span>
+<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a><span class="fu">### The Drill-Down</span></span>
+<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a>This pattern starts with an overview and progressively reveals more detail. You might begin with total DIA traffic, then break down by airline, then by route, then by day of week. It works well for analytical audiences who want to explore the data at multiple levels.</span>
+<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a>Your choice of structure depends on the audience's level of engagement and expertise. A general audience benefits from the Martini Glass (give them the conclusion first). A technical audience may prefer a drill-down (let them evaluate the methodology).</span>
+<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a><span class="fu">## Communicating Data to an Audience</span></span>
+<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a>Drawing from Drucker, Huron, Kosara, Schwabish, and Diakopoulos in *Data-Driven Storytelling*, several principles guide effective data communication regardless of audience.</span>
+<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a>**Annotation is argument.** When you add an annotation to a chart — a label, an arrow, a highlighted region — you are making an argument about what the reader should pay attention to. Use annotations deliberately to guide the reader's eye to the most important patterns.</span>
+<span id="cb7-170"><a href="#cb7-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-171"><a href="#cb7-171" aria-hidden="true" tabindex="-1"></a>**Redundancy builds comprehension.** Encoding the same information in multiple channels (color *and* label, position *and* size) makes the chart accessible to readers with different cognitive styles and to those with color vision deficiencies.</span>
+<span id="cb7-172"><a href="#cb7-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-173"><a href="#cb7-173" aria-hidden="true" tabindex="-1"></a>**Simplicity is not dumbing down.** Removing unnecessary gridlines, decimals, or chart elements does not make your analysis less rigorous. It makes it more communicable. Einstein reportedly said "Everything should be made as simple as possible, but not simpler." The same applies to charts.</span>
+<span id="cb7-174"><a href="#cb7-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-175"><a href="#cb7-175" aria-hidden="true" tabindex="-1"></a><span class="fu">## Writing the First Draft</span></span>
+<span id="cb7-176"><a href="#cb7-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-177"><a href="#cb7-177" aria-hidden="true" tabindex="-1"></a>When you sit down to write about your data analysis, drawing from Nolan and Stoudt's *Communicating with Data*:</span>
+<span id="cb7-178"><a href="#cb7-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-179"><a href="#cb7-179" aria-hidden="true" tabindex="-1"></a>**Start with the finding.** Your opening sentence should state the most important result. "DIA passenger traffic fell 93% between February and April 2020" is a finding. "We analyzed monthly passenger data from 1995 to 2021" is a methodology statement — useful, but secondary.</span>
+<span id="cb7-180"><a href="#cb7-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-181"><a href="#cb7-181" aria-hidden="true" tabindex="-1"></a>**Use concrete numbers.** Vague claims ("traffic dropped significantly") are less compelling and less trustworthy than specific ones ("traffic dropped from 5.3 million to 380,000 passengers").</span>
+<span id="cb7-182"><a href="#cb7-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-183"><a href="#cb7-183" aria-hidden="true" tabindex="-1"></a>**Explain, don't just show.** A chart alone is not an argument. Tell the reader what the chart shows, why it matters, and what it means for the question at hand. Resist the temptation to let the chart "speak for itself."</span>
+<span id="cb7-184"><a href="#cb7-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-185"><a href="#cb7-185" aria-hidden="true" tabindex="-1"></a>**Anticipate objections.** A sophisticated reader will wonder about seasonal effects, population growth, or airline mergers. Address these proactively — even briefly — to build credibility. If you don't raise the obvious objections, the reader will assume you did not consider them.</span>
+<span id="cb7-186"><a href="#cb7-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-187"><a href="#cb7-187" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercises</span></span>
+<span id="cb7-188"><a href="#cb7-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-189"><a href="#cb7-189" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb7-190"><a href="#cb7-190" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise 1: Two versions of one chart</span></span>
+<span id="cb7-191"><a href="#cb7-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-192"><a href="#cb7-192" aria-hidden="true" tabindex="-1"></a>Choose a finding from the House expenditure data in @sec-catplots. Create two versions of a chart communicating that finding: one for a congressional staffer who works with this data daily, and one for a constituent reading a local newspaper. Write a one-paragraph caption for each.</span>
+<span id="cb7-193"><a href="#cb7-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-194"><a href="#cb7-194" aria-hidden="true" tabindex="-1"></a>**Solution:**</span>
+<span id="cb7-195"><a href="#cb7-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-196"><a href="#cb7-196" aria-hidden="true" tabindex="-1"></a>For the staffer, include party breakdown, confidence intervals, dollar amounts, and a note about the data source and quarter. The caption might read: "Average Q3 2021 office spending by party (N=218 D, 212 R). Error bars show 95% CI. Source: ProPublica disbursement data."</span>
+<span id="cb7-197"><a href="#cb7-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-198"><a href="#cb7-198" aria-hidden="true" tabindex="-1"></a>For the constituent, simplify to a single comparison with plain language. The caption might read: "Your representative's office spent $387,000 last quarter, compared to the average of $340,000 across all congressional offices. Most of this spending went to staff salaries and office rent."</span>
+<span id="cb7-199"><a href="#cb7-199" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-200"><a href="#cb7-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-201"><a href="#cb7-201" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb7-202"><a href="#cb7-202" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise 2: Lead with the finding</span></span>
+<span id="cb7-203"><a href="#cb7-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-204"><a href="#cb7-204" aria-hidden="true" tabindex="-1"></a>Take any analysis you have done so far in this book (loading Census data, aggregating CDC mortality data, visualizing weather distributions). Write a three-sentence summary that leads with the finding, provides one supporting number, and briefly notes a caveat.</span>
+<span id="cb7-205"><a href="#cb7-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-206"><a href="#cb7-206" aria-hidden="true" tabindex="-1"></a>**Solution:**</span>
+<span id="cb7-207"><a href="#cb7-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-208"><a href="#cb7-208" aria-hidden="true" tabindex="-1"></a>Example: "Heart disease deaths in the U.S. increased 5.4% from 2019 to 2020, the largest year-over-year jump in the past decade. Total deaths rose from approximately 657,000 to 692,000, a change that coincides with the onset of the COVID-19 pandemic. This increase likely reflects both direct cardiovascular effects of COVID-19 and disruptions to routine cardiac care, though the CDC data does not distinguish between these mechanisms."</span>
+<span id="cb7-209"><a href="#cb7-209" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-210"><a href="#cb7-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-211"><a href="#cb7-211" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb7-212"><a href="#cb7-212" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise 3: Audience analysis</span></span>
+<span id="cb7-213"><a href="#cb7-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-214"><a href="#cb7-214" aria-hidden="true" tabindex="-1"></a>Identify three different audiences for the county-level COVID data you will encounter in @sec-scatterplots (e.g., a public health official, a journalist, a concerned citizen). For each, write one sentence describing what they already know, what they need to decide, and what chart type would serve them best.</span>
+<span id="cb7-215"><a href="#cb7-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-216"><a href="#cb7-216" aria-hidden="true" tabindex="-1"></a>**Solution:**</span>
+<span id="cb7-217"><a href="#cb7-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-218"><a href="#cb7-218" aria-hidden="true" tabindex="-1"></a>A **public health official** knows epidemiological terminology and needs to decide where to allocate resources. A choropleth map of per-capita case rates, colored by severity thresholds, would serve them best because it shows geographic hotspots at a glance.</span>
+<span id="cb7-219"><a href="#cb7-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-220"><a href="#cb7-220" aria-hidden="true" tabindex="-1"></a>A **journalist** knows the broad pandemic narrative and needs to decide whether a local angle is newsworthy. A comparative bar chart showing the local county against state and national averages would work because it immediately establishes whether the local situation is typical or exceptional.</span>
+<span id="cb7-221"><a href="#cb7-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-222"><a href="#cb7-222" aria-hidden="true" tabindex="-1"></a>A **concerned citizen** has limited statistical background and needs to decide whether to change personal behavior. A simple line chart of local weekly trends with a plain-language annotation ("cases rising" or "cases stable") and no jargon would be most effective.</span>
+<span id="cb7-223"><a href="#cb7-223" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-224"><a href="#cb7-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-225"><a href="#cb7-225" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb7-226"><a href="#cb7-226" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise 4: Choose a narrative structure</span></span>
+<span id="cb7-227"><a href="#cb7-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-228"><a href="#cb7-228" aria-hidden="true" tabindex="-1"></a>You have been asked to create a data story about congressional spending for a class blog. Describe how the story would differ if you used the Martini Glass structure versus the Drill-Down structure. Which would you choose for your classmates? Why?</span>
+<span id="cb7-229"><a href="#cb7-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-230"><a href="#cb7-230" aria-hidden="true" tabindex="-1"></a>**Solution:**</span>
+<span id="cb7-231"><a href="#cb7-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-232"><a href="#cb7-232" aria-hidden="true" tabindex="-1"></a>The **Martini Glass** would begin with the headline finding ("Congressional offices spend an average of $340,000 per quarter, but the range is enormous") and a single chart, then offer an interactive table or dashboard where readers can look up their own representative. This works well for classmates who may not read past the first paragraph.</span>
+<span id="cb7-233"><a href="#cb7-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-234"><a href="#cb7-234" aria-hidden="true" tabindex="-1"></a>The **Drill-Down** would start with total spending, then break down by party, then by spending category, then highlight a few interesting outliers. This builds understanding progressively but requires the reader to stay engaged through multiple charts. For classmates in a data science course, the drill-down may be more appropriate because the audience is learning analytical techniques, not just consuming findings.</span>
+<span id="cb7-235"><a href="#cb7-235" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-236"><a href="#cb7-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-237"><a href="#cb7-237" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
+<span id="cb7-238"><a href="#cb7-238" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercise 5: Redundancy in visualization</span></span>
+<span id="cb7-239"><a href="#cb7-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-240"><a href="#cb7-240" aria-hidden="true" tabindex="-1"></a>Take the DIA passenger chart and encode the same information in at least two visual channels (e.g., both color and a text annotation, or both line thickness and a legend label). How does the redundancy affect readability?</span>
+<span id="cb7-241"><a href="#cb7-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-242"><a href="#cb7-242" aria-hidden="true" tabindex="-1"></a>**Solution:**</span>
+<span id="cb7-243"><a href="#cb7-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-246"><a href="#cb7-246" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-247"><a href="#cb7-247" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb7-248"><a href="#cb7-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-249"><a href="#cb7-249" aria-hidden="true" tabindex="-1"></a>passenger_df[<span class="st">'Grand'</span>].plot(ax<span class="op">=</span>ax, color<span class="op">=</span><span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb7-250"><a href="#cb7-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-251"><a href="#cb7-251" aria-hidden="true" tabindex="-1"></a><span class="co"># Redundancy: both a vertical line AND a text annotation for the same event</span></span>
+<span id="cb7-252"><a href="#cb7-252" aria-hidden="true" tabindex="-1"></a>ax.axvline(pd.Timestamp(<span class="st">'2020-03-01'</span>), color<span class="op">=</span><span class="st">'crimson'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb7-253"><a href="#cb7-253" aria-hidden="true" tabindex="-1"></a>           linewidth<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'COVID-19 Onset'</span>)</span>
+<span id="cb7-254"><a href="#cb7-254" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="st">'COVID-19</span><span class="ch">\n</span><span class="st">Onset'</span>, xy<span class="op">=</span>(pd.Timestamp(<span class="st">'2020-03-01'</span>), <span class="dv">5_000_000</span>),</span>
+<span id="cb7-255"><a href="#cb7-255" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">10</span>, color<span class="op">=</span><span class="st">'crimson'</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb7-256"><a href="#cb7-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-257"><a href="#cb7-257" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb7-258"><a href="#cb7-258" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Monthly Passengers'</span>)</span>
+<span id="cb7-259"><a href="#cb7-259" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'DIA Passenger Traffic'</span>)</span>
+<span id="cb7-260"><a href="#cb7-260" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-261"><a href="#cb7-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-262"><a href="#cb7-262" aria-hidden="true" tabindex="-1"></a>The redundancy ensures that a reader who misses the vertical line will still see the annotation, and vice versa. This is especially helpful when charts are printed in black and white or viewed by readers with color vision deficiencies.</span>
+<span id="cb7-263"><a href="#cb7-263" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-264"><a href="#cb7-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-265"><a href="#cb7-265" aria-hidden="true" tabindex="-1"></a><span class="fu">## Looking Ahead</span></span>
+<span id="cb7-266"><a href="#cb7-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-267"><a href="#cb7-267" aria-hidden="true" tabindex="-1"></a>You now have a framework for thinking about audience that will inform every visualization and data narrative you produce. In @sec-temporal-data, we shift to a new data type — temporal data — and the unique challenges of working with dates, times, and timestamps in Python.</span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/cuinfoscience/Information-Exposition-Book/edit/main/chapters/08-audience.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/cuinfoscience/Information-Exposition-Book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
