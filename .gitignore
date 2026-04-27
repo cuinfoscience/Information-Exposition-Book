@@ -1,4 +1,4 @@
 .DS_Store
 book/
 .quarto/
-/.claude/workflows/
+/.claude/worktrees/
